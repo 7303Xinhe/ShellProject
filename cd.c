@@ -5,14 +5,14 @@ directory, i.e. it should have the same effect as cd ˜ (see Tilde Expansion).
 */
 void cd_home_function()
 {
-	int result = chdir(myHome); //get home directory and move to it
+	int result = chdir(home); //get home directory and move to it
 	if(result == -1) //error
 	{
 		perror("Directory not changed");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	setenv_function("PWD", myHome, 0); //change PWD
+	setenv_function("PWD", home, 0); //change PWD
 	printf("%s\n", getenv("PWD"));
 }
 

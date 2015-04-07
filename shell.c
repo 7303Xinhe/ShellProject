@@ -7,8 +7,8 @@ char** aliases; //alias names and values
 char** newAliases; //copied aliases
 int aliasCount = 0; //number of aliases
 struct passwd* pwd; //contains result of getpwnam
-char* myPath;
-char* myHome;
+char* path;
+char* home;
 int savedOutput; //output channel
 int savedInput; //input channel
 int savedError; //error channel
@@ -21,22 +21,22 @@ int addedWords = 0;
 
 void shell_init()
 {
-	myPath = malloc(500 * sizeof(char));
-	if(myPath == (char *) NULL) //error
+	path = malloc(500 * sizeof(char));
+	if(path == (char *) NULL) //error
 	{
 		perror("Error with memory allocation.");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	strcpy(myPath, getenv("PATH")); //get path directory so it stays constant
-	myHome = malloc(500 * sizeof(char));
-	if(myHome == (char *) NULL) //error
+	strcpy(path, getenv("PATH")); //get path directory so it stays constant
+	home = malloc(500 * sizeof(char));
+	if(home == (char *) NULL) //error
 	{
 		perror("Error with 																																																														memory allocation.");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	strcpy(myHome, getenv("HOME")); //get home directory so that it stays constant
+	strcpy(home, getenv("HOME")); //get home directory so that it stays constant
 	signal(SIGINT, SIG_IGN); //prevent crash from ctrl-c
 	signal(SIGTSTP, SIG_IGN); //prevent crash from ctrl-z
 	signal(SIGQUIT, SIG_IGN); //prevent crash from ctrl-/
@@ -213,6 +213,8 @@ char* getDirectories(char* textmatch)
 	}
 	return "";
 }
+
+
 void pipe_function(int numberOfPipes, int* pipes, int endOfCommand)
 {
 	pid_t pid[numberOfPipes];
@@ -576,14 +578,14 @@ char* tildeExpansion(char* text)
 		int length = strlen(&text[1]); 
 		if(length == 0) //empty afterwards, so get home directory
 		{
-			int result = chdir(myHome); //get home directory and move to it
+			int result = chdir(home); //get home directory and move to it
 			if(result == -1) //error
 			{
 				perror("Directory not changed");
 				printf("Error at line %d\n", __LINE__);
 				return;
 			}
-			return myHome;
+			return home;
 		}
 		else //actual expansion
 		{
@@ -609,7 +611,7 @@ char* tildeExpansion(char* text)
 			else //string continues
 			{
 				char *directory = malloc(300 * sizeof(char));
-				strcpy(directory, myHome); //start with home directory
+				strcpy(directory, home); //start with home directory
 				int index = length - 1;
 				int i;
 				for(i = 0; i < length; i++)
