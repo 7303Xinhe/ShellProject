@@ -213,8 +213,6 @@ char* getDirectories(char* textmatch)
 	}
 	return "";
 }
-
-
 void pipe_function(int numberOfPipes, int* pipes, int endOfCommand)
 {
 	pid_t pid[numberOfPipes];
