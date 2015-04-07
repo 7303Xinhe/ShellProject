@@ -1,4 +1,4 @@
--------------------
+ -------------------
 Features NOT Implemented
 1. File name completion    
 2. Other commands (piping)
