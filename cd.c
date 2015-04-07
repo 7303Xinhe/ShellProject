@@ -74,7 +74,8 @@ void cd_function(char *text) {
 				}
 			}
 
-			// doesn't return to root
+			// adding null characters
+			// if slash isn't at 0, doesn't return to root
 			if(lastSlashIndex != 0) { 
 				directory[lastSlashIndex] = '\0';
 			}
@@ -90,9 +91,9 @@ void cd_function(char *text) {
 				strcat(directory, "/"); //add slash
 				strcpy(text, &text[3]); //take everything after the slash
 			}
-			else //nothing
-			{
-				strcpy(text, ""); //blank it
+			// just goes back a directory
+			else {
+				strcpy(text, ""); // blank it
 			}
 		}
 
@@ -168,8 +169,7 @@ void cd_function(char *text) {
 	reset();
 }
 
-// removes extra slashes in the beginning of a string so ////home -> /home, ./////home -> ./home
-void shortenSlashes(char* string) { 
+// removes extra slashes void shortenSlashes(char* string) { 
 	int i = 0;
 	int size = strlen(string);
 	for(i = 0; i < size;){
