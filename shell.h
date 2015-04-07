@@ -29,7 +29,7 @@ void printenv_function(void);
 
 void alias_list_function(void);
 void alias_function(char *text, char *text2);
-void unalias_function (char *text, int flag);
+void unalias_function (char *text);
 int getAliasCount(void);
 char* aliasResolve(char* string);
 char* getAliasValue(char* aliasName);

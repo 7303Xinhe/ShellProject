@@ -64,21 +64,21 @@
 /* Copy the first part of user declarations.  */
 #line 1 "shell.y" /* yacc.c:339  */
 
-  #include "shell.h"
-  extern char *yytext;
-  void yyerror(const char *str)
-  {
+#include "shell.h"
+extern char *yytext;
+
+void yyerror(const char *str) {
 	fprintf(stderr,"error: %s\n", str);
-  }
-  int yywrap()
-  {
+}
+
+int yywrap() {
 	return 1;
-  }
-  main()
-  {
+}
+
+main() {
 	shell_init();
 	yyparse();
-  }
+}
 
 #line 84 "y.tab.c" /* yacc.c:339  */
 
@@ -476,45 +476,45 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    22,    22,    23,    24,    25,    27,    28,    29,    30,
-      31,    32,    33,    34,    35,    36,    37,    38,    39,    40,
-      41,    42,    43,    44,    45,    46,    47,    48,    49,    50,
-      51,    54,    59,    65,    70,    75,    82,    87,    92,    98,
-     104,   108,   113,   118,   122,   126,   131,   136,   142,   148,
-     153,   158,   163,   167,   172,   176,   181,   185,   190,   194,
-     198,   202,   206,   210,   214,   218,   222,   226,   230,   234,
-     238,   242,   246,   250,   254,   258,   262,   266,   270,   274,
-     278,   282,   286,   290,   294,   298,   302,   306,   310,   314,
-     318,   322,   326,   330,   334,   338,   342,   346,   350,   354,
-     358,   362,   366,   370,   374,   378,   382,   386,   390,   394,
-     398,   402,   406,   410,   414,   418,   422,   426,   430,   434,
-     438,   442,   446,   450,   454,   458,   462,   466,   470,   474,
-     478,   482,   486,   490,   494,   498,   502,   506,   510,   514,
-     518,   522,   526,   530,   534,   538,   542,   546,   550,   554,
-     558,   562,   566,   570,   574,   578,   582,   586,   590,   594,
-     598,   602,   606,   610,   614,   618,   622,   626,   630,   634,
-     638,   642,   646,   650,   654,   658,   662,   666,   670,   674,
-     678,   682,   686,   690,   694,   698,   702,   706,   710,   714,
-     718,   722,   726,   730,   734,   738,   742,   746,   750,   754,
-     758,   762,   766,   770,   774,   778,   782,   786,   790,   794,
-     798,   802,   806,   810,   814,   818,   822,   826,   830,   834,
-     838,   842,   846,   850,   854,   858,   862,   866,   870,   874,
-     878,   882,   886,   890,   894,   898,   902,   906,   910,   914,
-     918,   922,   926,   930,   934,   938,   942,   946,   950,   954,
-     958,   962,   966,   970,   974,   978,   982,   986,   990,   994,
-     998,  1002,  1006,  1010,  1014,  1018,  1022,  1026,  1030,  1034,
-    1038,  1042,  1046,  1050,  1054,  1058,  1062,  1066,  1070,  1074,
-    1078,  1082,  1086,  1090,  1094,  1098,  1102,  1106,  1110,  1114,
-    1118,  1122,  1126,  1130,  1134,  1138,  1142,  1146,  1150,  1154,
-    1158,  1162,  1166,  1170,  1174,  1178,  1182,  1186,  1190,  1194,
-    1198,  1202,  1206,  1210,  1214,  1218,  1222,  1226,  1230,  1234,
-    1238,  1242,  1246,  1250,  1254,  1258,  1262,  1266,  1270,  1274,
-    1278,  1282,  1286,  1290,  1294,  1298,  1302,  1306,  1310,  1314,
-    1318,  1322,  1326,  1330,  1334,  1338,  1342,  1346,  1350,  1354,
-    1358,  1362,  1366,  1370,  1374,  1378,  1382,  1386,  1390,  1394,
-    1398,  1402,  1406,  1410,  1414,  1418,  1422,  1426,  1430,  1434,
-    1438,  1442,  1446,  1450,  1454,  1458,  1462,  1466,  1470,  1474,
-    1479,  1484,  1488,  1520,  1524
+       0,    22,    22,    23,    24,    25,    27,    28,    30,    31,
+      32,    34,    35,    36,    38,    40,    41,    42,    43,    44,
+      46,    47,    48,    49,    50,    51,    52,    53,    54,    55,
+      56,    59,    63,    68,    72,    76,    82,    86,    90,    95,
+     100,   103,   107,   111,   115,   119,   123,   127,   132,   137,
+     141,   145,   150,   154,   159,   163,   168,   172,   177,   181,
+     185,   189,   193,   197,   201,   205,   209,   213,   217,   221,
+     225,   229,   233,   237,   241,   245,   249,   253,   257,   261,
+     265,   269,   273,   277,   281,   285,   289,   293,   297,   301,
+     305,   309,   313,   317,   321,   325,   329,   333,   337,   341,
+     345,   349,   353,   357,   361,   365,   369,   373,   377,   381,
+     385,   389,   393,   397,   401,   405,   409,   413,   417,   421,
+     425,   429,   433,   437,   441,   445,   449,   453,   457,   461,
+     465,   469,   473,   477,   481,   485,   489,   493,   497,   501,
+     505,   509,   513,   517,   521,   525,   529,   533,   537,   541,
+     545,   549,   553,   557,   561,   565,   569,   573,   577,   581,
+     585,   589,   593,   597,   601,   605,   609,   613,   617,   621,
+     625,   629,   633,   637,   641,   645,   649,   653,   657,   661,
+     665,   669,   673,   677,   681,   685,   689,   693,   697,   701,
+     705,   709,   713,   717,   721,   725,   729,   733,   737,   741,
+     745,   749,   753,   757,   761,   765,   769,   773,   777,   781,
+     785,   789,   793,   797,   801,   805,   809,   813,   817,   821,
+     825,   829,   833,   837,   841,   845,   849,   853,   857,   861,
+     865,   869,   873,   877,   881,   885,   889,   893,   897,   901,
+     905,   909,   913,   917,   921,   925,   929,   933,   937,   941,
+     945,   949,   953,   957,   961,   965,   969,   973,   977,   981,
+     985,   989,   993,   997,  1001,  1005,  1009,  1013,  1017,  1021,
+    1025,  1029,  1033,  1037,  1041,  1045,  1049,  1053,  1057,  1061,
+    1065,  1069,  1073,  1077,  1081,  1085,  1089,  1093,  1097,  1101,
+    1105,  1109,  1113,  1117,  1121,  1125,  1129,  1133,  1137,  1141,
+    1145,  1149,  1153,  1157,  1161,  1165,  1169,  1173,  1177,  1181,
+    1185,  1189,  1193,  1197,  1201,  1205,  1209,  1213,  1217,  1221,
+    1225,  1229,  1233,  1237,  1241,  1245,  1249,  1253,  1257,  1261,
+    1265,  1269,  1273,  1277,  1281,  1285,  1289,  1293,  1297,  1301,
+    1305,  1309,  1313,  1317,  1321,  1325,  1329,  1333,  1337,  1341,
+    1345,  1349,  1353,  1357,  1361,  1365,  1369,  1373,  1377,  1381,
+    1385,  1389,  1393,  1397,  1401,  1405,  1409,  1413,  1417,  1421,
+    1425,  1429,  1433,  1437,  1441,  1445,  1449,  1453,  1457,  1461,
+    1466,  1471,  1475,  1507,  1511
 };
 #endif
 
@@ -1649,167 +1649,167 @@ yyreduce:
   switch (yyn)
     {
         case 31:
-#line 55 "shell.y" /* yacc.c:1646  */
+#line 59 "shell.y" /* yacc.c:1646  */
     {
-			cd_home_function();
-		}
+		cd_home_function();
+	}
 #line 1657 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 60 "shell.y" /* yacc.c:1646  */
+#line 63 "shell.y" /* yacc.c:1646  */
     {
-			cd_function(textArray[getWords() - 1]);
-		}
+		cd_function(textArray[getWords() - 1]);
+	}
 #line 1665 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 66 "shell.y" /* yacc.c:1646  */
+#line 68 "shell.y" /* yacc.c:1646  */
     {
-			printenv_function();
-		}
+		printenv_function();
+	}
 #line 1673 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 71 "shell.y" /* yacc.c:1646  */
+#line 72 "shell.y" /* yacc.c:1646  */
     {
-			unsetenv_function(textArray[getWords() - 1], 1);
-		}
+		unsetenv_function(textArray[getWords() - 1], 1);
+	}
 #line 1681 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
 #line 76 "shell.y" /* yacc.c:1646  */
     {
-			setenv_function(textArray[getWords() - 2], textArray [getWords() - 1], 1);		
-		}
+		setenv_function(textArray[getWords() - 2], textArray [getWords() - 1], 1);		
+	}
 #line 1689 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 83 "shell.y" /* yacc.c:1646  */
+#line 82 "shell.y" /* yacc.c:1646  */
     {
-			alias_list_function();
-		}
+		alias_list_function();
+	}
 #line 1697 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 88 "shell.y" /* yacc.c:1646  */
+#line 86 "shell.y" /* yacc.c:1646  */
     {
-			alias_function(textArray[getWords() - 2], textArray[getWords() - 1]);
-		}
+		alias_function(textArray[getWords() - 2], textArray[getWords() - 1]);
+	}
 #line 1705 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 93 "shell.y" /* yacc.c:1646  */
+#line 90 "shell.y" /* yacc.c:1646  */
     {
-			unalias_function(textArray[getWords() - 1]);
-		}
+		unalias_function(textArray[getWords() - 1]);
+	}
 #line 1713 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 99 "shell.y" /* yacc.c:1646  */
+#line 95 "shell.y" /* yacc.c:1646  */
     { 
-			exit(0); //exit shell
-		}
+		exit(0); //exit shell
+	}
 #line 1721 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 105 "shell.y" /* yacc.c:1646  */
+#line 100 "shell.y" /* yacc.c:1646  */
     {
-							}
+	}
 #line 1728 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 109 "shell.y" /* yacc.c:1646  */
+#line 103 "shell.y" /* yacc.c:1646  */
     {
-								word_function("<");
-							}
+		word_function("<");
+	}
 #line 1736 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 114 "shell.y" /* yacc.c:1646  */
+#line 107 "shell.y" /* yacc.c:1646  */
     {
-								word_function(">");
-							}
+		word_function(">");
+	}
 #line 1744 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 119 "shell.y" /* yacc.c:1646  */
+#line 112 "shell.y" /* yacc.c:1646  */
     {
-							}
+	}
 #line 1751 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 123 "shell.y" /* yacc.c:1646  */
+#line 116 "shell.y" /* yacc.c:1646  */
     {
 							}
 #line 1758 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 127 "shell.y" /* yacc.c:1646  */
+#line 119 "shell.y" /* yacc.c:1646  */
     {
-								word_function("|");
-							}
+		word_function("|");
+	}
 #line 1766 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 132 "shell.y" /* yacc.c:1646  */
+#line 123 "shell.y" /* yacc.c:1646  */
     {
-								//printf("PIPE words\n");
-								//pipe with a command name and more than one argument
-							}
+		//printf("PIPE words\n");
+		//pipe with a command name and more than one argument
+	}
 #line 1775 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 137 "shell.y" /* yacc.c:1646  */
+#line 127 "shell.y" /* yacc.c:1646  */
     {
-								//printf("PIPE word_case\n");
-								//pipe with a command name and no arguments
-							}
+		//printf("PIPE word_case\n");
+		//pipe with a command name and no arguments
+	}
 #line 1784 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 143 "shell.y" /* yacc.c:1646  */
+#line 132 "shell.y" /* yacc.c:1646  */
     {
-								word_function("&");
-								printf ("Ampersand entered\n");
-							}
+		word_function("&");
+		printf ("Ampersand entered\n");
+	}
 #line 1793 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 149 "shell.y" /* yacc.c:1646  */
+#line 137 "shell.y" /* yacc.c:1646  */
     {
-								word_function("2>&1");
-							}
+		word_function("2>&1");
+	}
 #line 1801 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 154 "shell.y" /* yacc.c:1646  */
+#line 141 "shell.y" /* yacc.c:1646  */
     {
-								word_function(yytext);
-							}
+		word_function(yytext);
+	}
 #line 1809 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 159 "shell.y" /* yacc.c:1646  */
+#line 146 "shell.y" /* yacc.c:1646  */
     {
 								printf ("Syntax error.\n");
 							}
@@ -1817,7 +1817,7 @@ yyreduce:
     break;
 
   case 52:
-#line 163 "shell.y" /* yacc.c:1646  */
+#line 150 "shell.y" /* yacc.c:1646  */
     {
 								word_function(">>");
 							}
@@ -1825,7 +1825,7 @@ yyreduce:
     break;
 
   case 53:
-#line 168 "shell.y" /* yacc.c:1646  */
+#line 155 "shell.y" /* yacc.c:1646  */
     {
 								
 							}
@@ -1833,7 +1833,7 @@ yyreduce:
     break;
 
   case 54:
-#line 173 "shell.y" /* yacc.c:1646  */
+#line 160 "shell.y" /* yacc.c:1646  */
     {
 								//printf("word_case word_case\n");
 							}
@@ -1841,7 +1841,7 @@ yyreduce:
     break;
 
   case 55:
-#line 177 "shell.y" /* yacc.c:1646  */
+#line 164 "shell.y" /* yacc.c:1646  */
     {
 								//printf("words word_case\n");
 							}
@@ -1849,7 +1849,7 @@ yyreduce:
     break;
 
   case 56:
-#line 182 "shell.y" /* yacc.c:1646  */
+#line 169 "shell.y" /* yacc.c:1646  */
     {
 								//printf("pipe_case pipe_case\n");
 							}
@@ -1857,7 +1857,7 @@ yyreduce:
     break;
 
   case 57:
-#line 186 "shell.y" /* yacc.c:1646  */
+#line 173 "shell.y" /* yacc.c:1646  */
     {
 								//printf("pipes pipe_case\n");
 							}
@@ -1865,7 +1865,7 @@ yyreduce:
     break;
 
   case 58:
-#line 191 "shell.y" /* yacc.c:1646  */
+#line 178 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1873,7 +1873,7 @@ yyreduce:
     break;
 
   case 59:
-#line 195 "shell.y" /* yacc.c:1646  */
+#line 182 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1881,7 +1881,7 @@ yyreduce:
     break;
 
   case 60:
-#line 199 "shell.y" /* yacc.c:1646  */
+#line 186 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1889,7 +1889,7 @@ yyreduce:
     break;
 
   case 61:
-#line 203 "shell.y" /* yacc.c:1646  */
+#line 190 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1897,7 +1897,7 @@ yyreduce:
     break;
 
   case 62:
-#line 207 "shell.y" /* yacc.c:1646  */
+#line 194 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1905,7 +1905,7 @@ yyreduce:
     break;
 
   case 63:
-#line 211 "shell.y" /* yacc.c:1646  */
+#line 198 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1913,7 +1913,7 @@ yyreduce:
     break;
 
   case 64:
-#line 215 "shell.y" /* yacc.c:1646  */
+#line 202 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1921,7 +1921,7 @@ yyreduce:
     break;
 
   case 65:
-#line 219 "shell.y" /* yacc.c:1646  */
+#line 206 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1929,7 +1929,7 @@ yyreduce:
     break;
 
   case 66:
-#line 223 "shell.y" /* yacc.c:1646  */
+#line 210 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1937,7 +1937,7 @@ yyreduce:
     break;
 
   case 67:
-#line 227 "shell.y" /* yacc.c:1646  */
+#line 214 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1945,7 +1945,7 @@ yyreduce:
     break;
 
   case 68:
-#line 231 "shell.y" /* yacc.c:1646  */
+#line 218 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1953,7 +1953,7 @@ yyreduce:
     break;
 
   case 69:
-#line 235 "shell.y" /* yacc.c:1646  */
+#line 222 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1961,7 +1961,7 @@ yyreduce:
     break;
 
   case 70:
-#line 239 "shell.y" /* yacc.c:1646  */
+#line 226 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1969,7 +1969,7 @@ yyreduce:
     break;
 
   case 71:
-#line 243 "shell.y" /* yacc.c:1646  */
+#line 230 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1977,7 +1977,7 @@ yyreduce:
     break;
 
   case 72:
-#line 247 "shell.y" /* yacc.c:1646  */
+#line 234 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1985,7 +1985,7 @@ yyreduce:
     break;
 
   case 73:
-#line 251 "shell.y" /* yacc.c:1646  */
+#line 238 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -1993,7 +1993,7 @@ yyreduce:
     break;
 
   case 74:
-#line 255 "shell.y" /* yacc.c:1646  */
+#line 242 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2001,7 +2001,7 @@ yyreduce:
     break;
 
   case 75:
-#line 259 "shell.y" /* yacc.c:1646  */
+#line 246 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2009,7 +2009,7 @@ yyreduce:
     break;
 
   case 76:
-#line 263 "shell.y" /* yacc.c:1646  */
+#line 250 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2017,7 +2017,7 @@ yyreduce:
     break;
 
   case 77:
-#line 267 "shell.y" /* yacc.c:1646  */
+#line 254 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2025,7 +2025,7 @@ yyreduce:
     break;
 
   case 78:
-#line 271 "shell.y" /* yacc.c:1646  */
+#line 258 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2033,7 +2033,7 @@ yyreduce:
     break;
 
   case 79:
-#line 275 "shell.y" /* yacc.c:1646  */
+#line 262 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2041,7 +2041,7 @@ yyreduce:
     break;
 
   case 80:
-#line 279 "shell.y" /* yacc.c:1646  */
+#line 266 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2049,7 +2049,7 @@ yyreduce:
     break;
 
   case 81:
-#line 283 "shell.y" /* yacc.c:1646  */
+#line 270 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2057,7 +2057,7 @@ yyreduce:
     break;
 
   case 82:
-#line 287 "shell.y" /* yacc.c:1646  */
+#line 274 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2065,7 +2065,7 @@ yyreduce:
     break;
 
   case 83:
-#line 291 "shell.y" /* yacc.c:1646  */
+#line 278 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2073,7 +2073,7 @@ yyreduce:
     break;
 
   case 84:
-#line 295 "shell.y" /* yacc.c:1646  */
+#line 282 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2081,7 +2081,7 @@ yyreduce:
     break;
 
   case 85:
-#line 299 "shell.y" /* yacc.c:1646  */
+#line 286 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2089,7 +2089,7 @@ yyreduce:
     break;
 
   case 86:
-#line 303 "shell.y" /* yacc.c:1646  */
+#line 290 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2097,7 +2097,7 @@ yyreduce:
     break;
 
   case 87:
-#line 307 "shell.y" /* yacc.c:1646  */
+#line 294 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2105,7 +2105,7 @@ yyreduce:
     break;
 
   case 88:
-#line 311 "shell.y" /* yacc.c:1646  */
+#line 298 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2113,7 +2113,7 @@ yyreduce:
     break;
 
   case 89:
-#line 315 "shell.y" /* yacc.c:1646  */
+#line 302 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2121,7 +2121,7 @@ yyreduce:
     break;
 
   case 90:
-#line 319 "shell.y" /* yacc.c:1646  */
+#line 306 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2129,7 +2129,7 @@ yyreduce:
     break;
 
   case 91:
-#line 323 "shell.y" /* yacc.c:1646  */
+#line 310 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2137,7 +2137,7 @@ yyreduce:
     break;
 
   case 92:
-#line 327 "shell.y" /* yacc.c:1646  */
+#line 314 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2145,7 +2145,7 @@ yyreduce:
     break;
 
   case 93:
-#line 331 "shell.y" /* yacc.c:1646  */
+#line 318 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2153,7 +2153,7 @@ yyreduce:
     break;
 
   case 94:
-#line 335 "shell.y" /* yacc.c:1646  */
+#line 322 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2161,7 +2161,7 @@ yyreduce:
     break;
 
   case 95:
-#line 339 "shell.y" /* yacc.c:1646  */
+#line 326 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2169,7 +2169,7 @@ yyreduce:
     break;
 
   case 96:
-#line 343 "shell.y" /* yacc.c:1646  */
+#line 330 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2177,7 +2177,7 @@ yyreduce:
     break;
 
   case 97:
-#line 347 "shell.y" /* yacc.c:1646  */
+#line 334 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2185,7 +2185,7 @@ yyreduce:
     break;
 
   case 98:
-#line 351 "shell.y" /* yacc.c:1646  */
+#line 338 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2193,7 +2193,7 @@ yyreduce:
     break;
 
   case 99:
-#line 355 "shell.y" /* yacc.c:1646  */
+#line 342 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2201,7 +2201,7 @@ yyreduce:
     break;
 
   case 100:
-#line 359 "shell.y" /* yacc.c:1646  */
+#line 346 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2209,7 +2209,7 @@ yyreduce:
     break;
 
   case 101:
-#line 363 "shell.y" /* yacc.c:1646  */
+#line 350 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2217,7 +2217,7 @@ yyreduce:
     break;
 
   case 102:
-#line 367 "shell.y" /* yacc.c:1646  */
+#line 354 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2225,7 +2225,7 @@ yyreduce:
     break;
 
   case 103:
-#line 371 "shell.y" /* yacc.c:1646  */
+#line 358 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2233,7 +2233,7 @@ yyreduce:
     break;
 
   case 104:
-#line 375 "shell.y" /* yacc.c:1646  */
+#line 362 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2241,7 +2241,7 @@ yyreduce:
     break;
 
   case 105:
-#line 379 "shell.y" /* yacc.c:1646  */
+#line 366 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2249,7 +2249,7 @@ yyreduce:
     break;
 
   case 106:
-#line 383 "shell.y" /* yacc.c:1646  */
+#line 370 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2257,7 +2257,7 @@ yyreduce:
     break;
 
   case 107:
-#line 387 "shell.y" /* yacc.c:1646  */
+#line 374 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2265,7 +2265,7 @@ yyreduce:
     break;
 
   case 108:
-#line 391 "shell.y" /* yacc.c:1646  */
+#line 378 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2273,7 +2273,7 @@ yyreduce:
     break;
 
   case 109:
-#line 395 "shell.y" /* yacc.c:1646  */
+#line 382 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2281,7 +2281,7 @@ yyreduce:
     break;
 
   case 110:
-#line 399 "shell.y" /* yacc.c:1646  */
+#line 386 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2289,7 +2289,7 @@ yyreduce:
     break;
 
   case 111:
-#line 403 "shell.y" /* yacc.c:1646  */
+#line 390 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2297,7 +2297,7 @@ yyreduce:
     break;
 
   case 112:
-#line 407 "shell.y" /* yacc.c:1646  */
+#line 394 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2305,7 +2305,7 @@ yyreduce:
     break;
 
   case 113:
-#line 411 "shell.y" /* yacc.c:1646  */
+#line 398 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2313,7 +2313,7 @@ yyreduce:
     break;
 
   case 114:
-#line 415 "shell.y" /* yacc.c:1646  */
+#line 402 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2321,7 +2321,7 @@ yyreduce:
     break;
 
   case 115:
-#line 419 "shell.y" /* yacc.c:1646  */
+#line 406 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2329,7 +2329,7 @@ yyreduce:
     break;
 
   case 116:
-#line 423 "shell.y" /* yacc.c:1646  */
+#line 410 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2337,7 +2337,7 @@ yyreduce:
     break;
 
   case 117:
-#line 427 "shell.y" /* yacc.c:1646  */
+#line 414 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2345,7 +2345,7 @@ yyreduce:
     break;
 
   case 118:
-#line 431 "shell.y" /* yacc.c:1646  */
+#line 418 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2353,7 +2353,7 @@ yyreduce:
     break;
 
   case 119:
-#line 435 "shell.y" /* yacc.c:1646  */
+#line 422 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2361,7 +2361,7 @@ yyreduce:
     break;
 
   case 120:
-#line 439 "shell.y" /* yacc.c:1646  */
+#line 426 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2369,7 +2369,7 @@ yyreduce:
     break;
 
   case 121:
-#line 443 "shell.y" /* yacc.c:1646  */
+#line 430 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2377,7 +2377,7 @@ yyreduce:
     break;
 
   case 122:
-#line 447 "shell.y" /* yacc.c:1646  */
+#line 434 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2385,7 +2385,7 @@ yyreduce:
     break;
 
   case 123:
-#line 451 "shell.y" /* yacc.c:1646  */
+#line 438 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2393,7 +2393,7 @@ yyreduce:
     break;
 
   case 124:
-#line 455 "shell.y" /* yacc.c:1646  */
+#line 442 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2401,7 +2401,7 @@ yyreduce:
     break;
 
   case 125:
-#line 459 "shell.y" /* yacc.c:1646  */
+#line 446 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2409,7 +2409,7 @@ yyreduce:
     break;
 
   case 126:
-#line 463 "shell.y" /* yacc.c:1646  */
+#line 450 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2417,7 +2417,7 @@ yyreduce:
     break;
 
   case 127:
-#line 467 "shell.y" /* yacc.c:1646  */
+#line 454 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2425,7 +2425,7 @@ yyreduce:
     break;
 
   case 128:
-#line 471 "shell.y" /* yacc.c:1646  */
+#line 458 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2433,7 +2433,7 @@ yyreduce:
     break;
 
   case 129:
-#line 475 "shell.y" /* yacc.c:1646  */
+#line 462 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2441,7 +2441,7 @@ yyreduce:
     break;
 
   case 130:
-#line 479 "shell.y" /* yacc.c:1646  */
+#line 466 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2449,7 +2449,7 @@ yyreduce:
     break;
 
   case 131:
-#line 483 "shell.y" /* yacc.c:1646  */
+#line 470 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2457,7 +2457,7 @@ yyreduce:
     break;
 
   case 132:
-#line 487 "shell.y" /* yacc.c:1646  */
+#line 474 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2465,7 +2465,7 @@ yyreduce:
     break;
 
   case 133:
-#line 491 "shell.y" /* yacc.c:1646  */
+#line 478 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2473,7 +2473,7 @@ yyreduce:
     break;
 
   case 134:
-#line 495 "shell.y" /* yacc.c:1646  */
+#line 482 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2481,7 +2481,7 @@ yyreduce:
     break;
 
   case 135:
-#line 499 "shell.y" /* yacc.c:1646  */
+#line 486 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2489,7 +2489,7 @@ yyreduce:
     break;
 
   case 136:
-#line 503 "shell.y" /* yacc.c:1646  */
+#line 490 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2497,7 +2497,7 @@ yyreduce:
     break;
 
   case 137:
-#line 507 "shell.y" /* yacc.c:1646  */
+#line 494 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2505,7 +2505,7 @@ yyreduce:
     break;
 
   case 138:
-#line 511 "shell.y" /* yacc.c:1646  */
+#line 498 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2513,7 +2513,7 @@ yyreduce:
     break;
 
   case 139:
-#line 515 "shell.y" /* yacc.c:1646  */
+#line 502 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2521,7 +2521,7 @@ yyreduce:
     break;
 
   case 140:
-#line 519 "shell.y" /* yacc.c:1646  */
+#line 506 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2529,7 +2529,7 @@ yyreduce:
     break;
 
   case 141:
-#line 523 "shell.y" /* yacc.c:1646  */
+#line 510 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2537,7 +2537,7 @@ yyreduce:
     break;
 
   case 142:
-#line 527 "shell.y" /* yacc.c:1646  */
+#line 514 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2545,7 +2545,7 @@ yyreduce:
     break;
 
   case 143:
-#line 531 "shell.y" /* yacc.c:1646  */
+#line 518 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2553,7 +2553,7 @@ yyreduce:
     break;
 
   case 144:
-#line 535 "shell.y" /* yacc.c:1646  */
+#line 522 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2561,7 +2561,7 @@ yyreduce:
     break;
 
   case 145:
-#line 539 "shell.y" /* yacc.c:1646  */
+#line 526 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2569,7 +2569,7 @@ yyreduce:
     break;
 
   case 146:
-#line 543 "shell.y" /* yacc.c:1646  */
+#line 530 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2577,7 +2577,7 @@ yyreduce:
     break;
 
   case 147:
-#line 547 "shell.y" /* yacc.c:1646  */
+#line 534 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2585,7 +2585,7 @@ yyreduce:
     break;
 
   case 148:
-#line 551 "shell.y" /* yacc.c:1646  */
+#line 538 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2593,7 +2593,7 @@ yyreduce:
     break;
 
   case 149:
-#line 555 "shell.y" /* yacc.c:1646  */
+#line 542 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2601,7 +2601,7 @@ yyreduce:
     break;
 
   case 150:
-#line 559 "shell.y" /* yacc.c:1646  */
+#line 546 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2609,7 +2609,7 @@ yyreduce:
     break;
 
   case 151:
-#line 563 "shell.y" /* yacc.c:1646  */
+#line 550 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2617,7 +2617,7 @@ yyreduce:
     break;
 
   case 152:
-#line 567 "shell.y" /* yacc.c:1646  */
+#line 554 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2625,7 +2625,7 @@ yyreduce:
     break;
 
   case 153:
-#line 571 "shell.y" /* yacc.c:1646  */
+#line 558 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2633,7 +2633,7 @@ yyreduce:
     break;
 
   case 154:
-#line 575 "shell.y" /* yacc.c:1646  */
+#line 562 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2641,7 +2641,7 @@ yyreduce:
     break;
 
   case 155:
-#line 579 "shell.y" /* yacc.c:1646  */
+#line 566 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2649,7 +2649,7 @@ yyreduce:
     break;
 
   case 156:
-#line 583 "shell.y" /* yacc.c:1646  */
+#line 570 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2657,7 +2657,7 @@ yyreduce:
     break;
 
   case 157:
-#line 587 "shell.y" /* yacc.c:1646  */
+#line 574 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2665,7 +2665,7 @@ yyreduce:
     break;
 
   case 158:
-#line 591 "shell.y" /* yacc.c:1646  */
+#line 578 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2673,7 +2673,7 @@ yyreduce:
     break;
 
   case 159:
-#line 595 "shell.y" /* yacc.c:1646  */
+#line 582 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2681,7 +2681,7 @@ yyreduce:
     break;
 
   case 160:
-#line 599 "shell.y" /* yacc.c:1646  */
+#line 586 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2689,7 +2689,7 @@ yyreduce:
     break;
 
   case 161:
-#line 603 "shell.y" /* yacc.c:1646  */
+#line 590 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2697,7 +2697,7 @@ yyreduce:
     break;
 
   case 162:
-#line 607 "shell.y" /* yacc.c:1646  */
+#line 594 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2705,7 +2705,7 @@ yyreduce:
     break;
 
   case 163:
-#line 611 "shell.y" /* yacc.c:1646  */
+#line 598 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2713,7 +2713,7 @@ yyreduce:
     break;
 
   case 164:
-#line 615 "shell.y" /* yacc.c:1646  */
+#line 602 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2721,7 +2721,7 @@ yyreduce:
     break;
 
   case 165:
-#line 619 "shell.y" /* yacc.c:1646  */
+#line 606 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2729,7 +2729,7 @@ yyreduce:
     break;
 
   case 166:
-#line 623 "shell.y" /* yacc.c:1646  */
+#line 610 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2737,7 +2737,7 @@ yyreduce:
     break;
 
   case 167:
-#line 627 "shell.y" /* yacc.c:1646  */
+#line 614 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2745,7 +2745,7 @@ yyreduce:
     break;
 
   case 168:
-#line 631 "shell.y" /* yacc.c:1646  */
+#line 618 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2753,7 +2753,7 @@ yyreduce:
     break;
 
   case 169:
-#line 635 "shell.y" /* yacc.c:1646  */
+#line 622 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2761,7 +2761,7 @@ yyreduce:
     break;
 
   case 170:
-#line 639 "shell.y" /* yacc.c:1646  */
+#line 626 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2769,7 +2769,7 @@ yyreduce:
     break;
 
   case 171:
-#line 643 "shell.y" /* yacc.c:1646  */
+#line 630 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2777,7 +2777,7 @@ yyreduce:
     break;
 
   case 172:
-#line 647 "shell.y" /* yacc.c:1646  */
+#line 634 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2785,7 +2785,7 @@ yyreduce:
     break;
 
   case 173:
-#line 651 "shell.y" /* yacc.c:1646  */
+#line 638 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2793,7 +2793,7 @@ yyreduce:
     break;
 
   case 174:
-#line 655 "shell.y" /* yacc.c:1646  */
+#line 642 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2801,7 +2801,7 @@ yyreduce:
     break;
 
   case 175:
-#line 659 "shell.y" /* yacc.c:1646  */
+#line 646 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2809,7 +2809,7 @@ yyreduce:
     break;
 
   case 176:
-#line 663 "shell.y" /* yacc.c:1646  */
+#line 650 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2817,7 +2817,7 @@ yyreduce:
     break;
 
   case 177:
-#line 667 "shell.y" /* yacc.c:1646  */
+#line 654 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2825,7 +2825,7 @@ yyreduce:
     break;
 
   case 178:
-#line 671 "shell.y" /* yacc.c:1646  */
+#line 658 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2833,7 +2833,7 @@ yyreduce:
     break;
 
   case 179:
-#line 675 "shell.y" /* yacc.c:1646  */
+#line 662 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2841,7 +2841,7 @@ yyreduce:
     break;
 
   case 180:
-#line 679 "shell.y" /* yacc.c:1646  */
+#line 666 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2849,7 +2849,7 @@ yyreduce:
     break;
 
   case 181:
-#line 683 "shell.y" /* yacc.c:1646  */
+#line 670 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2857,7 +2857,7 @@ yyreduce:
     break;
 
   case 182:
-#line 687 "shell.y" /* yacc.c:1646  */
+#line 674 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2865,7 +2865,7 @@ yyreduce:
     break;
 
   case 183:
-#line 691 "shell.y" /* yacc.c:1646  */
+#line 678 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2873,7 +2873,7 @@ yyreduce:
     break;
 
   case 184:
-#line 695 "shell.y" /* yacc.c:1646  */
+#line 682 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2881,7 +2881,7 @@ yyreduce:
     break;
 
   case 185:
-#line 699 "shell.y" /* yacc.c:1646  */
+#line 686 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2889,7 +2889,7 @@ yyreduce:
     break;
 
   case 186:
-#line 703 "shell.y" /* yacc.c:1646  */
+#line 690 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2897,7 +2897,7 @@ yyreduce:
     break;
 
   case 187:
-#line 707 "shell.y" /* yacc.c:1646  */
+#line 694 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2905,7 +2905,7 @@ yyreduce:
     break;
 
   case 188:
-#line 711 "shell.y" /* yacc.c:1646  */
+#line 698 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2913,7 +2913,7 @@ yyreduce:
     break;
 
   case 189:
-#line 715 "shell.y" /* yacc.c:1646  */
+#line 702 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2921,7 +2921,7 @@ yyreduce:
     break;
 
   case 190:
-#line 719 "shell.y" /* yacc.c:1646  */
+#line 706 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2929,7 +2929,7 @@ yyreduce:
     break;
 
   case 191:
-#line 723 "shell.y" /* yacc.c:1646  */
+#line 710 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2937,7 +2937,7 @@ yyreduce:
     break;
 
   case 192:
-#line 727 "shell.y" /* yacc.c:1646  */
+#line 714 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2945,7 +2945,7 @@ yyreduce:
     break;
 
   case 193:
-#line 731 "shell.y" /* yacc.c:1646  */
+#line 718 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2953,7 +2953,7 @@ yyreduce:
     break;
 
   case 194:
-#line 735 "shell.y" /* yacc.c:1646  */
+#line 722 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2961,7 +2961,7 @@ yyreduce:
     break;
 
   case 195:
-#line 739 "shell.y" /* yacc.c:1646  */
+#line 726 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2969,7 +2969,7 @@ yyreduce:
     break;
 
   case 196:
-#line 743 "shell.y" /* yacc.c:1646  */
+#line 730 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2977,7 +2977,7 @@ yyreduce:
     break;
 
   case 197:
-#line 747 "shell.y" /* yacc.c:1646  */
+#line 734 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2985,7 +2985,7 @@ yyreduce:
     break;
 
   case 198:
-#line 751 "shell.y" /* yacc.c:1646  */
+#line 738 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -2993,7 +2993,7 @@ yyreduce:
     break;
 
   case 199:
-#line 755 "shell.y" /* yacc.c:1646  */
+#line 742 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3001,7 +3001,7 @@ yyreduce:
     break;
 
   case 200:
-#line 759 "shell.y" /* yacc.c:1646  */
+#line 746 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3009,7 +3009,7 @@ yyreduce:
     break;
 
   case 201:
-#line 763 "shell.y" /* yacc.c:1646  */
+#line 750 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3017,7 +3017,7 @@ yyreduce:
     break;
 
   case 202:
-#line 767 "shell.y" /* yacc.c:1646  */
+#line 754 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3025,7 +3025,7 @@ yyreduce:
     break;
 
   case 203:
-#line 771 "shell.y" /* yacc.c:1646  */
+#line 758 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3033,7 +3033,7 @@ yyreduce:
     break;
 
   case 204:
-#line 775 "shell.y" /* yacc.c:1646  */
+#line 762 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3041,7 +3041,7 @@ yyreduce:
     break;
 
   case 205:
-#line 779 "shell.y" /* yacc.c:1646  */
+#line 766 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3049,7 +3049,7 @@ yyreduce:
     break;
 
   case 206:
-#line 783 "shell.y" /* yacc.c:1646  */
+#line 770 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3057,7 +3057,7 @@ yyreduce:
     break;
 
   case 207:
-#line 787 "shell.y" /* yacc.c:1646  */
+#line 774 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3065,7 +3065,7 @@ yyreduce:
     break;
 
   case 208:
-#line 791 "shell.y" /* yacc.c:1646  */
+#line 778 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3073,7 +3073,7 @@ yyreduce:
     break;
 
   case 209:
-#line 795 "shell.y" /* yacc.c:1646  */
+#line 782 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3081,7 +3081,7 @@ yyreduce:
     break;
 
   case 210:
-#line 799 "shell.y" /* yacc.c:1646  */
+#line 786 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3089,7 +3089,7 @@ yyreduce:
     break;
 
   case 211:
-#line 803 "shell.y" /* yacc.c:1646  */
+#line 790 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3097,7 +3097,7 @@ yyreduce:
     break;
 
   case 212:
-#line 807 "shell.y" /* yacc.c:1646  */
+#line 794 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3105,7 +3105,7 @@ yyreduce:
     break;
 
   case 213:
-#line 811 "shell.y" /* yacc.c:1646  */
+#line 798 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3113,7 +3113,7 @@ yyreduce:
     break;
 
   case 214:
-#line 815 "shell.y" /* yacc.c:1646  */
+#line 802 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3121,7 +3121,7 @@ yyreduce:
     break;
 
   case 215:
-#line 819 "shell.y" /* yacc.c:1646  */
+#line 806 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3129,7 +3129,7 @@ yyreduce:
     break;
 
   case 216:
-#line 823 "shell.y" /* yacc.c:1646  */
+#line 810 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3137,7 +3137,7 @@ yyreduce:
     break;
 
   case 217:
-#line 827 "shell.y" /* yacc.c:1646  */
+#line 814 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3145,7 +3145,7 @@ yyreduce:
     break;
 
   case 218:
-#line 831 "shell.y" /* yacc.c:1646  */
+#line 818 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3153,7 +3153,7 @@ yyreduce:
     break;
 
   case 219:
-#line 835 "shell.y" /* yacc.c:1646  */
+#line 822 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3161,7 +3161,7 @@ yyreduce:
     break;
 
   case 220:
-#line 839 "shell.y" /* yacc.c:1646  */
+#line 826 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3169,7 +3169,7 @@ yyreduce:
     break;
 
   case 221:
-#line 843 "shell.y" /* yacc.c:1646  */
+#line 830 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3177,7 +3177,7 @@ yyreduce:
     break;
 
   case 222:
-#line 847 "shell.y" /* yacc.c:1646  */
+#line 834 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3185,7 +3185,7 @@ yyreduce:
     break;
 
   case 223:
-#line 851 "shell.y" /* yacc.c:1646  */
+#line 838 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3193,7 +3193,7 @@ yyreduce:
     break;
 
   case 224:
-#line 855 "shell.y" /* yacc.c:1646  */
+#line 842 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3201,7 +3201,7 @@ yyreduce:
     break;
 
   case 225:
-#line 859 "shell.y" /* yacc.c:1646  */
+#line 846 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3209,7 +3209,7 @@ yyreduce:
     break;
 
   case 226:
-#line 863 "shell.y" /* yacc.c:1646  */
+#line 850 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3217,7 +3217,7 @@ yyreduce:
     break;
 
   case 227:
-#line 867 "shell.y" /* yacc.c:1646  */
+#line 854 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3225,7 +3225,7 @@ yyreduce:
     break;
 
   case 228:
-#line 871 "shell.y" /* yacc.c:1646  */
+#line 858 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3233,7 +3233,7 @@ yyreduce:
     break;
 
   case 229:
-#line 875 "shell.y" /* yacc.c:1646  */
+#line 862 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3241,7 +3241,7 @@ yyreduce:
     break;
 
   case 230:
-#line 879 "shell.y" /* yacc.c:1646  */
+#line 866 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3249,7 +3249,7 @@ yyreduce:
     break;
 
   case 231:
-#line 883 "shell.y" /* yacc.c:1646  */
+#line 870 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3257,7 +3257,7 @@ yyreduce:
     break;
 
   case 232:
-#line 887 "shell.y" /* yacc.c:1646  */
+#line 874 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3265,7 +3265,7 @@ yyreduce:
     break;
 
   case 233:
-#line 891 "shell.y" /* yacc.c:1646  */
+#line 878 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3273,7 +3273,7 @@ yyreduce:
     break;
 
   case 234:
-#line 895 "shell.y" /* yacc.c:1646  */
+#line 882 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3281,7 +3281,7 @@ yyreduce:
     break;
 
   case 235:
-#line 899 "shell.y" /* yacc.c:1646  */
+#line 886 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3289,7 +3289,7 @@ yyreduce:
     break;
 
   case 236:
-#line 903 "shell.y" /* yacc.c:1646  */
+#line 890 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3297,7 +3297,7 @@ yyreduce:
     break;
 
   case 237:
-#line 907 "shell.y" /* yacc.c:1646  */
+#line 894 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3305,7 +3305,7 @@ yyreduce:
     break;
 
   case 238:
-#line 911 "shell.y" /* yacc.c:1646  */
+#line 898 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3313,7 +3313,7 @@ yyreduce:
     break;
 
   case 239:
-#line 915 "shell.y" /* yacc.c:1646  */
+#line 902 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3321,7 +3321,7 @@ yyreduce:
     break;
 
   case 240:
-#line 919 "shell.y" /* yacc.c:1646  */
+#line 906 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3329,7 +3329,7 @@ yyreduce:
     break;
 
   case 241:
-#line 923 "shell.y" /* yacc.c:1646  */
+#line 910 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3337,7 +3337,7 @@ yyreduce:
     break;
 
   case 242:
-#line 927 "shell.y" /* yacc.c:1646  */
+#line 914 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3345,7 +3345,7 @@ yyreduce:
     break;
 
   case 243:
-#line 931 "shell.y" /* yacc.c:1646  */
+#line 918 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3353,7 +3353,7 @@ yyreduce:
     break;
 
   case 244:
-#line 935 "shell.y" /* yacc.c:1646  */
+#line 922 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3361,7 +3361,7 @@ yyreduce:
     break;
 
   case 245:
-#line 939 "shell.y" /* yacc.c:1646  */
+#line 926 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3369,7 +3369,7 @@ yyreduce:
     break;
 
   case 246:
-#line 943 "shell.y" /* yacc.c:1646  */
+#line 930 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3377,7 +3377,7 @@ yyreduce:
     break;
 
   case 247:
-#line 947 "shell.y" /* yacc.c:1646  */
+#line 934 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3385,7 +3385,7 @@ yyreduce:
     break;
 
   case 248:
-#line 951 "shell.y" /* yacc.c:1646  */
+#line 938 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3393,7 +3393,7 @@ yyreduce:
     break;
 
   case 249:
-#line 955 "shell.y" /* yacc.c:1646  */
+#line 942 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3401,7 +3401,7 @@ yyreduce:
     break;
 
   case 250:
-#line 959 "shell.y" /* yacc.c:1646  */
+#line 946 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3409,7 +3409,7 @@ yyreduce:
     break;
 
   case 251:
-#line 963 "shell.y" /* yacc.c:1646  */
+#line 950 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3417,7 +3417,7 @@ yyreduce:
     break;
 
   case 252:
-#line 967 "shell.y" /* yacc.c:1646  */
+#line 954 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3425,7 +3425,7 @@ yyreduce:
     break;
 
   case 253:
-#line 971 "shell.y" /* yacc.c:1646  */
+#line 958 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3433,7 +3433,7 @@ yyreduce:
     break;
 
   case 254:
-#line 975 "shell.y" /* yacc.c:1646  */
+#line 962 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3441,7 +3441,7 @@ yyreduce:
     break;
 
   case 255:
-#line 979 "shell.y" /* yacc.c:1646  */
+#line 966 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3449,7 +3449,7 @@ yyreduce:
     break;
 
   case 256:
-#line 983 "shell.y" /* yacc.c:1646  */
+#line 970 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3457,7 +3457,7 @@ yyreduce:
     break;
 
   case 257:
-#line 987 "shell.y" /* yacc.c:1646  */
+#line 974 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3465,7 +3465,7 @@ yyreduce:
     break;
 
   case 258:
-#line 991 "shell.y" /* yacc.c:1646  */
+#line 978 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3473,7 +3473,7 @@ yyreduce:
     break;
 
   case 259:
-#line 995 "shell.y" /* yacc.c:1646  */
+#line 982 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3481,7 +3481,7 @@ yyreduce:
     break;
 
   case 260:
-#line 999 "shell.y" /* yacc.c:1646  */
+#line 986 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3489,7 +3489,7 @@ yyreduce:
     break;
 
   case 261:
-#line 1003 "shell.y" /* yacc.c:1646  */
+#line 990 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3497,7 +3497,7 @@ yyreduce:
     break;
 
   case 262:
-#line 1007 "shell.y" /* yacc.c:1646  */
+#line 994 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3505,7 +3505,7 @@ yyreduce:
     break;
 
   case 263:
-#line 1011 "shell.y" /* yacc.c:1646  */
+#line 998 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3513,7 +3513,7 @@ yyreduce:
     break;
 
   case 264:
-#line 1015 "shell.y" /* yacc.c:1646  */
+#line 1002 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3521,7 +3521,7 @@ yyreduce:
     break;
 
   case 265:
-#line 1019 "shell.y" /* yacc.c:1646  */
+#line 1006 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3529,7 +3529,7 @@ yyreduce:
     break;
 
   case 266:
-#line 1023 "shell.y" /* yacc.c:1646  */
+#line 1010 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3537,7 +3537,7 @@ yyreduce:
     break;
 
   case 267:
-#line 1027 "shell.y" /* yacc.c:1646  */
+#line 1014 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3545,7 +3545,7 @@ yyreduce:
     break;
 
   case 268:
-#line 1031 "shell.y" /* yacc.c:1646  */
+#line 1018 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3553,7 +3553,7 @@ yyreduce:
     break;
 
   case 269:
-#line 1035 "shell.y" /* yacc.c:1646  */
+#line 1022 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3561,7 +3561,7 @@ yyreduce:
     break;
 
   case 270:
-#line 1039 "shell.y" /* yacc.c:1646  */
+#line 1026 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3569,7 +3569,7 @@ yyreduce:
     break;
 
   case 271:
-#line 1043 "shell.y" /* yacc.c:1646  */
+#line 1030 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3577,7 +3577,7 @@ yyreduce:
     break;
 
   case 272:
-#line 1047 "shell.y" /* yacc.c:1646  */
+#line 1034 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3585,7 +3585,7 @@ yyreduce:
     break;
 
   case 273:
-#line 1051 "shell.y" /* yacc.c:1646  */
+#line 1038 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3593,7 +3593,7 @@ yyreduce:
     break;
 
   case 274:
-#line 1055 "shell.y" /* yacc.c:1646  */
+#line 1042 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3601,7 +3601,7 @@ yyreduce:
     break;
 
   case 275:
-#line 1059 "shell.y" /* yacc.c:1646  */
+#line 1046 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3609,7 +3609,7 @@ yyreduce:
     break;
 
   case 276:
-#line 1063 "shell.y" /* yacc.c:1646  */
+#line 1050 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3617,7 +3617,7 @@ yyreduce:
     break;
 
   case 277:
-#line 1067 "shell.y" /* yacc.c:1646  */
+#line 1054 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3625,7 +3625,7 @@ yyreduce:
     break;
 
   case 278:
-#line 1071 "shell.y" /* yacc.c:1646  */
+#line 1058 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3633,7 +3633,7 @@ yyreduce:
     break;
 
   case 279:
-#line 1075 "shell.y" /* yacc.c:1646  */
+#line 1062 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3641,7 +3641,7 @@ yyreduce:
     break;
 
   case 280:
-#line 1079 "shell.y" /* yacc.c:1646  */
+#line 1066 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3649,7 +3649,7 @@ yyreduce:
     break;
 
   case 281:
-#line 1083 "shell.y" /* yacc.c:1646  */
+#line 1070 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3657,7 +3657,7 @@ yyreduce:
     break;
 
   case 282:
-#line 1087 "shell.y" /* yacc.c:1646  */
+#line 1074 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3665,7 +3665,7 @@ yyreduce:
     break;
 
   case 283:
-#line 1091 "shell.y" /* yacc.c:1646  */
+#line 1078 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3673,7 +3673,7 @@ yyreduce:
     break;
 
   case 284:
-#line 1095 "shell.y" /* yacc.c:1646  */
+#line 1082 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3681,7 +3681,7 @@ yyreduce:
     break;
 
   case 285:
-#line 1099 "shell.y" /* yacc.c:1646  */
+#line 1086 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3689,7 +3689,7 @@ yyreduce:
     break;
 
   case 286:
-#line 1103 "shell.y" /* yacc.c:1646  */
+#line 1090 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3697,7 +3697,7 @@ yyreduce:
     break;
 
   case 287:
-#line 1107 "shell.y" /* yacc.c:1646  */
+#line 1094 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3705,7 +3705,7 @@ yyreduce:
     break;
 
   case 288:
-#line 1111 "shell.y" /* yacc.c:1646  */
+#line 1098 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3713,7 +3713,7 @@ yyreduce:
     break;
 
   case 289:
-#line 1115 "shell.y" /* yacc.c:1646  */
+#line 1102 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3721,7 +3721,7 @@ yyreduce:
     break;
 
   case 290:
-#line 1119 "shell.y" /* yacc.c:1646  */
+#line 1106 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3729,7 +3729,7 @@ yyreduce:
     break;
 
   case 291:
-#line 1123 "shell.y" /* yacc.c:1646  */
+#line 1110 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3737,7 +3737,7 @@ yyreduce:
     break;
 
   case 292:
-#line 1127 "shell.y" /* yacc.c:1646  */
+#line 1114 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3745,7 +3745,7 @@ yyreduce:
     break;
 
   case 293:
-#line 1131 "shell.y" /* yacc.c:1646  */
+#line 1118 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3753,7 +3753,7 @@ yyreduce:
     break;
 
   case 294:
-#line 1135 "shell.y" /* yacc.c:1646  */
+#line 1122 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3761,7 +3761,7 @@ yyreduce:
     break;
 
   case 295:
-#line 1139 "shell.y" /* yacc.c:1646  */
+#line 1126 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3769,7 +3769,7 @@ yyreduce:
     break;
 
   case 296:
-#line 1143 "shell.y" /* yacc.c:1646  */
+#line 1130 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3777,7 +3777,7 @@ yyreduce:
     break;
 
   case 297:
-#line 1147 "shell.y" /* yacc.c:1646  */
+#line 1134 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3785,7 +3785,7 @@ yyreduce:
     break;
 
   case 298:
-#line 1151 "shell.y" /* yacc.c:1646  */
+#line 1138 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3793,7 +3793,7 @@ yyreduce:
     break;
 
   case 299:
-#line 1155 "shell.y" /* yacc.c:1646  */
+#line 1142 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3801,7 +3801,7 @@ yyreduce:
     break;
 
   case 300:
-#line 1159 "shell.y" /* yacc.c:1646  */
+#line 1146 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3809,7 +3809,7 @@ yyreduce:
     break;
 
   case 301:
-#line 1163 "shell.y" /* yacc.c:1646  */
+#line 1150 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3817,7 +3817,7 @@ yyreduce:
     break;
 
   case 302:
-#line 1167 "shell.y" /* yacc.c:1646  */
+#line 1154 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3825,7 +3825,7 @@ yyreduce:
     break;
 
   case 303:
-#line 1171 "shell.y" /* yacc.c:1646  */
+#line 1158 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3833,7 +3833,7 @@ yyreduce:
     break;
 
   case 304:
-#line 1175 "shell.y" /* yacc.c:1646  */
+#line 1162 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3841,7 +3841,7 @@ yyreduce:
     break;
 
   case 305:
-#line 1179 "shell.y" /* yacc.c:1646  */
+#line 1166 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3849,7 +3849,7 @@ yyreduce:
     break;
 
   case 306:
-#line 1183 "shell.y" /* yacc.c:1646  */
+#line 1170 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3857,7 +3857,7 @@ yyreduce:
     break;
 
   case 307:
-#line 1187 "shell.y" /* yacc.c:1646  */
+#line 1174 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3865,7 +3865,7 @@ yyreduce:
     break;
 
   case 308:
-#line 1191 "shell.y" /* yacc.c:1646  */
+#line 1178 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3873,7 +3873,7 @@ yyreduce:
     break;
 
   case 309:
-#line 1195 "shell.y" /* yacc.c:1646  */
+#line 1182 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3881,7 +3881,7 @@ yyreduce:
     break;
 
   case 310:
-#line 1199 "shell.y" /* yacc.c:1646  */
+#line 1186 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3889,7 +3889,7 @@ yyreduce:
     break;
 
   case 311:
-#line 1203 "shell.y" /* yacc.c:1646  */
+#line 1190 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3897,7 +3897,7 @@ yyreduce:
     break;
 
   case 312:
-#line 1207 "shell.y" /* yacc.c:1646  */
+#line 1194 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3905,7 +3905,7 @@ yyreduce:
     break;
 
   case 313:
-#line 1211 "shell.y" /* yacc.c:1646  */
+#line 1198 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3913,7 +3913,7 @@ yyreduce:
     break;
 
   case 314:
-#line 1215 "shell.y" /* yacc.c:1646  */
+#line 1202 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3921,7 +3921,7 @@ yyreduce:
     break;
 
   case 315:
-#line 1219 "shell.y" /* yacc.c:1646  */
+#line 1206 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3929,7 +3929,7 @@ yyreduce:
     break;
 
   case 316:
-#line 1223 "shell.y" /* yacc.c:1646  */
+#line 1210 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3937,7 +3937,7 @@ yyreduce:
     break;
 
   case 317:
-#line 1227 "shell.y" /* yacc.c:1646  */
+#line 1214 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3945,7 +3945,7 @@ yyreduce:
     break;
 
   case 318:
-#line 1231 "shell.y" /* yacc.c:1646  */
+#line 1218 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3953,7 +3953,7 @@ yyreduce:
     break;
 
   case 319:
-#line 1235 "shell.y" /* yacc.c:1646  */
+#line 1222 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3961,7 +3961,7 @@ yyreduce:
     break;
 
   case 320:
-#line 1239 "shell.y" /* yacc.c:1646  */
+#line 1226 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3969,7 +3969,7 @@ yyreduce:
     break;
 
   case 321:
-#line 1243 "shell.y" /* yacc.c:1646  */
+#line 1230 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3977,7 +3977,7 @@ yyreduce:
     break;
 
   case 322:
-#line 1247 "shell.y" /* yacc.c:1646  */
+#line 1234 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3985,7 +3985,7 @@ yyreduce:
     break;
 
   case 323:
-#line 1251 "shell.y" /* yacc.c:1646  */
+#line 1238 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -3993,7 +3993,7 @@ yyreduce:
     break;
 
   case 324:
-#line 1255 "shell.y" /* yacc.c:1646  */
+#line 1242 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4001,7 +4001,7 @@ yyreduce:
     break;
 
   case 325:
-#line 1259 "shell.y" /* yacc.c:1646  */
+#line 1246 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4009,7 +4009,7 @@ yyreduce:
     break;
 
   case 326:
-#line 1263 "shell.y" /* yacc.c:1646  */
+#line 1250 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4017,7 +4017,7 @@ yyreduce:
     break;
 
   case 327:
-#line 1267 "shell.y" /* yacc.c:1646  */
+#line 1254 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4025,7 +4025,7 @@ yyreduce:
     break;
 
   case 328:
-#line 1271 "shell.y" /* yacc.c:1646  */
+#line 1258 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4033,7 +4033,7 @@ yyreduce:
     break;
 
   case 329:
-#line 1275 "shell.y" /* yacc.c:1646  */
+#line 1262 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4041,7 +4041,7 @@ yyreduce:
     break;
 
   case 330:
-#line 1279 "shell.y" /* yacc.c:1646  */
+#line 1266 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4049,7 +4049,7 @@ yyreduce:
     break;
 
   case 331:
-#line 1283 "shell.y" /* yacc.c:1646  */
+#line 1270 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4057,7 +4057,7 @@ yyreduce:
     break;
 
   case 332:
-#line 1287 "shell.y" /* yacc.c:1646  */
+#line 1274 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4065,7 +4065,7 @@ yyreduce:
     break;
 
   case 333:
-#line 1291 "shell.y" /* yacc.c:1646  */
+#line 1278 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4073,7 +4073,7 @@ yyreduce:
     break;
 
   case 334:
-#line 1295 "shell.y" /* yacc.c:1646  */
+#line 1282 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4081,7 +4081,7 @@ yyreduce:
     break;
 
   case 335:
-#line 1299 "shell.y" /* yacc.c:1646  */
+#line 1286 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4089,7 +4089,7 @@ yyreduce:
     break;
 
   case 336:
-#line 1303 "shell.y" /* yacc.c:1646  */
+#line 1290 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4097,7 +4097,7 @@ yyreduce:
     break;
 
   case 337:
-#line 1307 "shell.y" /* yacc.c:1646  */
+#line 1294 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4105,7 +4105,7 @@ yyreduce:
     break;
 
   case 338:
-#line 1311 "shell.y" /* yacc.c:1646  */
+#line 1298 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4113,7 +4113,7 @@ yyreduce:
     break;
 
   case 339:
-#line 1315 "shell.y" /* yacc.c:1646  */
+#line 1302 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4121,7 +4121,7 @@ yyreduce:
     break;
 
   case 340:
-#line 1319 "shell.y" /* yacc.c:1646  */
+#line 1306 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4129,7 +4129,7 @@ yyreduce:
     break;
 
   case 341:
-#line 1323 "shell.y" /* yacc.c:1646  */
+#line 1310 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4137,7 +4137,7 @@ yyreduce:
     break;
 
   case 342:
-#line 1327 "shell.y" /* yacc.c:1646  */
+#line 1314 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4145,7 +4145,7 @@ yyreduce:
     break;
 
   case 343:
-#line 1331 "shell.y" /* yacc.c:1646  */
+#line 1318 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4153,7 +4153,7 @@ yyreduce:
     break;
 
   case 344:
-#line 1335 "shell.y" /* yacc.c:1646  */
+#line 1322 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4161,7 +4161,7 @@ yyreduce:
     break;
 
   case 345:
-#line 1339 "shell.y" /* yacc.c:1646  */
+#line 1326 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4169,7 +4169,7 @@ yyreduce:
     break;
 
   case 346:
-#line 1343 "shell.y" /* yacc.c:1646  */
+#line 1330 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4177,7 +4177,7 @@ yyreduce:
     break;
 
   case 347:
-#line 1347 "shell.y" /* yacc.c:1646  */
+#line 1334 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4185,7 +4185,7 @@ yyreduce:
     break;
 
   case 348:
-#line 1351 "shell.y" /* yacc.c:1646  */
+#line 1338 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4193,7 +4193,7 @@ yyreduce:
     break;
 
   case 349:
-#line 1355 "shell.y" /* yacc.c:1646  */
+#line 1342 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4201,7 +4201,7 @@ yyreduce:
     break;
 
   case 350:
-#line 1359 "shell.y" /* yacc.c:1646  */
+#line 1346 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4209,7 +4209,7 @@ yyreduce:
     break;
 
   case 351:
-#line 1363 "shell.y" /* yacc.c:1646  */
+#line 1350 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4217,7 +4217,7 @@ yyreduce:
     break;
 
   case 352:
-#line 1367 "shell.y" /* yacc.c:1646  */
+#line 1354 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4225,7 +4225,7 @@ yyreduce:
     break;
 
   case 353:
-#line 1371 "shell.y" /* yacc.c:1646  */
+#line 1358 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4233,7 +4233,7 @@ yyreduce:
     break;
 
   case 354:
-#line 1375 "shell.y" /* yacc.c:1646  */
+#line 1362 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4241,7 +4241,7 @@ yyreduce:
     break;
 
   case 355:
-#line 1379 "shell.y" /* yacc.c:1646  */
+#line 1366 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4249,7 +4249,7 @@ yyreduce:
     break;
 
   case 356:
-#line 1383 "shell.y" /* yacc.c:1646  */
+#line 1370 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4257,7 +4257,7 @@ yyreduce:
     break;
 
   case 357:
-#line 1387 "shell.y" /* yacc.c:1646  */
+#line 1374 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4265,7 +4265,7 @@ yyreduce:
     break;
 
   case 358:
-#line 1391 "shell.y" /* yacc.c:1646  */
+#line 1378 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4273,7 +4273,7 @@ yyreduce:
     break;
 
   case 359:
-#line 1395 "shell.y" /* yacc.c:1646  */
+#line 1382 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4281,7 +4281,7 @@ yyreduce:
     break;
 
   case 360:
-#line 1399 "shell.y" /* yacc.c:1646  */
+#line 1386 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4289,7 +4289,7 @@ yyreduce:
     break;
 
   case 361:
-#line 1403 "shell.y" /* yacc.c:1646  */
+#line 1390 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4297,7 +4297,7 @@ yyreduce:
     break;
 
   case 362:
-#line 1407 "shell.y" /* yacc.c:1646  */
+#line 1394 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4305,7 +4305,7 @@ yyreduce:
     break;
 
   case 363:
-#line 1411 "shell.y" /* yacc.c:1646  */
+#line 1398 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4313,7 +4313,7 @@ yyreduce:
     break;
 
   case 364:
-#line 1415 "shell.y" /* yacc.c:1646  */
+#line 1402 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4321,7 +4321,7 @@ yyreduce:
     break;
 
   case 365:
-#line 1419 "shell.y" /* yacc.c:1646  */
+#line 1406 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4329,7 +4329,7 @@ yyreduce:
     break;
 
   case 366:
-#line 1423 "shell.y" /* yacc.c:1646  */
+#line 1410 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4337,7 +4337,7 @@ yyreduce:
     break;
 
   case 367:
-#line 1427 "shell.y" /* yacc.c:1646  */
+#line 1414 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4345,7 +4345,7 @@ yyreduce:
     break;
 
   case 368:
-#line 1431 "shell.y" /* yacc.c:1646  */
+#line 1418 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4353,7 +4353,7 @@ yyreduce:
     break;
 
   case 369:
-#line 1435 "shell.y" /* yacc.c:1646  */
+#line 1422 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4361,7 +4361,7 @@ yyreduce:
     break;
 
   case 370:
-#line 1439 "shell.y" /* yacc.c:1646  */
+#line 1426 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4369,7 +4369,7 @@ yyreduce:
     break;
 
   case 371:
-#line 1443 "shell.y" /* yacc.c:1646  */
+#line 1430 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4377,7 +4377,7 @@ yyreduce:
     break;
 
   case 372:
-#line 1447 "shell.y" /* yacc.c:1646  */
+#line 1434 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4385,7 +4385,7 @@ yyreduce:
     break;
 
   case 373:
-#line 1451 "shell.y" /* yacc.c:1646  */
+#line 1438 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4393,7 +4393,7 @@ yyreduce:
     break;
 
   case 374:
-#line 1455 "shell.y" /* yacc.c:1646  */
+#line 1442 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4401,7 +4401,7 @@ yyreduce:
     break;
 
   case 375:
-#line 1459 "shell.y" /* yacc.c:1646  */
+#line 1446 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4409,7 +4409,7 @@ yyreduce:
     break;
 
   case 376:
-#line 1463 "shell.y" /* yacc.c:1646  */
+#line 1450 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4417,7 +4417,7 @@ yyreduce:
     break;
 
   case 377:
-#line 1467 "shell.y" /* yacc.c:1646  */
+#line 1454 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4425,7 +4425,7 @@ yyreduce:
     break;
 
   case 378:
-#line 1471 "shell.y" /* yacc.c:1646  */
+#line 1458 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4433,7 +4433,7 @@ yyreduce:
     break;
 
   case 379:
-#line 1475 "shell.y" /* yacc.c:1646  */
+#line 1462 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4441,7 +4441,7 @@ yyreduce:
     break;
 
   case 380:
-#line 1480 "shell.y" /* yacc.c:1646  */
+#line 1467 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4449,7 +4449,7 @@ yyreduce:
     break;
 
   case 381:
-#line 1485 "shell.y" /* yacc.c:1646  */
+#line 1472 "shell.y" /* yacc.c:1646  */
     {
 								word2Function(yytext);
 							}
@@ -4457,7 +4457,7 @@ yyreduce:
     break;
 
   case 382:
-#line 1489 "shell.y" /* yacc.c:1646  */
+#line 1476 "shell.y" /* yacc.c:1646  */
     {
 								char* actualText = malloc(300 * sizeof(char));
 								if(actualText == (char*) NULL) //error
@@ -4493,7 +4493,7 @@ yyreduce:
     break;
 
   case 383:
-#line 1520 "shell.y" /* yacc.c:1646  */
+#line 1507 "shell.y" /* yacc.c:1646  */
     {
 								quoteFunction(yytext);
 							}
@@ -4501,7 +4501,7 @@ yyreduce:
     break;
 
   case 384:
-#line 1525 "shell.y" /* yacc.c:1646  */
+#line 1512 "shell.y" /* yacc.c:1646  */
     {
 			execute();
 		}
@@ -4737,5 +4737,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1528 "shell.y" /* yacc.c:1906  */
+#line 1515 "shell.y" /* yacc.c:1906  */
 

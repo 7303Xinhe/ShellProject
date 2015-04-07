@@ -43,7 +43,6 @@ void alias_function(char *text, char *text2)
 	newAliases[aliasCount + 1] = NULL; //null entry
 	aliases = newAliases;
 	aliasCount++; //increment index
-	printf("Alias created!\n");
 	reset();
 }
 
@@ -87,7 +86,6 @@ void unalias_function(char *text)
 			aliasCount--; //decrement count
 		} 
 	}
-	printf("Alias removed!\n");
 	reset();
 }
 

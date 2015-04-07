@@ -379,13 +379,13 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[66] =
     {   0,
-        0,    0,   23,   21,   11,   10,    8,   21,   21,   17,
-        8,   14,   15,   13,    8,    8,    8,    8,    8,    8,
-       16,   11,    8,    0,    0,    0,   18,    8,    8,    1,
-        8,    8,    8,    9,    0,   19,    0,    8,    7,    8,
-        8,    8,    8,   12,   20,    8,    8,    8,    8,    8,
-        5,    8,    8,    8,    8,    8,    4,    8,    8,    8,
-        6,    8,    2,    3,    0
+        0,    0,   23,   21,    9,    8,   16,   21,   21,   14,
+       16,   11,   12,   10,   16,   16,   16,   16,   16,   16,
+       13,    9,   16,    0,    0,    0,   15,   16,   16,    1,
+       16,   16,   16,   17,    0,   19,    0,   16,    7,   16,
+       16,   16,   16,   18,   20,   16,   16,   16,   16,   16,
+        5,   16,   16,   16,   16,   16,    4,   16,   16,   16,
+        6,   16,    2,    3,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
@@ -502,10 +502,10 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "shell.lex"
 #line 2 "shell.lex"
-	#include <stdio.h>
-	#include <string.h>
-	#include <stdlib.h>
-	#include "y.tab.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "y.tab.h"
 #line 510 "lex.yy.c"
 
 #define INITIAL 0
@@ -693,9 +693,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 7 "shell.lex"
+#line 8 "shell.lex"
 
-#line 699 "lex.yy.c"
+
+#line 700 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -780,120 +781,120 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 8 "shell.lex"
+#line 10 "shell.lex"
 return CD;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 9 "shell.lex"
+#line 11 "shell.lex"
 return PRINTENV;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 10 "shell.lex"
+#line 12 "shell.lex"
 return UNSETENV;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 11 "shell.lex"
+#line 13 "shell.lex"
 return SETENV;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 12 "shell.lex"
+#line 14 "shell.lex"
 return ALIAS;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 13 "shell.lex"
+#line 15 "shell.lex"
 return UNALIAS;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 14 "shell.lex"
+#line 16 "shell.lex"
 return BYE;
 	YY_BREAK
 case 8:
-YY_RULE_SETUP
-#line 15 "shell.lex"
-return WORD;
-	YY_BREAK
-case 9:
-YY_RULE_SETUP
-#line 16 "shell.lex"
-return QUOTES;
-	YY_BREAK
-case 10:
-/* rule 10 can match eol */
+/* rule 8 can match eol */
 YY_RULE_SETUP
 #line 17 "shell.lex"
 return NEWLINE;
 	YY_BREAK
-case 11:
+case 9:
 YY_RULE_SETUP
 #line 18 "shell.lex"
-/* ignore end of line */;
+/* ignore */;
 	YY_BREAK
-case 12:
-YY_RULE_SETUP
-#line 19 "shell.lex"
-return ENVIRONMENTVARIABLE; 
-	YY_BREAK
-case 13:
+case 10:
 YY_RULE_SETUP
 #line 20 "shell.lex"
 return SLASH;
 	YY_BREAK
-case 14:
+case 11:
 YY_RULE_SETUP
 #line 21 "shell.lex"
 return READFROM;
 	YY_BREAK
-case 15:
+case 12:
 YY_RULE_SETUP
 #line 22 "shell.lex"
 return WRITETO;
 	YY_BREAK
-case 16:
+case 13:
 YY_RULE_SETUP
 #line 23 "shell.lex"
 return PIPE;
 	YY_BREAK
-case 17:
+case 14:
 YY_RULE_SETUP
 #line 24 "shell.lex"
 return AMPERSAND;
 	YY_BREAK
-case 18:
+case 15:
 YY_RULE_SETUP
 #line 25 "shell.lex"
 return APPEND;
 	YY_BREAK
+case 16:
+YY_RULE_SETUP
+#line 27 "shell.lex"
+return WORD;
+	YY_BREAK
+case 17:
+YY_RULE_SETUP
+#line 28 "shell.lex"
+return QUOTES;
+	YY_BREAK
+case 18:
+YY_RULE_SETUP
+#line 29 "shell.lex"
+return ENVIRONMENTVARIABLE; 
+	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 26 "shell.lex"
+#line 31 "shell.lex"
 return STANDARDERROR1;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 27 "shell.lex"
+#line 32 "shell.lex"
 return STANDARDERROR2;
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 28 "shell.lex"
+#line 34 "shell.lex"
 {exit(0);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 29 "shell.lex"
+#line 35 "shell.lex"
 {yyerror("Unrecognized character");}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 30 "shell.lex"
+#line 37 "shell.lex"
 ECHO;
 	YY_BREAK
-#line 897 "lex.yy.c"
+#line 898 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1889,7 +1890,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 30 "shell.lex"
+#line 37 "shell.lex"
 
 
 
