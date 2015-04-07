@@ -2,53 +2,60 @@
 setenv variable word This command sets the value of the variable variable to be
 word.
 */
-void setenv_function (char *text, char *text2, int flag)
-{
-	shortenSlashes(text2); //switch it to actual correct text
-	char *es;
-	if (text == NULL || text[0] == '\0' || strchr(text, '=') != NULL || text2 == NULL) //check to see if valid
-	{
+void setenv_function (char *text, char *text2, int flag) {
+	
+	shortenSlashes(text2); 
+
+	// check
+	if (text == NULL || text[0] == '\0' || strchr(text, '=') != NULL || text2 == NULL) {
 		perror("Invalid argument.");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	unsetenv_function(text, 0);             /* Remove all occurrences */
-	es = malloc(strlen(text) + strlen(text2) + 2);
-	/* +2 for '=' and null terminator */
-	if (es == NULL) //error
-	{
+
+	// Remove all occurrences 
+	unsetenv_function(text, 0);             
+	
+	char *variablePair;
+	variablePair = malloc(strlen(text) + strlen(text2) + 2); // +2 for '=' and null terminator
+	 
+	if (variablePair == NULL) {
 		perror("Error with memory allocation");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	if(strcmp(text, "PATH") == 0 || strcmp(text, "ARGPATH") == 0) //setting path
-	{
+
+	// setting path
+	if(strcmp(text, "PATH") == 0 || strcmp(text, "ARGPATH") == 0) {
 		char *pch = strtok(text2, ":"); //split on colons
 		char *path = malloc(500 * sizeof(char));
-		if(path == (char *) NULL) //error
-		{
+		
+		if(path == (char *) NULL) {
 			perror("Error with memory allocation.");
 			printf("Error at line %d\n", __LINE__);
 			return;
 		}
+		
 		strcpy(path, "");
-		while (pch != NULL) //still have tokens
-		{
+		while (pch != NULL) { // still have tokens		
 			char* directory = malloc(300 * sizeof(char));
-			if(directory == (char*) NULL) //error
-			{
+			
+			if(directory == (char*) NULL) {
 				perror("Error with memory allocation.");
 				printf("Error at line %d\n", __LINE__);
 				return;
 			}
+			
+			// current working directory
 			strcpy(directory, getenv("PWD"));
-			if(pch[0] == '.')
-			{
-				if(strlen(pch) == 1) //just a dot
-				{
+			
+			if(pch[0] == '.') {				
+				// just a dot
+				if(strlen(pch) == 1) {
 					strcat(path, directory); //get current directory
 					strcat(path, ":");
 				}
+				
 				else if(strlen(pch) == 2 && pch[1] == '/') //just a dot-slash
 				{
 					strcat(path, directory); //get current directory
@@ -131,10 +138,10 @@ void setenv_function (char *text, char *text2, int flag)
 		path[strlen(path) - 1] = '\0'; //get rid of colon at the end
 		strcpy(text2, path);
 	}
-	strcpy(es, text); //copy variable
-	strcat(es, "="); //copy =
-	strcat(es, text2); //copy value
-	int result = putenv(es); //put into array
+	strcpy(variablePair, text); //copy variable
+	strcat(variablePair, "="); //copy =
+	strcat(variablePair, text2); //copy value
+	int result = putenv(variablePair); //put into array
 	if(result == -1) //error
 	{
 		perror("Error inserting element into environment variable array");
