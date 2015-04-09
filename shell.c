@@ -123,7 +123,7 @@ void word_function(char *text) {
 	}
 	strcpy(es, text); //copy text into pointer
 	newTextArray = (char **) malloc((words+2)*sizeof(char *)); //null entry and new word
-	if ( newTextArray == (char **) NULL ) {//no array created
+	if ( newTextArray == (char **) NULL ) { //no array created
 		perror("Array not created");
 		printf("Error at line %d\n", __LINE__);
 		return;
@@ -199,13 +199,8 @@ int globerr(const char *path, int eerrno) {//error
 	return 0;	/* let glob() keep going */
 }
 
-
-
-
-
-
 void quoteFunction(char* text) {
-	changeGroupedSpacesIntoOneSpace(text);
+	condenseSpaces(text);
 	char* actualText = malloc(300 * sizeof(char));
 	if(actualText == (char*) NULL) {//error
 		perror ("Memory allocation error.");
@@ -391,7 +386,7 @@ char* tildeExpansion(char* text)
 		return text;
 	}
 }
-void changeGroupedSpacesIntoOneSpace(char* string){ //removes extra spaces in the word so that each word has one space between it
+void condenseSpaces(char* string){ //removes extra spaces in the word so that each word has one space between it
 	int i = 0;
 	int size = strlen(string);
 	for(i = 0; i < size;) {
@@ -434,6 +429,7 @@ void reset() {
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
+
 	if(dup2(savedError, 2) == -1) { //error
 		perror("Error not redirected");
 		printf("Error at line %d\n", __LINE__);
