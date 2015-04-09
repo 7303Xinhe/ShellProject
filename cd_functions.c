@@ -147,16 +147,18 @@ void cd_function(char *inputDirectory){
 			reset();
 			return;
 		}
-		setenv_function("PWD", inputDirectory, 0); //change PWD to absolute
+		// absolute path
+		setenv_function("PWD", inputDirectory, 0); 
 		return;
 	}
 
+	// relative path
 	// last character is a slash and currentDirectory isn't "/"
 	if(strncmp(&currentDirectory[strlen(currentDirectory) - 1], "/", 1) == 0 && strlen(currentDirectory) != 1) {
-		currentDirectory[strlen(currentDirectory) - 1] = '\0'; //remove slash
-		setenv_function("PWD", currentDirectory, 0); //change PWD to absolute
+		currentDirectory[strlen(currentDirectory) - 1] = '\0'; // remove slash
+		setenv_function("PWD", currentDirectory, 0); 
 	} else {
-		setenv_function("PWD", currentDirectory, 0); //change PWD to absolute
+		setenv_function("PWD", currentDirectory, 0); 
 	}
 	reset();
 }
