@@ -44,7 +44,7 @@
   int getAliasCount(void);
   int globerr(const char* path, int eerrno);
   char* getDirectories(char *textmatch);
-  void changeGroupedSlashesIntoOneSlash(char* string);
+  void condenseSlashes(char* string);
   void quoteFunction(char* text);
   void word2Function(char* text);
   char* tildeExpansion(char* text);
