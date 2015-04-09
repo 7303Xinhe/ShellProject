@@ -1,6 +1,6 @@
 void setenv_function (char *text, char *text2, int flag)
 {
-	changeGroupedSlashesIntoOneSlash(text2); //switch it to actual correct text
+	condenseSlashes(text2); //switch it to actual correct text
 	char *es;
 	if (text == NULL || text[0] == '\0' || strchr(text, '=') != NULL || text2 == NULL) //check to see if valid
 	{
