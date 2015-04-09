@@ -1638,7 +1638,7 @@ yyreduce:
         case 30:
 #line 51 "shell.y" /* yacc.c:1646  */
     {
-								cd_function();
+								cd_home_function();
 								lineHeaderPath();
 							}
 #line 1645 "y.tab.c" /* yacc.c:1646  */
@@ -1647,7 +1647,7 @@ yyreduce:
   case 31:
 #line 57 "shell.y" /* yacc.c:1646  */
     {
-								cd_function2(textArray[getWords() - 1]);
+								cd_function(textArray[getWords() - 1]);
 								lineHeaderPath();
 							}
 #line 1654 "y.tab.c" /* yacc.c:1646  */

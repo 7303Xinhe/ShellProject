@@ -49,13 +49,13 @@ command:
 cd2_case:
 		CD 
 							{
-								cd_function();
+								cd_home_function();
 								lineHeaderPath();
 							};
 cd_case:
 	    CD word_case 
 							{
-								cd_function2(textArray[getWords() - 1]);
+								cd_function(textArray[getWords() - 1]);
 								lineHeaderPath();
 							}
 printenv_case:

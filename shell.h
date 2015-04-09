@@ -30,9 +30,9 @@
   void unalias_function (char *text, int flag);
   void setenv_function (char *text, char *text2, int flag);
   void alias_function(char *text, char *text2);
-  void cd_function(void);
+  void cd_home_function(void);
   void printenv_function(void);
-  void cd_function2(char *text);
+  void cd_function(char *text);
   int standard_error_redirect_function ();
   int standard_error_redirect_function2 (char *text);
   int write_to_function (char *text);
