@@ -1,146 +1,145 @@
 %{
-#include "shell.h"
-extern char *yytext;
-
-void yyerror(const char *str) {
+  #include "shell.h"
+  extern char *yytext;
+  void yyerror(const char *str)
+  {
 	fprintf(stderr,"error: %s\n", str);
-}
-
-int yywrap() {
+  }
+  int yywrap()
+  {
 	return 1;
-}
-
-main() {
+  }
+  main()
+  {
 	shell_init();
 	yyparse();
-}
+  }
 %}
-
-%token CD PRINTENV UNSETENV SETENV NEWLINE ALIAS UNALIAS BYE WORD MATCHER QUOTES ENVIRONMENTVARIABLE SLASH READFROM WRITETO PIPE AMPERSAND APPEND STANDARDERROR1 STANDARDERROR2	COMMANDNAME
-
+%token CD PRINTENV UNSETENV SETENV NEWLINE ALIAS UNALIAS BYE WORD QUOTES ENVIRONMENTVARIABLE READFROM WRITETO PIPE AMPERSAND APPEND STANDARDERROR1 STANDARDERROR2
 %%
 commands: 
-	|commands command NEWLINE
-	|commands command3
-	|commands command4;
+		| commands command NEWLINE
+		| commands command3
+		| commands command4;
 command:
-	 cd_home_case
-	|cd_case
-
-	|printenv_case
-	|unsetenv_case
-	|setenv_case
-
-	|alias_list_case
-	|alias_case
-	|unalias_case
-
-	|bye_case
-
-	|slash_case
-	|read_from_case
-	|write_to_case
-	|pipe_case
-	|ampersand_case
-
-	|append_case
-	|standard_error_redirect_case
-	|standard_error_redirect_case2
-	|error_case
-	|words
-	|pipes
-	|pipe2_case
-	|command2
-	|read_from_case2
-	|write_to_case2
-	|append_case2;
-
-cd_home_case:
-	CD {
-		cd_home_function();
-	};
+		cd2_case
+		|cd_case
+		|printenv_case
+		|unsetenv_case
+		|setenv_case
+		|alias2_case
+		|alias_case
+		|unalias_case
+		|bye_case
+		|read_from_case
+		|write_to_case
+		|pipe_case
+		|ampersand_case
+		|append_case
+		|standard_error_redirect_case
+		|standard_error_redirect_case2
+		|error_case        
+		|words
+		|pipes
+		|pipe2_case
+		|command2
+		|read_from_case2
+		|write_to_case2
+		|append_case2;
+cd2_case:
+		CD 
+							{
+								cd_function();
+							};
 cd_case:
-    CD word_case {
-		cd_function(textArray[getWords() - 1]);
-	}
-
+	    CD word_case 
+							{
+								cd_function2(textArray[getWords() - 1]);
+							}
 printenv_case:
-    PRINTENV {
-		printenv_function();
-	};
+	    PRINTENV 
+							{
+								printenv_function();
+							};
 unsetenv_case:
-	UNSETENV word_case {
-		unsetenv_function(textArray[getWords() - 1], 1);
-	};
-setenv_case:
-	SETENV word_case word_case {
-		setenv_function(textArray[getWords() - 2], textArray [getWords() - 1], 1);		
-	};
-
-
-alias_list_case:
-	ALIAS {
-		alias_list_function();
-	};
+		UNSETENV word_case 
+							{
+								unsetenv_function(textArray[getWords() - 1], 1);
+							};
+setenv_case:             
+		SETENV word_case word_case   
+							{
+								setenv_function(textArray[getWords() - 2], textArray [getWords() - 1], 1);		
+							};
+alias2_case:
+		ALIAS	
+							{
+								alias_function2();
+							};
 alias_case:
-	ALIAS  word_case  word_case {
-		alias_function(textArray[getWords() - 2], textArray[getWords() - 1]);
-	};
+		ALIAS  word_case  word_case    
+							{
+								alias_function(textArray[getWords() - 2], textArray[getWords() - 1]);
+							};
 unalias_case:
-	UNALIAS word_case {
-		unalias_function(textArray[getWords() - 1]);
-	}
-
+		UNALIAS word_case       
+							{
+								unalias_function(textArray[getWords() - 1], 1);                              
+							}
 bye_case:
-	BYE { 
-		exit(0); //exit shell
-	};
-
-slash_case:
-	SLASH {
-	};
+		BYE				   
+							{ 
+								exit(0); //exit shell
+							};
 read_from_case2:
-	READFROM {
-		word_function("<");
-	};
+		READFROM
+							{
+								word_function("<");
+							};
 write_to_case2:
-	WRITETO {
-		word_function(">");
-	};
+		WRITETO
+							{
+								word_function(">");
+							};
 read_from_case:
-	read_from_case2 word_case			
-	{
-	};
+		read_from_case2 word_case			
+							{
+							};
 write_to_case:
-	write_to_case2	word_case	
+		write_to_case2	word_case	
 							{
 							};
 pipe2_case:
-	PIPE {
-		word_function("|");
-	};
+		PIPE
+							{
+								word_function("|");
+							};
 pipe_case:
-	pipe2_case words {
-		//printf("PIPE words\n");
-		//pipe with a command name and more than one argument
-	}
-	|pipe2_case word_case {
-		//printf("PIPE word_case\n");
-		//pipe with a command name and no arguments
-	};
+		pipe2_case words			
+							{
+								//printf("PIPE words\n");
+								//pipe with a command name and more than one argument
+							}
+	|	pipe2_case word_case
+							{
+								//printf("PIPE word_case\n");
+								//pipe with a command name and no arguments
+							};
 ampersand_case:
-	AMPERSAND {
-		word_function("&");
-		printf ("Ampersand entered\n");
-	};
+		AMPERSAND			
+							{
+								word_function("&");
+							};
 standard_error_redirect_case:
-	STANDARDERROR1 {
-		word_function("2>&1");
-	};
+		STANDARDERROR1
+							{
+								word_function("2>&1");
+							};
 standard_error_redirect_case2:
-	STANDARDERROR2 {
-		word_function(yytext);
-	};
+		STANDARDERROR2		
+							{
+								word_function(yytext);
+							};
 error_case:
 		error
 							{
