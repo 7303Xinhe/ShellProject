@@ -233,7 +233,7 @@ int globerr(const char *path, int eerrno) //error
 	return 0;	/* let glob() keep going */
 }
 
-void changeGroupedSlashesIntoOneSlash(char* string)
+void condenseSlashes(char* string)
 { //removes extra slashes in the beginning of a string so ////home -> /home, ./////home -> ./home
 	int i = 0;
 	int size = strlen(string);
