@@ -172,3 +172,13 @@ void unsetenv_function(char *text, int flag)
 		reset();
 	}
 }
+
+
+void printenv_function()
+{
+	char ** ep;
+	for(ep = environ; *ep!= NULL; ep++)
+	{
+		printf("%s\n", *ep); //print everything line by line
+	}
+}

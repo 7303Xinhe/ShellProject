@@ -14,7 +14,7 @@ int savedError; //error channel
 int addedWords = 0;
 
 #include "cd_functions.c"
-#include "setenv_functions.c"
+#include "env_functions.c"
 #include "alias_functions.c"
 
 void shell_init()
@@ -157,14 +157,7 @@ void word_function(char *text)
 	textArray = newTextArray;
 	words++; //increment index
 }
-void printenv_function()
-{
-	char ** ep;
-	for(ep = environ; *ep!= NULL; ep++)
-	{
-		printf("%s\n", *ep); //print everything line by line
-	}
-}
+
 
 
 int getWords()
