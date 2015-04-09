@@ -51,7 +51,7 @@
   char* aliasResolve(char* string);
   char* getAliasValue(char* aliasName);
   void shell_init(void);
-  void changeGroupedSpacesIntoOneSpace(char* string);
+  void condenseSpaces(char* string);
   int append_function(char* text);
   void reset(void);
   void execute(void);
