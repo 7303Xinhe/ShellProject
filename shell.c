@@ -699,6 +699,10 @@ void execute()
 					strcpy(resolved,aliasResolve(textArray[i]));
 					textArray[i] = resolved;
 					textArrayAliasExpansion(textArray[i], i + addedWords);
+					if(strstr(resolved, "cd") != NULL){
+						aliasToCd(resolved);
+					}
+					return;
 				}
 			}
 			else{
@@ -1196,7 +1200,20 @@ int fork_pipes (int n, struct command *cmd)
 	return execvp (cmd [i].argv [0], (char * const *)cmd [i].argv);
 }
 
+void aliasToCd(char* text) {
+	char* altered = malloc(300 * sizeof(char));
+		printf("%s penis \n", text);
+	altered = text;
+	int i;
+	for(i = 0; i < strlen(altered); ++i) {
+		if(altered[i] == ' ') {
+			strcpy(altered, &altered[i+1]);
+			break;
+		}
 
+	}
+	cd_function(altered);
+}
 
 
 void lineHeaderPath() {
