@@ -1,9 +1,8 @@
-Xin He
-Matthew Weingarten
-README
 -------------------
 Features NOT Implemented
 1. File name completion    
+2. Other commands (piping)
+3. Alias commands (more YACC handling)
 
 Features Implemented
 1. Built-in commands
@@ -18,12 +17,9 @@ Features Implemented
 10. Quotes being interpreted as one word
 11. Metacharacters
 12. Shell never crashes
-13. Other commands
-14. External matching
-15. I/O redirection
-16. Pipinh
-17. Alias commands
-18. Escape characters
+13. I/O redirection with other commands
+14. External matching for other commands
 
 Questions
-1. Performing file name completion
+1. Metacharacters and \
+2. Connecting pipes together
