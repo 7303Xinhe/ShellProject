@@ -22,12 +22,12 @@ commands:
 		| commands command3
 		| commands command4;
 command:
-		cd2_case
+		cd_home_case
 		|cd_case
 		|printenv_case
 		|unsetenv_case
 		|setenv_case
-		|alias2_case
+		|alias_print_case
 		|alias_case
 		|unalias_case
 		|bye_case
@@ -46,7 +46,7 @@ command:
 		|read_from_case2
 		|write_to_case2
 		|append_case2;
-cd2_case:
+cd_home_case:
 		CD 
 							{
 								cd_home_function();
@@ -76,7 +76,7 @@ setenv_case:
 								setenv_function(textArray[getWords() - 2], textArray [getWords() - 1], 1);	
 								lineHeaderPath();	
 							};
-alias2_case:
+alias_print_case:
 		ALIAS	
 							{
 								alias_print_function();
