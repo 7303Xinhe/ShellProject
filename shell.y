@@ -126,1358 +126,1471 @@ pipe2_case:
 		PIPE
 							{
 								word_function("|");
+								lineHeaderPath();
 							};
 pipe_case:
 		pipe2_case words			
 							{
 								//printf("PIPE words\n");
 								//pipe with a command name and more than one argument
+								lineHeaderPath();
 							}
 	|	pipe2_case word_case
 							{
 								//printf("PIPE word_case\n");
 								//pipe with a command name and no arguments
+								lineHeaderPath();
 							};
 ampersand_case:
 		AMPERSAND			
 							{
 								word_function("&");
+								lineHeaderPath();
 							};
 standard_error_redirect_case:
 		STANDARDERROR1
 							{
 								word_function("2>&1");
+								lineHeaderPath();
 							};
 standard_error_redirect_case2:
 		STANDARDERROR2		
 							{
 								word_function(yytext);
+								lineHeaderPath();
 							};
 error_case:
 		error
 							{
 								printf ("Syntax error.\n");
+								lineHeaderPath();
 							};
 append_case2:
 		APPEND				{
 								word_function(">>");
+								lineHeaderPath();
 							};
 append_case:
 		append_case2	word_case
 							{
-								
+								lineHeaderPath();
 							};
 words:
 		word_case word_case
 							{
 								//printf("word_case word_case\n");
+								lineHeaderPath();
 							}
 	|	words	word_case
 							{
 								//printf("words word_case\n");
+								lineHeaderPath();
 							};
 pipes:
 		pipe_case	pipe_case
 							{
 								//printf("pipe_case pipe_case\n");
+								lineHeaderPath();
 							}
 	|	pipes 		pipe_case
 							{
 								//printf("pipes pipe_case\n");
+								lineHeaderPath();
 							};
 command2:
 		word_case words pipes read_from_case write_to_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case write_to_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case write_to_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes write_to_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case write_to_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case write_to_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case write_to_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes write_to_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes write_to_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case write_to_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case write_to_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words write_to_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case write_to_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case write_to_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes write_to_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case write_to_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes write_to_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case write_to_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words write_to_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words write_to_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case write_to_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes write_to_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes write_to_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case write_to_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case write_to_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case write_to_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words write_to_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes write_to_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case write_to_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case write_to_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case write_to_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case write_to_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case write_to_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes write_to_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes write_to_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case write_to_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words write_to_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case write_to_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes write_to_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words write_to_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes write_to_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case write_to_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case read_from_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case write_to_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case standard_error_redirect_case2 ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case standard_error_redirect_case2
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case append_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case append_case standard_error_redirect_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case append_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes append_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words read_from_case append_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case pipes read_from_case append_case standard_error_redirect_case ampersand_case
 		{
 			execute();
+			lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipes append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipes append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words read_from_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words read_from_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipes read_from_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipes read_from_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipes append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case read_from_case append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipes append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words read_from_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipes read_from_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipes append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipes append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case read_from_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case read_from_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipes append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case read_from_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipes read_from_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipes append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words read_from_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipes read_from_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipes append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words read_from_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipes read_from_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipes append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case read_from_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipes append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case read_from_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case write_to_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case write_to_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case write_to_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes write_to_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case write_to_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case write_to_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes write_to_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes write_to_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case write_to_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case write_to_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case write_to_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes write_to_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case write_to_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case write_to_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case write_to_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case write_to_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		} 
 	|	word_case word_case pipes read_from_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case write_to_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes write_to_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes write_to_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case write_to_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case write_to_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes read_from_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipes append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case read_from_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case write_to_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case write_to_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case write_to_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case write_to_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case write_to_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case write_to_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case write_to_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case write_to_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case write_to_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case write_to_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case write_to_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case write_to_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case write_to_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case write_to_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case write_to_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case write_to_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case write_to_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case write_to_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case write_to_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case write_to_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case read_from_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case words pipe_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case read_from_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case pipe_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case write_to_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case write_to_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case write_to_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case write_to_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case write_to_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case write_to_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case write_to_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case write_to_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case write_to_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case write_to_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case write_to_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case append_case standard_error_redirect_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case append_case standard_error_redirect_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case append_case ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case append_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case read_from_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case append_case standard_error_redirect_case2 ampersand_case
 		{
-			execute();
+			execute(); lineHeaderPath();
 		}
 	|	word_case word_case pipe_case append_case standard_error_redirect_case2
 		{
-			execute();
+			execute(); lineHeaderPath();
 		};
 command3:
 	word_case	word_case	NEWLINE
 		{
-			execute();
+			execute(); lineHeaderPath();
 		};
 word_case:
 		WORD				
@@ -1522,6 +1635,6 @@ word_case:
 command4:
 	word_case	NEWLINE
 		{
-			execute();
+			execute(); lineHeaderPath();
 		};
 %%
