@@ -18,11 +18,12 @@ int addedWords = 0;
 #include "alias_functions.c"
 
 void shell_init() {
+
 	printf("\n********************** SHELL STARTS HERE **********************\n\n");
 
 	myPath = malloc(500 * sizeof(char));
 	if(myPath == (char *) NULL) { //error
-		perror("Error with memory allocation.");
+		perror("Memory allocation error.");
 		printf("Error at line %d\n", __LINE__);
 		lineHeaderPath();
 		return;
@@ -30,7 +31,7 @@ void shell_init() {
 	strcpy(myPath, getenv("PATH")); //get path directory so it stays constant
 	myHome = malloc(500 * sizeof(char));
 	if(myHome == (char *) NULL) { //error
-		perror("Error with 																																																														memory allocation.");
+		perror("Memory allocation error."); 
 		printf("Error at line %d\n", __LINE__);
 		lineHeaderPath();
 		return;
@@ -46,40 +47,34 @@ void shell_init() {
 	lineHeaderPath();
 }
 
-
-
-
-
-
-
-
 int standard_error_redirect_function() {
 	savedError = dup(2); //get current standard error
-	int result = dup2(1, 2); //redirect output to standard error
-	if (result == -1) {//error
+	//redirect output to standard error
+	if (dup2(1, 2) == -1) {//error
 		perror("Standard error not redirected to output");
 		printf("Error at line %d\n", __LINE__);
 		return -1;
 	}
 	return 0;
 }
+
 int standard_error_redirect_function2(char *text) {
-	char* text2 = malloc(300 * sizeof(char));
-	if (text2 == (char *)NULL) {//error
-		perror("Error with memory allocation.");
+	char* copyText = malloc(300 * sizeof(char));
+	if (copyText == (char *)NULL) { //error
+		perror("Memory allocation error.");
 		printf("Error at line %d\n", __LINE__);
 		return -1;
 	}
-	strcpy(text2, &text[2]); //get everything after >
-	int out = open(text2, O_WRONLY | O_CREAT | O_TRUNC | S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR); //open file
+	strcpy(copyText, &text[2]); //get everything after >
+	int out = open(copyText, O_WRONLY | O_CREAT | O_TRUNC | S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR); //open file
 	if(out == -1) {//error
 		perror("File not created");
 		printf("Error at line %d\n", __LINE__);
 		return -1;
 	}
-	savedError = dup(2); //get current standard error
-	int result = dup2(out, 2); //redirect standard error to output file
-	if (result == -1) {//error
+	savedError = dup(2); //get current standard error 
+	//redirect standard error to output file
+	if (dup2(out, 2) == -1) {//error
 		perror("Standard error not redirected");
 		printf("Error at line %d\n", __LINE__);
 		return -1;
@@ -94,8 +89,8 @@ int write_to_function(char *text) {
 		return -1;
 	}
 	savedOutput = dup(1); //get current output
-	int result = dup2(out, 1); //redirect output to file
-	if (result == -1) {//error
+	//redirect output to file
+	if (dup2(out, 1) == -1) {//error
 		perror("Output not redirected");
 		printf("Error at line %d\n", __LINE__);
 		return -1;
@@ -110,20 +105,19 @@ int read_from_function (char *text) {
 		return -1;
 	}
 	savedInput = dup(0); //get current input
-	int result = dup2(in, 0); //redirect input from file
-	if (result == -1) {//error
+	//redirect input from file
+	if (dup2(in, 0) == -1) {//error
 		perror("Input not redirected");
 		printf("Error at line %d\n", __LINE__);
 		return -1;
 	}
 	return 0;
 }
-void word_function(char *text)
-{
+void word_function(char *text) {
 	char * es;
 	es = malloc(strlen(text) + 1); //allocate space for word and terminating character
 	if (es == NULL) {//error
-		perror("Error with memory allocation.");
+		perror("Memory allocation error.");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
@@ -155,7 +149,7 @@ char* getDirectories(char* textmatch) {
 	struct dirent *ent;
 	results = malloc(10 * sizeof(glob_t));
 	if(results == (glob_t*) NULL) {//error
-		perror("Error with memory allocation.");
+		perror("Memory allocation error.");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
@@ -176,7 +170,7 @@ char* getDirectories(char* textmatch) {
 		}
 		char* result = malloc(size * sizeof(char));
 		if(result == (char*) NULL) { //error
-			perror("Error with memory allocation.");
+			perror("Memory allocation error.");
 			printf("Error at line %d\n", __LINE__);
 			return;
 		}
@@ -214,14 +208,14 @@ void quoteFunction(char* text) {
 	changeGroupedSpacesIntoOneSpace(text);
 	char* actualText = malloc(300 * sizeof(char));
 	if(actualText == (char*) NULL) {//error
-		perror ("Error with memory allocation.");
+		perror ("Memory allocation error.");
 		printf ("Error at line %d\n", __LINE__);
 		return;
 	}
 	strncpy(actualText, &text[1], strlen(text) - 2); //everything between quotes
 	char* result = malloc(300 * sizeof(char));
 	if (result == (char*) NULL) {//error
-		perror ("Error with memory allocation.");
+		perror ("Memory allocation error.");
 		printf ("Error at line %d\n", __LINE__);
 		return;
 	}
@@ -232,7 +226,7 @@ void quoteFunction(char* text) {
 	int opens = 0;
 	int ends = 0;
 	if (results == (int*) NULL) {//error
-		perror ("Error with memory allocation.");
+		perror ("Memory allocation error.");
 		printf ("Error at line %d\n", __LINE__);
 		return;
 	}
@@ -262,7 +256,7 @@ void quoteFunction(char* text) {
 	}
 	char *result2 = malloc(300 * sizeof(char));
 	if(result2 == (char*) NULL) { //error
-		perror ("Error with memory allocation.");
+		perror ("Memory allocation error.");
 		printf ("Error at line %d\n", __LINE__);
 		return;
 	}
@@ -273,7 +267,7 @@ void quoteFunction(char* text) {
 		strcpy(result2, "");
 		char* result3 = malloc(300 * sizeof(char));
 		if(result3 == (char*) NULL) { //error
-			perror ("Error with memory allocation.");
+			perror ("Memory allocation error.");
 			printf ("Error at line %d\n", __LINE__);
 			return;
 		}
@@ -318,7 +312,7 @@ void quoteFunction(char* text) {
 void word2Function(char* text) {
 	char* result2 = malloc(300 * sizeof(char));
 	if(result2 == (char*) NULL) {//error with memory allocation
-		perror ("Error with memory allocation.");
+		perror ("Memory allocation error.");
 		printf ("Error at line %d\n", __LINE__);
 		return;
 	}
@@ -327,7 +321,7 @@ void word2Function(char* text) {
 	while(pch != NULL) {
 		char* result = malloc(300 * sizeof(char));
 		if(result == (char*) NULL) {//error with memory allocation
-			perror ("Error with memory allocation.");
+			perror ("Memory allocation error.");
 			printf ("Error at line %d\n", __LINE__);
 			return;
 		}
@@ -382,7 +376,7 @@ char* tildeExpansion(char* text)
 				}
 				char *toadd = malloc(300 * sizeof(char));
 				if(toadd == (char *) NULL) {
-					perror("Error with memory allocation.");
+					perror("Memory allocation error.");
 					printf("Error at line %d\n", __LINE__);
 					return;
 				}
@@ -421,8 +415,8 @@ int append_function(char* text) {
 		return -1;
 	}
 	savedOutput = dup(1); //save current output
-	int result = dup2(out, 1); //redirect output to file
-	if (result == -1) {//error
+	//redirect output to file
+	if (dup2(out, 1) == -1) {//error
 		perror("Output not redirected");
 		printf("Error at line %d\n", __LINE__);
 		return -1;
@@ -430,20 +424,17 @@ int append_function(char* text) {
 	return 0;
 }
 void reset() {
-	int result = dup2(savedInput, 0);
-	if(result == -1) {//error
+	if(dup2(savedInput, 0) == -1) {//error
 		perror("Input not redirected");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	result = dup2(savedOutput, 1);
-	if(result == -1) {//error
+	if(dup2(savedOutput, 1) == -1) {//error
 		perror("Output not redirected");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	result = dup2(savedError, 2);
-	if(result == -1) { //error
+	if(dup2(savedError, 2) == -1) { //error
 		perror("Error not redirected");
 		printf("Error at line %d\n", __LINE__);
 		return;
@@ -483,7 +474,7 @@ void execute() {
 		if(strcmp(textArray[0], "echo") == 0 && strcmp(textArray[1], "-e") != 0) {//echo command without -e
 			char* result = malloc((strlen(textArray[1]) + 1) * sizeof(char));
 			if(result == (char*)NULL) {
-				perror("Error with memory allocation.");
+				perror("Memory allocation error.");
 				printf("Error at line %d\n", __LINE__);
 				reset();
 				exit(0);
@@ -496,7 +487,7 @@ void execute() {
 		}
 		int* spaces = malloc(300 * sizeof(int));
 		if(spaces == (int*) NULL) { //error
-			perror("Error with memory allocation.");
+			perror("Memory allocation error.");
 			printf("Error at line %d\n", __LINE__);
 			reset();
 			exit(0);
@@ -515,7 +506,7 @@ void execute() {
 			for(ep = environ; *ep!= NULL; ep++) {
 				char* theVariable = malloc((strlen(*ep) + 1) * sizeof(char));
 				if(theVariable == (char*) NULL) {//error
-					perror("Error with memory allocation.");
+					perror("Memory allocation error.");
 					printf("Error at line %d\n", __LINE__);
 					reset();
 					exit(0);
@@ -530,7 +521,7 @@ void execute() {
 				}
 				char* result = malloc((strlen(theVariable) - index + 1) * sizeof(char));
 				if(result == (char*) NULL) {//error
-					perror("Error with memory allocation.");
+					perror("Memory allocation error.");
 					printf("Error at line %d\n", __LINE__);
 					reset();
 					exit(0);
@@ -545,7 +536,7 @@ void execute() {
 		}
 		int* pipes = malloc(300 * sizeof(int));
 		if(pipes == (int*) NULL) { //error
-			perror("Error with memory allocation.");
+			perror("Memory allocation error.");
 			printf("Error at line %d\n", __LINE__);
 			reset();
 			exit(0);
@@ -553,7 +544,7 @@ void execute() {
 		}
 		int* globs = malloc(300 * sizeof(int));
 		if(globs == (int*) NULL) {//error
-			perror("Error with memory allocation.");
+			perror("Memory allocation error.");
 			printf("Error at line %d\n", __LINE__);
 			reset();
 			exit(0);
@@ -616,7 +607,7 @@ void execute() {
 			}
 			char* result = malloc((strlen(getDirectories(textArray[globs[i] + addedWords])) + 1)* sizeof(char));
 			if(result == (char*) NULL) { //error
-				perror("Error with memory allocation.");
+				perror("Memory allocation error.");
 				printf("Error at line %d\n", __LINE__);
 				reset();
 				exit(0);
@@ -724,7 +715,7 @@ void execute() {
 			}
 			char* result = malloc(300 * sizeof(char));
 			if(result == (char*) NULL) { //error
-				perror("Error with memory allocation.");
+				perror("Memory allocation error.");
 				printf("Error at line %d\n", __LINE__);
 				reset();
 				exit(0);
@@ -778,7 +769,7 @@ void execute() {
 					arguments[pipes[0]] = (char*)0; //null terminator
 					cmd[0].argv = malloc(j*sizeof(char*));
 					if(cmd[0].argv == (char**)NULL) { //error
-						perror("Error with memory allocation.");
+						perror("Memory allocation error.");
 						printf("Error at line %d\n", __LINE__);
 						reset();
 						exit(0);
@@ -788,7 +779,7 @@ void execute() {
 					for(k = 0; k < j; k++) {
 						cmd[0].argv[k] = malloc((strlen(arguments[k]) + 1) * sizeof(char));
 						if(cmd[0].argv[k] == (char*) NULL) { //error
-							perror("Error with memory allocation.");
+							perror("Memory allocation error.");
 							printf("Error at line %d\n", __LINE__);
 							reset();
 							exit(0);
@@ -807,7 +798,7 @@ void execute() {
 					arguments[pipes[i] - pipes[i - 1] - 1] = (char *)0; //null terminator
 					cmd[i].argv = malloc(j*sizeof(char*));
 					if(cmd[i].argv == (char**)NULL) {//error
-						perror("Error with memory allocation.");
+						perror("Memory allocation error.");
 						printf("Error at line %d\n", __LINE__);
 						reset();
 						exit(0);
@@ -817,7 +808,7 @@ void execute() {
 					for(k = 0; k < j; k++) {
 						cmd[i].argv[k] = malloc((strlen(arguments[k]) + 1) * sizeof(char));
 						if(cmd[i].argv[k] == (char*) NULL) { //error
-							perror("Error with memory allocation.");
+							perror("Memory allocation error.");
 							printf("Error at line %d\n", __LINE__);
 							reset();
 							exit(0);
@@ -836,7 +827,7 @@ void execute() {
 					arguments[endOfCommand - pipes[i - 1] - 1] = (char *)0; //null terminator
 					cmd[numberOfCommands - 1].argv = malloc(j*sizeof(char*));
 					if(cmd[numberOfCommands - 1].argv == (char**) NULL) { //error
-						perror("Error with memory allocation.");
+						perror("Memory allocation error.");
 						printf("Error at line %d\n", __LINE__);
 						reset();
 						exit(0);
@@ -846,7 +837,7 @@ void execute() {
 					for(k = 0; k < j; k++) {
 						cmd[numberOfCommands - 1].argv[k] = malloc((strlen(arguments[k]) + 1) * sizeof(char));
 						if(cmd[numberOfCommands - 1].argv[k] == (char*) NULL) { //error
-							perror("Error with memory allocation.");
+							perror("Memory allocation error.");
 							printf("Error at line %d\n", __LINE__);
 							reset();
 							exit(0);
@@ -873,14 +864,14 @@ void word3_function(char* text, int position) {
 	char* saved3;
 	char* result = malloc((strlen(text) + 1) * sizeof(char));
 	if(result == (char*) NULL) { //error
-		perror("Error with memory allocation.");
+		perror("Memory allocation error.");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
 	strcpy(result, text);
 	char* result2 = malloc((strlen(text) + 1) * sizeof(char));
 	if(result2 == (char*) NULL) {//error
-		perror("Error with memory allocation.");
+		perror("Memory allocation error.");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
@@ -924,7 +915,7 @@ void word3_function(char* text, int position) {
 		char* es;
 		es = malloc(strlen(pch2) + 1); //allocate space for word and terminating character
 		if (es == NULL) {//error
-			perror("Error with memory allocation.");
+			perror("Memory allocation error.");
 			printf("Error at line %d\n", __LINE__);
 			return;
 		}
@@ -939,7 +930,7 @@ void word3_function(char* text, int position) {
 	for(k = position + j; k < words; k++) {
 		newTextArray[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
 		if(newTextArray[k] == (char*) NULL) { //error
-			perror("Error with memory allocation.");
+			perror("Memory allocation error.");
 			printf("Error at line %d\n", __LINE__);
 			return;
 		}
