@@ -14,6 +14,7 @@ int savedError; //error channel
 int addedWords = 0;
 
 #include "cd_functions.c"
+#include "setenv_functions.c"
 
 void shell_init()
 {
@@ -46,34 +47,8 @@ void shell_init()
 	// print path
 	lineHeaderPath();
 }
-void unsetenv_function(char *text, int flag)
-{
-	char **envVariableNames, **rightEnvVariableNames;
-	size_t length;
-	if (text == NULL || text == '\0' || strchr(text, '=') != NULL) { //error
-		perror("Entered an invalid name");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
-	length = strlen(text);
-	for (envVariableNames = environ; *envVariableNames != NULL; )
-	{
-		if (strncmp(*envVariableNames, text, length) == 0 && (*envVariableNames)[length] == '=') { //found a match
-			for (rightEnvVariableNames = envVariableNames; *rightEnvVariableNames != NULL; rightEnvVariableNames++)
-			{
-				*rightEnvVariableNames = *(rightEnvVariableNames + 1); //shift over
-			}
-			/* Continue around the loop to further instances of 'name' */
-		} 
-		else {
-				envVariableNames++; //keep moving
-		}
-	}
-	if(flag)
-	{
-		reset();
-	}
-}
+
+
 void unalias_function(char *text, int flag)
 {
 	size_t length;
@@ -99,150 +74,7 @@ void unalias_function(char *text, int flag)
 		reset();
 	}
 }
-void setenv_function (char *text, char *text2, int flag)
-{
-	changeGroupedSlashesIntoOneSlash(text2); //switch it to actual correct text
-	char *es;
-	if (text == NULL || text[0] == '\0' || strchr(text, '=') != NULL || text2 == NULL) //check to see if valid
-	{
-		perror("Invalid argument.");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
-	unsetenv_function(text, 0);             /* Remove all occurrences */
-	es = malloc(strlen(text) + strlen(text2) + 2);
-	/* +2 for '=' and null terminator */
-	if (es == NULL) //error
-	{
-		perror("Error with memory allocation");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
-	if(strcmp(text, "PATH") == 0 || strcmp(text, "ARGPATH") == 0) //setting path
-	{
-		char *pch = strtok(text2, ":"); //split on colons
-		char *path = malloc(500 * sizeof(char));
-		if(path == (char *) NULL) //error
-		{
-			perror("Error with memory allocation.");
-			printf("Error at line %d\n", __LINE__);
-			return;
-		}
-		strcpy(path, "");
-		while (pch != NULL) //still have tokens
-		{
-			char* directory = malloc(300 * sizeof(char));
-			if(directory == (char*) NULL) //error
-			{
-				perror("Error with memory allocation.");
-				printf("Error at line %d\n", __LINE__);
-				return;
-			}
-			strcpy(directory, getenv("PWD"));
-			if(pch[0] == '.')
-			{
-				if(strlen(pch) == 1) //just a dot
-				{
-					strcat(path, directory); //get current directory
-					strcat(path, ":");
-				}
-				else if(strlen(pch) == 2 && pch[1] == '/') //just a dot-slash
-				{
-					strcat(path, directory); //get current directory
-					strcat(path, ":");
-				}
-				else if(strlen(pch) > 2 && pch[1] == '/')
-				{
-					strcat(path, directory);
-					strcat(path, &pch[2]);
-					strcat(path, ":");
-				}
-				else if(pch[1] != '.') //append text after dot
-				{
-					strcat(path, directory);
-					strcat(path, &pch[1]);
-					strcat(path, ":");
-				}
-				else if(pch[1] == '.' && strcmp(directory, "/") != 0)//go up a level (not in the root)
-				{
-					int i;
-					int lastSlashIndex = 1;
-					for(i = strlen(directory) - 2; i >= 0; i--) //find occurence of last slash
-					{
-						if(directory[i] == '/')
-						{
-							lastSlashIndex = i; //found last slash
-							break;
-						}
-					}
-					if(lastSlashIndex != 0)
-					{ //if .. does not return to the root directory
-						directory[lastSlashIndex] = '\0';//sets the second to last slash to a null character
-						strncat(path, directory, lastSlashIndex);
-					}
-					else if(lastSlashIndex == 0)
-					{//if .. is returning up to the root directory
-						directory[1] = '\0';//sets index 1 to null so the directory sets to the root
-						strcat(path, "/");
-					}
-					if(strlen(pch) > 2)
-					{
-						strcat(path, "/"); //add slash
-						strcat(path, &pch[3]); //take everything after the slash
-						strcat(path, ":");
-					}
-					else //nothing
-					{
-						strcat(path, "/"); //blank it
-						strcat(path, ":");
-					}
-				}
-				else if(strcmp(directory, "/") == 0)
-				{//if it is in root
-					strcat(path,"/"); //change text to empty string so ".." is not concatenated to the directory later on
-					strcat(path, ":");
-				}
-			}
-			if(pch[0] == '/') //first character is slash
-			{
-				if(strlen(pch) == 1 || (strlen(pch) == 2 && pch[1] == '.')) //just a slash or slash-dot
-				{
-					strcat(path, "/");
-					strcat(path, ":");
-				}
-				else
-				{
-					char* text2 = malloc(300 * sizeof(char));
-					if(text2 == (char *) NULL)
-					{
-						perror("Error with memory allocation.");
-						printf("Error at line %d\n", __LINE__);
-						return;
-					}
-					strcat(path, &pch[1]);
-					strcat(path, ":");
-				}
-			}
-			pch = strtok(NULL, ":");
-		}
-		path[strlen(path) - 1] = '\0'; //get rid of colon at the end
-		strcpy(text2, path);
-	}
-	strcpy(es, text); //copy variable
-	strcat(es, "="); //copy =
-	strcat(es, text2); //copy value
-	int result = putenv(es); //put into array
-	if(result == -1) //error
-	{
-		perror("Error inserting element into environment variable array");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
-	if(flag)
-	{
-		reset();
-	}
-}
+
 void alias_function(char *text, char *text2)
 {
 	char *es;
