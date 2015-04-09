@@ -62,31 +62,37 @@ printenv_case:
 	    PRINTENV 
 							{
 								printenv_function();
+								lineHeaderPath();
 							};
 unsetenv_case:
 		UNSETENV word_case 
 							{
 								unsetenv_function(textArray[getWords() - 1], 1);
+								lineHeaderPath();
 							};
 setenv_case:             
 		SETENV word_case word_case   
 							{
-								setenv_function(textArray[getWords() - 2], textArray [getWords() - 1], 1);		
+								setenv_function(textArray[getWords() - 2], textArray [getWords() - 1], 1);	
+								lineHeaderPath();	
 							};
 alias2_case:
 		ALIAS	
 							{
 								alias_function2();
+								lineHeaderPath();
 							};
 alias_case:
 		ALIAS  word_case  word_case    
 							{
 								alias_function(textArray[getWords() - 2], textArray[getWords() - 1]);
+								lineHeaderPath();
 							};
 unalias_case:
 		UNALIAS word_case       
 							{
-								unalias_function(textArray[getWords() - 1], 1);                              
+								unalias_function(textArray[getWords() - 1], 1);  
+								lineHeaderPath();                            
 							}
 bye_case:
 		BYE				   
@@ -98,19 +104,23 @@ read_from_case2:
 		READFROM
 							{
 								word_function("<");
+								lineHeaderPath();
 							};
 write_to_case2:
 		WRITETO
 							{
 								word_function(">");
+								lineHeaderPath();
 							};
 read_from_case:
 		read_from_case2 word_case			
 							{
+								lineHeaderPath();
 							};
 write_to_case:
 		write_to_case2	word_case	
 							{
+								lineHeaderPath();
 							};
 pipe2_case:
 		PIPE
