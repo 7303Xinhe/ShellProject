@@ -1186,8 +1186,8 @@ int fork_pipes (int n, struct command *cmd)
 
 void aliasToCd(char* text) {
 	char* altered = malloc(300 * sizeof(char));
-		printf("%s penis \n", text);
 	altered = text;
+
 	int i;
 	for(i = 0; i < strlen(altered); ++i) {
 		if(altered[i] == ' ') {
