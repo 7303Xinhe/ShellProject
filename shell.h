@@ -38,7 +38,7 @@
   int write_to_function (char *text);
   int read_from_function (char *text);
   void word_function (char *text);
-  void alias_function2(void);
+  void alias_print_function(void);
   int getWords(void);
   int getAliasCount(void);
   int globerr(const char* path, int eerrno);

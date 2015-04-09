@@ -79,7 +79,7 @@ setenv_case:
 alias2_case:
 		ALIAS	
 							{
-								alias_function2();
+								alias_print_function();
 								lineHeaderPath();
 							};
 alias_case:

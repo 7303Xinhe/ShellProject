@@ -1683,7 +1683,7 @@ yyreduce:
   case 35:
 #line 81 "shell.y" /* yacc.c:1646  */
     {
-								alias_function2();
+								alias_print_function();
 								lineHeaderPath();
 							}
 #line 1690 "y.tab.c" /* yacc.c:1646  */
