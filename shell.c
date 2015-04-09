@@ -38,7 +38,9 @@ void shell_init()
 	signal(SIGTSTP, SIG_IGN); //prevent crash from ctrl-z
 	signal(SIGQUIT, SIG_IGN); //prevent crash from ctrl-/
 
-	// prints the path
+	// start in home
+	cd_function();
+	// print path
 	lineHeaderPath();
 }
 void unsetenv_function(char *text, int flag)
