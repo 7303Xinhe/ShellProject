@@ -1,4 +1,4 @@
-// used for the just "cd" command 
+/* used for the just "cd" command */
 void cd_home_function() {
 
 	// change to home currentDirectory
@@ -15,7 +15,7 @@ void cd_home_function() {
 }
 
 
-// normal cd function "cd word"
+/* normal cd function "cd word" */
 void cd_function(char *inputDirectory){
 
 	condenseSlashes(inputDirectory); 
