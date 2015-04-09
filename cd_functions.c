@@ -1,29 +1,42 @@
-void cd_home_function(){
+// used for the just "cd" command 
+void cd_home_function() {
 
-	int result = chdir(myHome); //get home directory and move to it
-	if(result == -1){ //error
-		perror("Directory not changed");
+	// change to home currentDirectory
+	int flag = chdir(myHome); 
+	
+	// error
+	if(flag == -1) { 				
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	setenv_function("PWD", myHome, 0); //change PWD
+
+	// change the value of the PWD variable
+	setenv_function("PWD", myHome, 0); 
 }
 
 
+// normal cd function "cd word"
 void cd_function(char *text){
 
-	changeGroupedSlashesIntoOneSlash(text); //alters the text so all grouped slashes now become one slash. ex. ////home///usr -> /home/usr
-	char *directory = malloc(300 * sizeof(char));
-	if (directory == (char *) NULL) {//error
-		perror("Error with memory allocation.");
+	condenseSlashes(text); 
+
+	char *currentDirectory = malloc(300 * sizeof(char));
+	
+	if (currentDirectory == (char *) NULL) {
+		perror("Memory allocation error.\n");
 		printf("Error at line %d\n", __LINE__);
 		reset();
 		return;
 	}
-	strcpy(directory, getenv("PWD")); //start with current directory and see if it's relative or absolute
-	if(directory[strlen(directory) - 1] != '/') { //last character is not a slash
-		strcat(directory, "/"); //adds a slash
+
+	// get current directory
+	strcpy(currentDirectory, getenv("PWD")); 
+
+	// if last character is not a slash then adds a slash
+	if(currentDirectory[strlen(currentDirectory) - 1] != '/') { 
+		strcat(currentDirectory, "/"); 
 	}
+
 	if(text[0] == '.') {
 		if(strlen(text) == 1) {//just a dot
 			strcpy(text, ""); //blank it
@@ -37,38 +50,38 @@ void cd_function(char *text){
 		else if(text[1] != '.') {//append text after dot
 			strcpy(text, &text[1]);
 		}
-		else if(text[1] == '.' && strcmp(directory, "/") != 0) {//go up a level (not in the root)
+		else if(text[1] == '.' && strcmp(currentDirectory, "/") != 0) {//go up a level (not in the root)
 			int i;
 			int lastSlashIndex = 1;
-			for(i = strlen(directory) - 2; i >= 0; i--) {//find occurence of last slash
-				if(directory[i] == '/') {
+			for(i = strlen(currentDirectory) - 2; i >= 0; i--) {//find occurence of last slash
+				if(currentDirectory[i] == '/') {
 					lastSlashIndex = i; //found last slash
 					break;
 				}
 			}
-			if(lastSlashIndex != 0) { //if .. does not return to the root directory
-				directory[lastSlashIndex] = '\0';//sets the second to last slash to a null character
+			if(lastSlashIndex != 0) { //if .. does not return to the root currentDirectory
+				currentDirectory[lastSlashIndex] = '\0';//sets the second to last slash to a null character
 			}
-			else if(lastSlashIndex == 0) {//if .. is returning up to the root directory
-				directory[1] = '\0';//sets index 1 to null so the directory sets to the root
+			else if(lastSlashIndex == 0) {//if .. is returning up to the root currentDirectory
+				currentDirectory[1] = '\0';//sets index 1 to null so the currentDirectory sets to the root
 			}
 			if(strlen(text) > 2) {
-				strcat(directory, "/"); //add slash
+				strcat(currentDirectory, "/"); //add slash
 				strcpy(text, &text[3]); //take everything after the slash
 			}
 			else { //nothing
 				strcpy(text, ""); //blank it
 			}
 		}
-		else if(strcmp(directory, "/") == 0) {//if it is in root
-			strcpy(text,""); //change text to empty string so ".." is not concatenated to the directory later on
+		else if(strcmp(currentDirectory, "/") == 0) {//if it is in root
+			strcpy(text,""); //change text to empty string so ".." is not concatenated to the currentDirectory later on
 		}
 	}
 	if(text[0] == '/') {//first character is slash
 		if(strlen(text) == 1 || (strlen(text) == 2 && text[1] == '.')) {//just a slash or slash-dot
-			int result = chdir("/"); //move to slash directory
+			int result = chdir("/"); //move to slash currentDirectory
 			if(result == -1) {
-				perror("Directory not changed");
+				perror("currentDirectory not changed");
 				printf("Error at line %d\n", __LINE__);
 				reset();
 				return;
@@ -86,15 +99,15 @@ void cd_function(char *text){
 			}
 			strncpy(text2, text, strlen(text)); //copy everything after slash
 			strcpy(text, text2); //copy back into text
-			strcpy(directory, "");
+			strcpy(currentDirectory, "");
 		}
 	}
-	strcat(directory, text); //check if relative
-	int result = chdir(directory); //move directory
+	strcat(currentDirectory, text); //check if relative
+	int result = chdir(currentDirectory); //move currentDirectory
 	if (result == -1) { //error, could be absolute, could be actual error
 		int result2 = chdir(text); //absolute
 		if (result2 == -1) { //error
-			perror("Directory not changed");
+			perror("currentDirectory not changed");
 			printf("Error at line %d\n", __LINE__);
 			reset();
 			return;
@@ -102,12 +115,12 @@ void cd_function(char *text){
 		setenv_function("PWD", text, 0); //change PWD to absolute
 		return;
 	}
-	if(strncmp(&directory[strlen(directory) - 1], "/", 1) == 0 && strlen(directory) != 1) {//last character is a slash and directory isn't just "/"
-		directory[strlen(directory) - 1] = '\0'; //remove slash
-		setenv_function("PWD", directory, 0); //change PWD to absolute
+	if(strncmp(&currentDirectory[strlen(currentDirectory) - 1], "/", 1) == 0 && strlen(currentDirectory) != 1) {//last character is a slash and currentDirectory isn't just "/"
+		currentDirectory[strlen(currentDirectory) - 1] = '\0'; //remove slash
+		setenv_function("PWD", currentDirectory, 0); //change PWD to absolute
 	}
 	else{
-		setenv_function("PWD", directory, 0); //change PWD to absolute
+		setenv_function("PWD", currentDirectory, 0); //change PWD to absolute
 	}
 	reset();
 }
