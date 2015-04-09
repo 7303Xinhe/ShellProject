@@ -23,6 +23,9 @@
   {
       char **argv;
   };
+
+  void lineHeaderPath();
+
   void unsetenv_function(char *text, int flag);
   void unalias_function (char *text, int flag);
   void setenv_function (char *text, char *text2, int flag);

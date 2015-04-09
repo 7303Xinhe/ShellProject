@@ -50,11 +50,13 @@ cd2_case:
 		CD 
 							{
 								cd_function();
+								lineHeaderPath();
 							};
 cd_case:
 	    CD word_case 
 							{
 								cd_function2(textArray[getWords() - 1]);
+								lineHeaderPath();
 							}
 printenv_case:
 	    PRINTENV 
@@ -89,6 +91,7 @@ unalias_case:
 bye_case:
 		BYE				   
 							{ 
+								printf("\n**********************  SHELL ENDS HERE  **********************\n\n");
 								exit(0); //exit shell
 							};
 read_from_case2:

@@ -14,11 +14,14 @@ int savedError; //error channel
 int addedWords = 0;
 void shell_init()
 {
+	printf("\n********************** SHELL STARTS HERE **********************\n\n");
+
 	myPath = malloc(500 * sizeof(char));
 	if(myPath == (char *) NULL) //error
 	{
 		perror("Error with memory allocation.");
 		printf("Error at line %d\n", __LINE__);
+		lineHeaderPath();
 		return;
 	}
 	strcpy(myPath, getenv("PATH")); //get path directory so it stays constant
@@ -27,12 +30,16 @@ void shell_init()
 	{
 		perror("Error with 																																																														memory allocation.");
 		printf("Error at line %d\n", __LINE__);
+		lineHeaderPath();
 		return;
 	}
 	strcpy(myHome, getenv("HOME")); //get home directory so that it stays constant
 	signal(SIGINT, SIG_IGN); //prevent crash from ctrl-c
 	signal(SIGTSTP, SIG_IGN); //prevent crash from ctrl-z
 	signal(SIGQUIT, SIG_IGN); //prevent crash from ctrl-/
+
+	// prints the path
+	lineHeaderPath();
 }
 void unsetenv_function(char *text, int flag)
 {
@@ -1766,4 +1773,35 @@ int fork_pipes (int n, struct command *cmd)
 	}
 	/* Execute the last stage with the current process. */
 	return execvp (cmd [i].argv [0], (char * const *)cmd [i].argv);
+}
+
+
+
+
+void lineHeaderPath() {
+	// char *folder = malloc(300 * sizeof(char));
+	// folder = getenv("PWD");
+	// int sizeString = strlen(folder);
+	// int lastIndex = sizeString - 1;
+	// int lastSlashIndex;
+	// int i;
+	// for(i = lastIndex; i >= 0; --i) {
+	// 	if(folder[i] == '/') {
+	// 		lastSlashIndex = i; //found last slash
+	// 		break;
+	// 	}
+	// }
+	
+	// get user
+	struct passwd *passwd;
+	passwd = getpwuid ( getuid()); 
+	printf("%s@", passwd->pw_name);	
+
+	// get computer name
+	char* hostName = malloc(300 * sizeof(char));
+	gethostname(hostName, 20);
+	printf("%s:", hostName);
+
+	// get path
+	printf("%s$ ", getenv("PWD"));
 }
