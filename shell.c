@@ -233,22 +233,6 @@ int globerr(const char *path, int eerrno) //error
 	return 0;	/* let glob() keep going */
 }
 
-void condenseSlashes(char* string)
-{ //removes extra slashes in the beginning of a string so ////home -> /home, ./////home -> ./home
-	int i = 0;
-	int size = strlen(string);
-	for(i = 0; i < size;){
-		if(string[i] == '/' && string[i+1] == '/'){
-			int j = i + 1;
-			for(j = i; j <=size; j++){
-				string[j] = string[j+1];
-			}
-			size--;
-		}
-		else
-			i++;
-	}
-}
 
 
 
