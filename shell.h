@@ -25,6 +25,7 @@
   };
 
   void lineHeaderPath();
+  void aliasToCd(char* text);
 
   void unsetenv_function(char *text, int flag);
   void unalias_function (char *text, int flag);
