@@ -1,11 +1,3 @@
-void alias_print_function()
-{
-	int i;
-	for(i = 0; i < aliasCount; i++)
-	{
-		printf("%s\n", aliases[i]); //print each alias line by line
-	}
-}
 
 void alias_function(char *text, char *text2)
 {
@@ -284,3 +276,14 @@ char *fixText(char *orig, char *rep, char *with) {
     strcpy(tmp, orig);
     return result;
 }
+
+
+void alias_print_function()
+{
+	int i;
+	for(i = 0; i < aliasCount; i++)
+	{
+		printf("%s\n", aliases[i]); //print each alias line by line
+	}
+}
+

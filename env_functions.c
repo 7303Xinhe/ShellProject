@@ -228,5 +228,3 @@ void printenv_function() {
 		printf("%s\n", *environTemp); 
 	}
 }
-
-
