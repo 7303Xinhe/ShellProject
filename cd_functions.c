@@ -42,7 +42,7 @@ void cd_function(char *inputDirectory){
 
 		// just dot || dot-slash || ".."
 		if((strlen(inputDirectory) == 1) || (strlen(inputDirectory) == 2 && inputDirectory[1] == '/') 
-			|| (inputDirectory[1] == '.' && strcmp(currentDirectory, "/")){
+			|| (inputDirectory[1] == '.' && strcmp(currentDirectory, "/"))) {
 			return;
 		}
 
