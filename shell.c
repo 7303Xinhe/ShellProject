@@ -14,9 +14,10 @@ int savedInput; //input channel
 int savedError; //error channel
 int addedWords = 0;
 
+#include "alias_functions.c"
 #include "cd_functions.c"
 #include "env_functions.c"
-#include "alias_functions.c"
+
 
 void shell_init() {
 	// black background

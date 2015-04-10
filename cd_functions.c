@@ -16,6 +16,11 @@ void cd_home_function() {
 /* normal cd function "cd word" */
 void cd_function(char *inputDirectory){
 
+	// // check if input is an alias
+	// if(strcmp(aliasResolver(inputDirectory), "") != 0) {
+	// 	inputDirectory = aliasResolver(inputDirectory);
+	// }
+
 	condenseSlashes(inputDirectory); 
 
 	char *currentDirectory = malloc(300 * sizeof(char));

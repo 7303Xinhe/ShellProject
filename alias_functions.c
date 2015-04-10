@@ -175,8 +175,8 @@ char* aliasResolver(char* alias) {
 	// first value
 	char* value = malloc(500*sizeof(char));
 	if(getAliasValue(name, value) == -1) {
-		perror("Error alias not found.\n");
-		printf("Error at line %d\n", __LINE__);
+		//perror("Error alias not found.\n");
+		//printf("Error at line %d\n", __LINE__);
 		return "";
 	}
 
