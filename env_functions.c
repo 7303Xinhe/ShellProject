@@ -30,9 +30,9 @@ void setenv_function (char *variable, char *value, int flag) {
 		// list of one or more currentDirectory names separated by colon
 		char *valueToken = strtok(value, ":"); 
 
+		// string used to build the final value
 		char *path = malloc(500 * sizeof(char));
-		if(path == (char *) NULL) //error
-		{
+		if(path == (char *) NULL) {
 			perror("Error with memory allocation.");
 			printf("Error at line %d\n", __LINE__);
 			return;
@@ -220,7 +220,7 @@ void unsetenv_function(char *variable, int flag) {
 	}
 }
 
-// print all the environment variable pairs
+/* print all the environment variable pairs */
 void printenv_function() {
 
 	char ** environTemp;
