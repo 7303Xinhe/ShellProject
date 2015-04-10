@@ -1,19 +1,18 @@
 %{
-  #include "shell.h"
-  extern char *yytext;
-  void yyerror(const char *str)
-  {
+#include "shell.h"
+extern char *yytext;
+void yyerror(const char *str) {
 	fprintf(stderr,"error: %s\n", str);
-  }
-  int yywrap()
-  {
+}
+
+int yywrap() {
 	return 1;
-  }
-  main()
-  {
+}
+
+main() {
 	shell_init();
 	yyparse();
-  }
+}
 %}
 %token CD PRINTENV UNSETENV SETENV NEWLINE ALIAS UNALIAS BYE WORD QUOTES ENVIRONMENTVARIABLE READFROM WRITETO PIPE AMPERSAND APPEND STANDARDERROR1 STANDARDERROR2
 %%
