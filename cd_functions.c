@@ -56,12 +56,6 @@ void cd_function(char *inputDirectory){
 		// 	strcpy(inputDirectory, &inputDirectory[1]);
 		// }
 
-		else if(inputDirectory[1] == '.' && strlen(inputDirectory) == 2) {
-			printf("hello\n");
-			chdir("..");
-			return;
-		}
-
 		// starting with ".."
 		else if(inputDirectory[1] == '.' && strcmp(currentDirectory, "/") != 0) {
 			int i;
