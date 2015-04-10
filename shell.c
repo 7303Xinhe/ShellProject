@@ -125,7 +125,7 @@ void word_function(char *text) {
 		return;
 	}
 	strcpy(es, text); //copy text into pointer
-	newTextArray = (char **) malloc((words+2)*sizeof(char *)); //null entry and new word
+	char **newTextArray = (char **) malloc((words+2)*sizeof(char *)); //null entry and new word
 	if ( newTextArray == (char **) NULL ) { //no array created
 		perror("Array not created");
 		printf("Error at line %d\n", __LINE__);
@@ -885,7 +885,7 @@ void word3_function(char* text, int position) {
 		tokens++;
 		pch = strtok_r(NULL, "$", &saved3);
 	}
-	newTextArray = (char **) malloc((words+tokens)*sizeof(char *)); //null entry and new words
+	char **newTextArray = (char **) malloc((words+tokens)*sizeof(char *)); //null entry and new words
 	if ( newTextArray == (char **) NULL ) { //no array created
 		perror("Array not created");
 		printf("Error at line %d\n", __LINE__);

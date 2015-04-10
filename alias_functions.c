@@ -1,6 +1,17 @@
-char** aliases; 	// alias names and values
+// alias names and values
+// char** aliases; 	
+
 // char** aliasesTemp;	// copied aliases
-int aliasCount = 0; // number of aliases
+
+// number of aliases
+int aliasCount = 0; 
+
+struct aliasStruct {
+	char* name;
+	char* word;
+};
+
+struct aliasStruct *aliases; 	
 
 /* This alias command adds a new alias to the shell. An alias is
 essentially a shorthand form of a long command. */
@@ -17,27 +28,17 @@ void alias_function(char *name, char *word) {
 	// remove current assignment for the name
 	unalias_function(name, 0);          
 
-	char *pair;
 
-	// allocate +2 for '=' and null terminator 
-	pair = malloc(strlen(name) + strlen(word) + 2);
+	struct aliasStruct pair;
+	pair.name = name;
+	pair.word = word;
 
-	if (pair == NULL) {
-		perror("Error with memory allocation");
-		printf("Error at line %d\n", __LINE__);
-		reset();
-		return;
-	}
+	struct aliasStruct* aliasesTemp;
+	aliasesTemp = malloc((aliasCount+1) * sizeof(struct aliasStruct)); 
 
-	// create the pair
-	strcpy(pair, name); 
-	strcat(pair, "="); 
-	strcat(pair, word);
-
-	char** aliasesTemp;
-	aliasesTemp = (char **) malloc((aliasCount+2) * sizeof(char *)); 
-	if(aliasesTemp == (char **) NULL) {
+	if(aliasesTemp == (struct aliasStruct *) NULL) {
 		perror("Array not created.");
+
 		printf("Error at line %d\n", __LINE__);
 		reset();
 		return;
@@ -48,11 +49,48 @@ void alias_function(char *name, char *word) {
 		aliasesTemp[i] = aliases[i];
 	}
 	aliasesTemp[aliasCount] = pair; 
-	aliasesTemp[aliasCount + 1] = NULL; 
+	// aliasesTemp[aliasCount + 1] = NULL; 
 
 	aliases = aliasesTemp;
 	++aliasCount; 
 	reset();
+
+	// char *pair;
+
+	// // allocate +2 for '=' and null terminator 
+	// pair = malloc(strlen(name) + strlen(word) + 2);
+
+	// if (pair == NULL) {
+	// 	perror("Error with memory allocation");
+	// 	printf("Error at line %d\n", __LINE__);
+	// 	reset();
+	// 	return;
+	// }
+
+	// // create the pair
+	// strcpy(pair, name); 
+	// strcat(pair, "="); 
+	// strcat(pair, word);
+
+	// char** aliasesTemp;
+	// aliasesTemp = (char **) malloc((aliasCount+2) * sizeof(char *)); 
+	// if(aliasesTemp == (char **) NULL) {
+	// 	perror("Array not created.");
+	// 	printf("Error at line %d\n", __LINE__);
+	// 	reset();
+	// 	return;
+	// }
+
+	// int i;
+	// for(i = 0; i < aliasCount; ++i) {
+	// 	aliasesTemp[i] = aliases[i];
+	// }
+	// aliasesTemp[aliasCount] = pair; 
+	// aliasesTemp[aliasCount + 1] = NULL; 
+
+	// aliases = aliasesTemp;
+	// ++aliasCount; 
+	// reset();
 }
 
 /*  The unalias command is used to remove the alias for name from the alias list. */
@@ -70,7 +108,7 @@ void unalias_function(char *name, int flag) {
 	int j;
 	for (i = 0; i < aliasCount; ++i) {
 		// check for match
-		if (strncmp(aliases[i], name, length) == 0 && aliases[i][length] == '=') { //found match
+		if (strncmp((aliases[i]).name, name, length) == 0) { 
 			for (j = i; j < aliasCount; j++) {
 				// shift to left
 				aliases[j] = aliases[j + 1]; 
@@ -94,8 +132,8 @@ int getAliasValue(char* aliasName, char* returnValue) {
 	int i;
 	for(i = 0; i < aliasCount; ++i) {
 		// find match
-		if(strncmp(aliases[i], aliasName, aliasNameLength) == 0) {
-			strcpy(returnValue, &aliases[i][aliasNameLength+1]);
+		if(strncmp((aliases[i]).name, aliasName, aliasNameLength) == 0) {
+			strcpy(returnValue, (aliases[i]).word);
 			return 0;
 		}
 	}
@@ -127,7 +165,7 @@ char* aliasResolver(char* alias) {
 	
 	char* name = malloc(500*sizeof(char)); 
 	strcpy(name, alias);
-	
+
 	// keeps track of alias names already encountered 
 	char* aliasTracker[100]; 
 	int nestedSize = 0; //keeps track of size of names in the tracker
@@ -226,7 +264,7 @@ void textArrayAliasExpansion(char* name, int position)
 		tokens++;
 		pch = strtok_r(NULL, " ", &saved3);
 	}
-	newTextArray = (char **) malloc((words+tokens)*sizeof(char *)); //null entry and new words
+	char** newTextArray = (char **) malloc((words+tokens)*sizeof(char *)); //null entry and new words
 	if ( newTextArray == (char **) NULL ) //no array created
 	{
 		perror("Array not created");
@@ -346,7 +384,8 @@ char *fixText(char *orig, char *rep, char *with) {
 void alias_print_function() {
 	int i;
 	for(i = 0; i < aliasCount; ++i) {
-		printf("%s\n", aliases[i]); 
+		printf("%s=%s\n", aliases[i].name, aliases[i].word); 
+
 	}
 }
 
