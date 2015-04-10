@@ -22,8 +22,10 @@ int addedWords = 0;
 #include "alias_functions.c"
 
 void shell_init() {
-
-	printf("\n********************** SHELL STARTS HERE **********************\n\n");
+	// black background
+	
+	printf("[01;32;40m" "\n****************************** SHELL STARTS HERE *******************************\n\n");
+	printf("[00;32;40m" "");
 
 	myPath = malloc(500 * sizeof(char));
 	if(myPath == (char *) NULL) { //error
@@ -1026,15 +1028,18 @@ void lineHeaderPath() {
 	// get user
 	struct passwd *passwd;
 	passwd = getpwuid ( getuid()); 
-	printf("%s@", passwd->pw_name);	
+	printf("[1;34;40m" "%s@", passwd->pw_name);	
 
 	// get computer name
 	char* hostName = malloc(300 * sizeof(char));
 	gethostname(hostName, 20);
-	printf("%s:", hostName);
+	printf("[1;34;40m" "%s:", hostName);
 
 	// get path
-	printf("%s$ ", getenv("PWD"));
+	printf("[1;35;40m" "%s$ ", getenv("PWD"));
+
+	// back to normal
+	printf("[00;00;40m");
 }
 
 

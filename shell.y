@@ -97,7 +97,8 @@ unalias_case:
 bye_case:
 		BYE				   
 							{ 
-								printf("\n**********************  SHELL ENDS HERE  **********************\n\n");
+								printf("[01;31;40m" "\n******************************  SHELL ENDS HERE  *******************************\n\n");
+								printf("[00;00;00m");
 								exit(0); //exit shell
 							};
 read_from_case2:
@@ -162,7 +163,7 @@ standard_error_redirect_case2:
 error_case:
 		error
 							{
-								printf ("Syntax error.\n");
+								//printf ("Syntax error.\n");
 								lineHeaderPath();
 							};
 append_case2:
