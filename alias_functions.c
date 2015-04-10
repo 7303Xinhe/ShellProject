@@ -9,6 +9,7 @@ void alias_function(char *text, char *text2)
 		reset();
 		return;
 	}
+	/*
 	if(strcmp(text, "cd") == 0 || strcmp(text, "alias") == 0 || strcmp(text, "unalias") == 0 || strcmp(text, "setenv") == 0 || strcmp(text, "printenv") == 0 || strcmp(text, "unsetenv") == 0) //error
 	{
 		perror("Trying to make an alias out of a built-in command");
@@ -16,6 +17,7 @@ void alias_function(char *text, char *text2)
 		reset();
 		return;
 	}
+	*/
 	unalias_function(text, 0);             /* Remove all occurrences */
 	es = malloc(strlen(text) + strlen(text2) + 2);
 	if (es == NULL) //error
