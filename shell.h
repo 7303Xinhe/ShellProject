@@ -49,7 +49,10 @@
   void word2Function(char* text);
   char* tildeExpansion(char* text);
   char* aliasResolve(char* string);
-  char* getAliasValue(char* aliasName);
+ 
+  // char* getAliasValue(char* aliasName);
+  int getAliasValue(char* aliasName, char* aliasValue);
+
   void shell_init(void);
   void condenseSpaces(char* string);
   int append_function(char* text);

@@ -55,94 +55,147 @@ void alias_function(char *name, char *word) {
 	reset();
 }
 
-void unalias_function(char *name, int flag)
-{
+/*  The unalias command is used to remove the alias for name from the alias list. */
+void unalias_function(char *name, int flag) {
+	
 	size_t length;
-	if (name == NULL || name == '\0' || strchr(name, '=') != NULL) { //invalid
+	if (name == NULL || name == '\0' || strchr(name, '=') != NULL) { 
 		perror("Entered an invalid alias");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
+
 	length = strlen(name);
 	int i;
 	int j;
-	for (i = 0; i < aliasCount; i++)
-	{
+	for (i = 0; i < aliasCount; ++i) {
+		// check for match
 		if (strncmp(aliases[i], name, length) == 0 && aliases[i][length] == '=') { //found match
-			for (j = i; j < aliasCount; j++)
-			{
-				aliases[j] = aliases[j + 1]; //shift over
+			for (j = i; j < aliasCount; j++) {
+				// shift to left
+				aliases[j] = aliases[j + 1]; 
 			}
-			aliasCount--; //decrement count
+
+			// decrement 
+			--aliasCount; 
 		} 
 	}
-	if(flag == 1){
+
+	if(flag == 1) {
 		reset();
 	}
 }
 
-char* getAliasValue(char* aliasName)
-{//returns the value of an alias when given the name as an argument,returns empty string if the alias name does not exist
-	int i = 0;
-	char* value = malloc(300*sizeof(char));
-	value[0] = '\0';
-	for(i = 0; i < aliasCount; i++)
-	{//goes through aliases arary
-		int j = 0;
-		int eqindex = strlen(aliases[i]);
-		for(j = 0; j < eqindex; j++)
-		{
-			if(aliases[i][j] == '=')
-			{//finds the = character which separates name and value
-				eqindex = j;
-			}
+// Gets the value of an alias when given the name returns empty string if the alias name does not exist
+int getAliasValue(char* aliasName, char* returnValue) {
+	
+	int aliasNameLength = strlen(aliasName);
+
+	int i;
+	for(i = 0; i < aliasCount; ++i) {
+		// find match
+		if(strncmp(aliases[i], aliasName, aliasNameLength) == 0) {
+			strcpy(returnValue, &aliases[i][aliasNameLength+1]);
+			return 0;
 		}
-		char* possibleNameMatch = malloc(300*sizeof(char));
-		strncpy(possibleNameMatch, aliases[i], eqindex);//copies everything up to the = value into possibleNameMatch
-		if(strcmp(aliasName, possibleNameMatch) == 0)
-		{//if name is possibleNameMatch then copies everything after the = into the return value
-			strcpy(value, &aliases[i][eqindex+1]);
-			return value;
-		}
-		free(possibleNameMatch); //frees memory
 	}
-	return value;
+
+	return -1;
+	// for(i = 0; i < aliasCount; ++i) {
+
+	// 	int j;
+	// 	int eqindex = strlen(aliases[i]);
+	// 	for(j = 0; j < eqindex; j++) {
+	// 		//finds the = character which separates name and value
+	// 		if(aliases[i][j] == '=') {
+	// 			eqindex = j;
+	// 		}
+	// 	}
+	// 	char* possibleNameMatch = malloc(300*sizeof(char));
+	// 	strncpy(possibleNameMatch, aliases[i], eqindex);//copies everything up to the = value into possibleNameMatch
+	// 	if(strcmp(aliasName, possibleNameMatch) == 0)
+	// 	{//if name is possibleNameMatch then copies everything after the = into the return value
+	// 		strcpy(value, &aliases[i][eqindex+1]);
+	// 		return value;
+	// 	}
+	// 	free(possibleNameMatch); //frees memory
+	// }
 }
 
-char* aliasResolve(char* alias)
-{//takes in name of alias and returns the final resolved value of that alias name or <LOOP> if it loops infinitely,
-	//if string passed in argument is not an alias then it returns empty string
+// takes in name of alias and returns the final resolved value of that alias name or <LOOP> if it loops infinitely,
+char* aliasResolve(char* alias) {
+	
 	char* name = malloc(500*sizeof(char)); //declares name and value strings used to resolve
+	strcpy(name, alias);
+	// keeps track of alias names already encountered 
+	char* aliasTracker[100]; 
+	int nestedSize = 0; //keeps track of size of names in the tracker
+	aliasTracker[nestedSize] = name;
+	++nestedSize;
+
+	// first value
 	char* value = malloc(500*sizeof(char));
-	char* nameTracker[100]; //keeps track of alias names already encountered in order to detect infinite loops
-	int trackSize = 0; //keeps track of size of names in the tracker
-	strcpy(name, alias); //copies initial name into name string
-	nameTracker[trackSize] = name;
-	trackSize++;
-	strcpy(value,getAliasValue(name));//gets initial value
-	if(strcmp(value, "") == 0)
-	{//if initial alias name does not resolve to anything(resolves to empty string), return empty string
-		return value;
+	if(getAliasValue(name, value) == -1) {
+		perror("Error alias not found.\n");
+		printf("Error at line %d\n", __LINE__);
+		return "";
 	}
-	while(value[0] != '\0')
-	{ //loop runs until value cannot be further resolved into an additional alias
+
+	// loop to find nested 
+	while(1) {
+		strcpy(name, value);
+		if(getAliasValue(name, value) == -1) {
+			return value;
+		} 
+
+		aliasTracker[nestedSize] = name;
+		++nestedSize;
+
 		int i;
-		for(i = 0; i < trackSize; i++)
-		{
-			if(strcmp(value, nameTracker[i]) == 0)
-			{ //returns "<LOOP>" if the alias generates an infinite loop
+		for(i = 0; i < nestedSize; ++i) {
+			// returns "<LOOP>" if the alias generates an infinite loop 
+			if(strcmp(value, aliasTracker[i]) == 0) { 
 				strcpy(value, "<LOOP>");
 				return value;
 			}
 		}
-		nameTracker[trackSize] = value;//the alias value gets added to the tracking array if it's not in the array already
-		trackSize++;
-		name = value; //name now becomes the previous value
-		value = getAliasValue(name); //get alias value connected to alias name
 	}
-	strcpy(value, name);
-	free(name);
-	return value;
+	
+	//if string passed in argument is not an alias then it returns empty string
+	// char* name = malloc(500*sizeof(char)); //declares name and value strings used to resolve
+	// char* value = malloc(500*sizeof(char));
+	// char* aliasTracker[100]; //keeps track of alias names already encountered in order to detect infinite loops
+	// int nestedSize = 0; //keeps track of size of names in the tracker
+	// strcpy(name, alias); //copies initial name into name string
+	// aliasTracker[nestedSize] = name;
+	// nestedSize++;
+	
+	// strcpy(value,getAliasValue(name));//gets initial value
+	
+	// if(strcmp(value, "") == 0)
+	// {//if initial alias name does not resolve to anything(resolves to empty string), return empty string
+	// 	return value;
+	// }
+	// while(value[0] != '\0')
+	// { //loop runs until value cannot be further resolved into an additional alias
+	// 	int i;
+	// 	for(i = 0; i < nestedSize; i++)
+	// 	{
+	// 		if(strcmp(value, aliasTracker[i]) == 0)
+	// 		{ //returns "<LOOP>" if the alias generates an infinite loop
+	// 			strcpy(value, "<LOOP>");
+	// 			return value;
+	// 		}
+	// 	}
+	// 	aliasTracker[nestedSize] = value;//the alias value gets added to the tracking array if it's not in the array already
+	// 	nestedSize++;
+	// 	name = value; //name now becomes the previous value
+		
+	// 	value = getAliasValue(name); //get alias value connected to alias name
+	// }
+	// strcpy(value, name);
+	// free(name);
+	// return value;
 }
 
 
