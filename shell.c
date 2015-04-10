@@ -1,6 +1,6 @@
 #include "shell.h"
 
-char** newTextArray; //copied words
+char** z; //copied words
 int words = 0; //number of words
 
 // points to an array of strings called the `environment'.
@@ -563,16 +563,16 @@ void execute() {
 		numberOfCommands = numberOfPipes + 1;
 		for(i = 0; i < numberOfCommands; i++) { //resolves aliases
 			if(i == 0) {
-				if(strcmp(aliasResolve(textArray[i]), "<LOOP>") == 0) { //infinite alias expansion
+				if(strcmp(aliasResolver(textArray[i]), "<LOOP>") == 0) { //infinite alias expansion
 					perror("Infinite alias expansion.");
 					printf("Error at line %d\n", __LINE__);
 					reset();
 					exit(0);
 					return;
 				}
-				else if(strcmp(aliasResolve(textArray[i]), "") != 0) {//alias has a value
-					char* resolved = malloc((strlen(aliasResolve(textArray[i])) + 1) * sizeof(char));
-					strcpy(resolved,aliasResolve(textArray[i]));
+				else if(strcmp(aliasResolver(textArray[i]), "") != 0) {//alias has a value
+					char* resolved = malloc((strlen(aliasResolver(textArray[i])) + 1) * sizeof(char));
+					strcpy(resolved,aliasResolver(textArray[i]));
 					textArray[i] = resolved;
 					textArrayAliasExpansion(textArray[i], i + addedWords);
 
@@ -580,16 +580,16 @@ void execute() {
 			}
 			else{
 				int j;
-				if(strcmp(aliasResolve(textArray[pipes[i - 1] + 1]), "<LOOP>") == 0) {//infinite alias expansion
+				if(strcmp(aliasResolver(textArray[pipes[i - 1] + 1]), "<LOOP>") == 0) {//infinite alias expansion
 					perror("Infinite alias expansion.");
 					printf("Error at line %d\n", __LINE__);
 					reset();
 					exit(0);
 					return;
 				}
-				else if(strcmp(aliasResolve(textArray[pipes[i - 1] + 1 + addedWords]), "") != 0) {//alias has a value
-					char* resolved = malloc((strlen(aliasResolve(textArray[pipes[i - 1] + 1 + addedWords]) + 1) * sizeof(char)));
-					strcpy(resolved,aliasResolve(textArray[pipes[i - 1] + 1 + addedWords]));
+				else if(strcmp(aliasResolver(textArray[pipes[i - 1] + 1 + addedWords]), "") != 0) {//alias has a value
+					char* resolved = malloc((strlen(aliasResolver(textArray[pipes[i - 1] + 1 + addedWords]) + 1) * sizeof(char)));
+					strcpy(resolved,aliasResolver(textArray[pipes[i - 1] + 1 + addedWords]));
 					textArray[pipes[i - 1] + 1 + addedWords] = resolved;
 					textArrayAliasExpansion(textArray[pipes[i - 1] + 1 + addedWords], pipes[i - 1] + 1 + addedWords);
 				}

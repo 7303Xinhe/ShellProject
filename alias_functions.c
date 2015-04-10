@@ -123,10 +123,11 @@ int getAliasValue(char* aliasName, char* returnValue) {
 }
 
 // takes in name of alias and returns the final resolved value of that alias name or <LOOP> if it loops infinitely,
-char* aliasResolve(char* alias) {
+char* aliasResolver(char* alias) {
 	
-	char* name = malloc(500*sizeof(char)); //declares name and value strings used to resolve
+	char* name = malloc(500*sizeof(char)); 
 	strcpy(name, alias);
+	
 	// keeps track of alias names already encountered 
 	char* aliasTracker[100]; 
 	int nestedSize = 0; //keeps track of size of names in the tracker
