@@ -1,6 +1,7 @@
 %{
 #include "shell.h"
 extern char *yytext;
+
 void yyerror(const char *str) {
 	fprintf(stderr,"error: %s\n", str);
 }
