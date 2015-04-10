@@ -1,13 +1,13 @@
-/* setenv variable word - This command sets the value of the variable variable to be word. */
-void setenv_function (char *variable, char *value, int flag) {
+/* setenv variable word - This command sets the word of the variable variable to be word. */
+void setenv_function (char *variable, char *word, int flag) {
 
-	condenseSlashes(value); 
+	condenseSlashes(word); 
 
-	// for the variable=value pair
+	// for the variable=word pair
 	char *pair;
 
 	// check to see if inputs are valid
-	if (variable == NULL || variable[0] == '\0' || strchr(variable, '=') != NULL || value == NULL) {
+	if (variable == NULL || variable[0] == '\0' || strchr(variable, '=') != NULL || word == NULL) {
 		perror("Invalid argument.");
 		printf("Error at line %d\n", __LINE__);
 		return;
@@ -17,7 +17,7 @@ void setenv_function (char *variable, char *value, int flag) {
 	unsetenv_function(variable, 0);             
 	
 	// allocate +2 for '=' and null terminator 
-	pair = malloc(strlen(variable) + strlen(value) + 2);
+	pair = malloc(strlen(variable) + strlen(word) + 2);
 	if (pair == NULL) {
 		perror("Error with memory allocation");
 		printf("Error at line %d\n", __LINE__);
@@ -28,9 +28,9 @@ void setenv_function (char *variable, char *value, int flag) {
 	if(strcmp(variable, "PATH") == 0 || strcmp(variable, "ARGPATH") == 0) {
 
 		// list of one or more currentDirectory names separated by colon
-		char *valueToken = strtok(value, ":"); 
+		char *valueToken = strtok(word, ":"); 
 
-		// string used to build the final value
+		// string used to build the final word
 		char *path = malloc(500 * sizeof(char));
 		if(path == (char *) NULL) {
 			perror("Error with memory allocation.");
@@ -128,8 +128,8 @@ void setenv_function (char *variable, char *value, int flag) {
 					strcat(path, "/");
 					strcat(path, ":");
 				} else {
-					char* value = malloc(300 * sizeof(char));
-					if(value == (char *) NULL) {
+					char* word = malloc(300 * sizeof(char));
+					if(word == (char *) NULL) {
 						perror("Error with memory allocation.");
 						printf("Error at line %d\n", __LINE__);
 						return;
@@ -142,15 +142,15 @@ void setenv_function (char *variable, char *value, int flag) {
 
 			// relative path ~sjc/bin
 			else {
-				char* value = malloc(300 * sizeof(char));
-				if(value == (char *) NULL) {
+				char* word = malloc(300 * sizeof(char));
+				if(word == (char *) NULL) {
 					perror("Error with memory allocation.");
 					printf("Error at line %d\n", __LINE__);
 					return;
 				}
-				strcat(value, currentDirectory);
-				strcat(value, valueToken);
-				strcat(path, value);
+				strcat(word, currentDirectory);
+				strcat(word, valueToken);
+				strcat(path, word);
 				strcat(path, ":");
 			}
 
@@ -160,8 +160,8 @@ void setenv_function (char *variable, char *value, int flag) {
 
 		// get rid of colon at the end
 		path[strlen(path) - 1] = '\0';
-		// put path into value 
-		strcpy(value, path);
+		// put path into word 
+		strcpy(word, path);
 
 	} // end if PATH || ARGPATH
 
@@ -169,7 +169,7 @@ void setenv_function (char *variable, char *value, int flag) {
 	// create the pair
 	strcpy(pair, variable); 
 	strcat(pair, "="); 
-	strcat(pair, value); 
+	strcat(pair, word); 
 	
 	// put into array
 	if(putenv(pair) == -1) {
