@@ -1,11 +1,9 @@
 /* used for the just "cd" command */
 void cd_home_function() {
 
-	// change to home currentDirectory
-	int flag = chdir(myHome); 
-	
+	// change to home currentDirectory	
 	// error
-	if(flag == -1) { 				
+	if(chdir(myHome) == -1) { 				
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
@@ -55,7 +53,7 @@ void cd_function(char *inputDirectory){
 		// else if(inputDirectory[1] != '.') {
 		// 	strcpy(inputDirectory, &inputDirectory[1]);
 		// }
-
+ 
 		// starting with ".."
 		else if(inputDirectory[1] == '.' && strcmp(currentDirectory, "/") != 0) {
 			int i;

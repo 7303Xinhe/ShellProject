@@ -24,7 +24,7 @@ bye 		return BYE;
 ">" 	return WRITETO;
 "|" 	return PIPE;
 "&" 	return AMPERSAND;
-">>" 	return APPEND;
+">>"	return APPEND;
 
 "2>"[*?@!#%',=~.:/:A-Za-z0-9]+ 	return STANDARDERROR1;
 "2>&1" 							return STANDARDERROR2;

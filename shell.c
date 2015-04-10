@@ -392,7 +392,9 @@ char* tildeExpansion(char* text)
 		return text;
 	}
 }
-void condenseSpaces(char* string){ //removes extra spaces in the word so that each word has one space between it
+
+/* removes extra spaces in the word */
+void condenseSpaces(char* string){ 
 	int i = 0;
 	int size = strlen(string);
 	for(i = 0; i < size;) {
@@ -408,6 +410,7 @@ void condenseSpaces(char* string){ //removes extra spaces in the word so that ea
 		}
 	}
 }
+
 int append_function(char* text) {
 	int out = open(text, O_RDWR | O_APPEND | S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR); //open file
 	if(out == -1) { //error
@@ -445,6 +448,7 @@ void reset() {
 	addedWords = 0;
 	memset(textArray, 0, sizeof(textArray)); //clear contents
 }
+
 void execute() {
 	int numberOfPipes = 0;
 	int numberOfCommands = 0;
