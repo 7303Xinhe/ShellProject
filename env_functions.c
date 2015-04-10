@@ -194,21 +194,21 @@ void unsetenv_function(char *variable, int flag) {
 	}
 
 	// to temp array of string pairs
-	char **envVariablesTemp;
+	char **environTemp;
 	
 	size_t length;
 	length = strlen(variable);	
 
 	// loop through all the env variables trying to find match
-	for (envVariablesTemp = envVariables; *envVariablesTemp != NULL; ++envVariablesTemp) {
+	for (environTemp = environ; *environTemp != NULL; ++environTemp) {
 
 		// found match
-		if (strncmp(*envVariablesTemp, variable, length) == 0 && (*envVariablesTemp)[length] == '=') { 
+		if (strncmp(*environTemp, variable, length) == 0 && (*environTemp)[length] == '=') { 
 			
 			// shift all the variables to the left
-			while(*envVariablesTemp != NULL) {
-				*envVariablesTemp = *(envVariablesTemp + 1); 
-				++envVariablesTemp;
+			while(*environTemp != NULL) {
+				*environTemp = *(environTemp + 1); 
+				++environTemp;
 			}
 			break;
 		} 
@@ -223,9 +223,9 @@ void unsetenv_function(char *variable, int flag) {
 // print all the environment variable pairs
 void printenv_function() {
 
-	char ** envVariablesTemp;
-	for(envVariablesTemp = envVariables; *ep!= NULL; ep++) {
-		printf("%s\n", *ep); 
+	char ** environTemp;
+	for(environTemp = environ; *environTemp!= NULL; environTemp++) {
+		printf("%s\n", *environTemp); 
 	}
 }
 
