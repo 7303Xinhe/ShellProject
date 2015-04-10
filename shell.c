@@ -1,7 +1,11 @@
 #include "shell.h"
 char** newTextArray; //copied words
 int words = 0; //number of words
-extern char** environ; //environment variables
+
+// points to an array of strings called the `environment'.
+extern char** environ; 
+
+
 char** aliases; //alias names and values
 char** newAliases; //copied aliases
 int aliasCount = 0; //number of aliases
