@@ -39,10 +39,9 @@ void cd_function(char *inputDirectory){
 
 	// input starts with '.'
 	if(inputDirectory[0] == '.') {
-
-		// just dot || dot-slash || ".."
+		// just dot || dot-slash || ".." and current dir is '/'
 		if((strlen(inputDirectory) == 1) || (strlen(inputDirectory) == 2 && inputDirectory[1] == '/') 
-			|| (inputDirectory[1] == '.' && strcmp(currentDirectory, "/"))) {
+			|| (inputDirectory[1] == '.' && strcmp(currentDirectory, "/") == 0)) {
 			return;
 		}
 
@@ -52,14 +51,19 @@ void cd_function(char *inputDirectory){
 			strcpy(inputDirectory, &inputDirectory[2]);
 		}
 
-		// '.' then something
-		else if(inputDirectory[1] != '.') {
-			strcpy(inputDirectory, &inputDirectory[1]);
+		// // '.' then something
+		// else if(inputDirectory[1] != '.') {
+		// 	strcpy(inputDirectory, &inputDirectory[1]);
+		// }
+
+		else if(inputDirectory[1] == '.' && strlen(inputDirectory) == 2) {
+			printf("hello\n");
+			chdir("..");
+			return;
 		}
 
 		// starting with ".."
 		else if(inputDirectory[1] == '.' && strcmp(currentDirectory, "/") != 0) {
-			
 			int i;
 			int slashIndex = 1;
 			// -2 to start at the last char, since we added a '/' in the end
@@ -71,6 +75,7 @@ void cd_function(char *inputDirectory){
 			}
 
 			// changing currentDirectory path
+
 			// pushes currentDirectory up a level
 			if(slashIndex != 0) { 
 				// moves null char to previous slash
@@ -127,13 +132,11 @@ void cd_function(char *inputDirectory){
 	// combines current with the input
 	// check if relative
 	strcat(currentDirectory, inputDirectory); 
-	int flag = chdir(currentDirectory); 
 	
 	//error check absolute path
-	if (flag == -1) { 
-		int result2 = chdir(inputDirectory); 
-		if (result2 == -1) {
-			perror("currentDirectory not changed");
+	if (chdir(currentDirectory) == -1) { 
+		if (chdir(inputDirectory) == -1) {
+			perror("Directory not changed");
 			printf("Error at line %d\n", __LINE__);
 			reset();
 			return;
