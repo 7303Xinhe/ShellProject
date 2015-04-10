@@ -1,65 +1,74 @@
+char** aliases; 	// alias names and values
+// char** aliasesTemp;	// copied aliases
+int aliasCount = 0; // number of aliases
 
-void alias_function(char *text, char *text2)
-{
-	char *es;
-	if (text == NULL || text[0] == '\0' || strchr(text, '=') != NULL || text2 == NULL) //check to see if valid
-	{
+/* This alias command adds a new alias to the shell. An alias is
+essentially a shorthand form of a long command. */
+void alias_function(char *name, char *word) {
+
+	// check
+	if (name == NULL || name[0] == '\0' || strchr(name, '=') != NULL || word == NULL) {
 		perror("Invalid argument");
 		printf("Error at line %d\n", __LINE__);
 		reset();
 		return;
 	}
-	/*
-	if(strcmp(text, "cd") == 0 || strcmp(text, "alias") == 0 || strcmp(text, "unalias") == 0 || strcmp(text, "setenv") == 0 || strcmp(text, "printenv") == 0 || strcmp(text, "unsetenv") == 0) //error
-	{
-		perror("Trying to make an alias out of a built-in command");
-		printf("Error at line %d\n", __LINE__); 
-		reset();
-		return;
-	}
-	*/
-	unalias_function(text, 0);             /* Remove all occurrences */
-	es = malloc(strlen(text) + strlen(text2) + 2);
-	if (es == NULL) //error
-	{
+
+	// remove current assignment for the name
+	unalias_function(name, 0);          
+
+	char *pair;
+
+	// allocate +2 for '=' and null terminator 
+	pair = malloc(strlen(name) + strlen(word) + 2);
+
+	if (pair == NULL) {
 		perror("Error with memory allocation");
 		printf("Error at line %d\n", __LINE__);
 		reset();
 		return;
 	}
-	strcpy(es, text); //copy variable
-	strcat(es, "="); //copy =
-	strcat(es, text2); //copy value
-	newAliases = (char **) malloc((aliasCount+2)*sizeof(char *)); //null entry and new word
-	if ( newAliases == (char **) NULL ) //no array created
-	{
+
+	// create the pair
+	strcpy(pair, name); 
+	strcat(pair, "="); 
+	strcat(pair, word);
+
+	char** aliasesTemp;
+	aliasesTemp = (char **) malloc((aliasCount+2) * sizeof(char *)); 
+	if(aliasesTemp == (char **) NULL) {
 		perror("Array not created.");
 		printf("Error at line %d\n", __LINE__);
 		reset();
 		return;
 	}
-	memcpy ((char *) newAliases, (char *) aliases, aliasCount*sizeof(char *)); //copy all entries from textArray into newTextArray
-	newAliases[aliasCount] = es; //word
-	newAliases[aliasCount + 1] = NULL; //null entry
-	aliases = newAliases;
-	aliasCount++; //increment index
+
+	int i;
+	for(i = 0; i < aliasCount; ++i) {
+		aliasesTemp[i] = aliases[i];
+	}
+	aliasesTemp[aliasCount] = pair; 
+	aliasesTemp[aliasCount + 1] = NULL; 
+
+	aliases = aliasesTemp;
+	++aliasCount; 
 	reset();
 }
 
-void unalias_function(char *text, int flag)
+void unalias_function(char *name, int flag)
 {
 	size_t length;
-	if (text == NULL || text == '\0' || strchr(text, '=') != NULL) { //invalid
+	if (name == NULL || name == '\0' || strchr(name, '=') != NULL) { //invalid
 		perror("Entered an invalid alias");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	length = strlen(text);
+	length = strlen(name);
 	int i;
 	int j;
 	for (i = 0; i < aliasCount; i++)
 	{
-		if (strncmp(aliases[i], text, length) == 0 && aliases[i][length] == '=') { //found match
+		if (strncmp(aliases[i], name, length) == 0 && aliases[i][length] == '=') { //found match
 			for (j = i; j < aliasCount; j++)
 			{
 				aliases[j] = aliases[j + 1]; //shift over
@@ -137,25 +146,25 @@ char* aliasResolve(char* alias)
 }
 
 
-void textArrayAliasExpansion(char* text, int position)
+void textArrayAliasExpansion(char* name, int position)
 {
 	char* saved3;
-	char* result = malloc((strlen(text) + 1) * sizeof(char)); //allocate space
+	char* result = malloc((strlen(name) + 1) * sizeof(char)); //allocate space
 	if(result == (char*) NULL) //error
 	{
 		perror("Error with memory allocation.");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	strcpy(result, text); //copy text over
-	char* result2 = malloc((strlen(text) + 1) * sizeof(char));
+	strcpy(result, name); //copy name over
+	char* result2 = malloc((strlen(name) + 1) * sizeof(char));
 	if(result2 == (char*) NULL) //error
 	{
 		perror("Error with memory allocation.");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	strcpy(result2, result); //copy another one since strtok_r changes actual text
+	strcpy(result2, result); //copy another one since strtok_r changes actual name
 	char* pch = strtok_r(result, " ", &saved3); //parse to get each indiviual file
 	int tokens = 0; //how many positions we add
 	while(pch != NULL)
@@ -171,7 +180,7 @@ void textArrayAliasExpansion(char* text, int position)
 		return;
 	}
 	memcpy ((char *) newTextArray, (char *) textArray, position*sizeof(char *)); //copy all entries from 0 to position of textArray into newTextArray
-	char** textForLater = malloc((words - position) * sizeof(char *)); //text we add at the end of the textArray
+	char** textForLater = malloc((words - position) * sizeof(char *)); //name we add at the end of the textArray
 	if(textForLater == (char**)NULL) //error
 	{
 		perror("Array not created");
@@ -198,16 +207,16 @@ void textArrayAliasExpansion(char* text, int position)
 	words--; //since we are overwriting an entry, need to decrement words beforehand
 	while(pch2 != NULL)
 	{
-		char* es;
-		es = malloc(strlen(pch2) + 1); //allocate space for word and terminating character
-		if (es == NULL) //error
+		char* pair;
+		pair = malloc(strlen(pch2) + 1); //allocate space for word and terminating character
+		if (pair == NULL) //error
 		{
 			perror("Error with memory allocation.");
 			printf("Error at line %d\n", __LINE__);
 			return;
 		}
-		strcpy(es, pch2); //copy text into pointer
-		newTextArray[position + j] = es; //word
+		strcpy(pair, pch2); //copy name into pointer
+		newTextArray[position + j] = pair; //word
 		j++; //move forward
 		words++; //added another word
 		pch2 = strtok_r(NULL, " ", &saved4);
@@ -279,13 +288,11 @@ char *fixText(char *orig, char *rep, char *with) {
     return result;
 }
 
-
-void alias_print_function()
-{
+/* print each alias line by line */
+void alias_print_function() {
 	int i;
-	for(i = 0; i < aliasCount; i++)
-	{
-		printf("%s\n", aliases[i]); //print each alias line by line
+	for(i = 0; i < aliasCount; ++i) {
+		printf("%s\n", aliases[i]); 
 	}
 }
 
