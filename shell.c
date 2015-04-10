@@ -1,14 +1,11 @@
 #include "shell.h"
+
 char** newTextArray; //copied words
 int words = 0; //number of words
 
 // points to an array of strings called the `environment'.
 extern char** environ; 
 
-
-char** aliases; //alias names and values
-char** newAliases; //copied aliases
-int aliasCount = 0; //number of aliases
 struct passwd* pwd; //contains result of getpwnam
 char* myPath;
 char* myHome;
