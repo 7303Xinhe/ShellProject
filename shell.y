@@ -22,14 +22,9 @@ commands:
 		| commands command3
 		| commands command4;
 command:
-		cd_home_case
-		|cd_case
-		|printenv_case
-		|unsetenv_case
-		|setenv_case
-		|alias_print_case
+		cd_case
+		|env_case
 		|alias_case
-		|unalias_case
 		|bye_case
 		|read_from_case
 		|write_to_case
@@ -46,54 +41,47 @@ command:
 		|read_from_case2
 		|write_to_case2
 		|append_case2;
-cd_home_case:
-		CD 
-							{
-								cd_home_function();
-								lineHeaderPath();
-							};
 cd_case:
-	    CD word_case 
-							{
-								cd_function(textArray[getWords() - 1]);
-								lineHeaderPath();
-							}
-printenv_case:
-	    PRINTENV 
-							{
-								printenv_function();
-								lineHeaderPath();
-							};
-unsetenv_case:
-		UNSETENV word_case 
-							{
-								unsetenv_function(textArray[getWords() - 1], 1);
-								lineHeaderPath();
-							};
-setenv_case:             
-		SETENV word_case word_case   
-							{
-								setenv_function(textArray[getWords() - 2], textArray [getWords() - 1], 1);	
-								lineHeaderPath();	
-							};
-alias_print_case:
-		ALIAS	
-							{
-								alias_print_function();
-								lineHeaderPath();
-							};
+		CD {
+			cd_home_function();
+			lineHeaderPath();
+		}
+	    |
+		CD word_case {
+			cd_function(textArray[getWords() - 1]);
+			lineHeaderPath();
+		};
+env_case:
+	    PRINTENV {
+			printenv_function();
+			lineHeaderPath();
+		}
+		| 
+		UNSETENV word_case {
+			unsetenv_function(textArray[getWords() - 1], 1);
+			lineHeaderPath();
+		}   
+		|
+		SETENV word_case word_case {
+			setenv_function(textArray[getWords() - 2], textArray [getWords() - 1], 1);	
+			lineHeaderPath();	
+		};
 alias_case:
-		ALIAS  word_case  word_case    
-							{
-								alias_function(textArray[getWords() - 2], textArray[getWords() - 1]);
-								lineHeaderPath();
-							};
-unalias_case:
-		UNALIAS word_case       
-							{
-								unalias_function(textArray[getWords() - 1], 1);  
-								lineHeaderPath();                            
-							}
+		ALIAS {
+			alias_print_function();
+			lineHeaderPath();
+		}
+		|
+		ALIAS  word_case  word_case {
+			alias_function(textArray[getWords() - 2], textArray[getWords() - 1]);
+			lineHeaderPath();
+		}
+		|
+		UNALIAS word_case {
+			unalias_function(textArray[getWords() - 1], 1);  
+			lineHeaderPath();                            
+		};
+		
 bye_case:
 		BYE				   
 							{ 
