@@ -1,6 +1,5 @@
 /* used for the just "cd" command */
 void cd_home_function() {
-
 	// change to home currentDirectory	
 	// error
 	if(chdir(myHome) == -1) { 				

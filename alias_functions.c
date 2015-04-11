@@ -1,14 +1,4 @@
 
-// number of aliases
-int aliasCount = 0; 
-
-struct aliasStruct {
-	char* name;
-	char* word;
-};
-
-struct aliasStruct *aliases; 	
-
 /* This alias command adds a new alias to the shell. An alias is
 essentially a shorthand form of a long command. */
 void alias_function(char *name, char *word) {
@@ -18,11 +8,10 @@ void alias_function(char *name, char *word) {
 
 
 	struct aliasStruct pair;
-	pair.name = name;
-	pair.word = word;
+	pair.name = strdup(name);
+	pair.word = strdup(word);
 
-	struct aliasStruct* aliasesTemp;
-	aliasesTemp = malloc((aliasCount+1) * sizeof(struct aliasStruct)); 
+	struct aliasStruct* aliasesTemp = malloc((aliasCount+2) * sizeof(struct aliasStruct)); 
 
 	int i;
 	for(i = 0; i < aliasCount; ++i) {
@@ -92,7 +81,6 @@ int getAliasValue(char* aliasName, char* returnValue) {
 
 // takes in name of alias and returns the final resolved value of that alias name or <LOOP> if it loops infinitely,
 char* aliasResolver(char* alias) {
-	
 	char* name = malloc(500*sizeof(char)); 
 	strcpy(name, alias);
 
@@ -151,14 +139,14 @@ void textArrayAliasExpansion(char* name, int position) {
 		tokens++;
 		pch = strtok_r(NULL, " ", &saved3);
 	}
-	char** newTextArray = (char **) malloc((words+tokens)*sizeof(char *)); //null entry and new words
+	char** newTextArray = (char **) malloc((wordCount+tokens)*sizeof(char *)); //null entry and new wordCount
 
 	memcpy ((char *) newTextArray, (char *) textArray, position*sizeof(char *)); //copy all entries from 0 to position of textArray into newTextArray
-	char** textForLater = malloc((words - position) * sizeof(char *)); //name we add at the end of the textArray
+	char** textForLater = malloc((wordCount - position) * sizeof(char *)); //name we add at the end of the textArray
 
 	int i;
 	int index = 0;
-	for(i = position + 1; i < words; i++)
+	for(i = position + 1; i < wordCount; i++)
 	{
 		textForLater[index] = malloc((strlen(textArray[i]) + 1) * sizeof(char)); //allocate enough space for entry
 		
@@ -168,7 +156,7 @@ void textArrayAliasExpansion(char* name, int position) {
 	char* saved4;
 	char* pch2 = strtok_r(result2, " ", &saved4);
 	int j = 0;
-	words--; //since we are overwriting an entry, need to decrement words beforehand
+	wordCount--; //since we are overwriting an entry, need to decrement wordCount beforehand
 	while(pch2 != NULL)
 	{
 		char* pair;
@@ -177,21 +165,21 @@ void textArrayAliasExpansion(char* name, int position) {
 		strcpy(pair, pch2); //copy name into pointer
 		newTextArray[position + j] = pair; //word
 		j++; //move forward
-		words++; //added another word
+		wordCount++; //added another word
 		pch2 = strtok_r(NULL, " ", &saved4);
 	}
 	int k;
 	index = 0;
-	for(k = position + j; k < words; k++)
+	for(k = position + j; k < wordCount; k++)
 	{
 		newTextArray[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
 		
 		strcpy(newTextArray[k], textForLater[index]); //copy over
 		index++; //move to next entry
 	}
-	newTextArray[words + 1] = NULL; //null entry
+	newTextArray[wordCount + 1] = NULL; //null entry
 	textArray = newTextArray;
-	addedWords += j - 1; //how many words we added
+	addedWords += j - 1; //how many wordCount we added
 }
 char *fixText(char *orig, char *rep, char *with) {
     char *result; // the return string

@@ -14,6 +14,7 @@ unalias 	return UNALIAS;
 bye 		return BYE;
 \n 			return NEWLINE;
 
+
 [-*?@!#%',=~_.:/:A-Za-z0-9]+ 						return WORD;
 "\""[-*? \\<>&\|${},_\"@!#%'=~.:/:A-Za-z0-9]+"\"" 	return QUOTES;
 "${"[-*?@!#%,'=~._:/:AAN-Za-z0-9]+"}" 				return ENVIRONMENTVARIABLE; 

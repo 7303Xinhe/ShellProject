@@ -1,7 +1,4 @@
-Xin He
-Matthew Weingarten
-README
--------------------
+
 Features NOT Implemented
 1. File name completion    
 

@@ -1,30 +1,100 @@
 #include "shell.h"
 
-char** z; //copied words
-int words = 0; //number of words
-
-// points to an array of strings called the `environment'.
-extern char** environ; 
-
-struct passwd* pwd; //contains result of getpwnam
-char* myPath;
-char* myHome;
-int savedOutput; //output channel
-int savedInput; //input channel
-int savedError; //error channel
-int addedWords = 0;
-
 #include "alias_functions.c"
 #include "cd_functions.c"
 #include "env_functions.c"
 #include "error_functions.c"
+#include "execute_function.c"
 
+main() {
+	shell_init();
+	// loops till bye
+	while(1) {
+		// prepare parser
+		textArray[0] = strdup("");
+		// header
+		lineHeaderPath();
+		switch(getCommand()) {
+			case ERRORS:
+				break;
+			case OK:
+				processCommand();
+				break;
+			default: 				
+				break;
+		}
+	}
+}
+
+void processCommand() {
+	
+	if(builtin_type > 0)
+		do_it();
+	else 
+		execute();
+}
+
+void do_it() {
+	switch (builtin_type) {
+		case ALIAS_DEF:
+			alias_function(variable, word);
+			break;
+		case ALIASPRINT_DEF:
+			alias_print_function();
+			break;
+		case CDHOME_DEF:
+			cd_home_function();
+			break;
+		case CDPATH_DEF:
+			cd_function(cdPath);
+			break;
+		case UNALIAS_DEF:
+			unalias_function(variable, 1);
+			break;
+		case SETENV_DEF:
+			setenv_function(variable, word, 1);	
+			break;
+		case UNSETENV_DEF:
+			unsetenv_function(variable, 1);
+			break;
+		case PRINTENV_DEF: 
+			printenv_function();
+			break;
+		default:
+			break;
+	}
+	builtin_type = 0;
+}
+
+int getCommand() {
+
+	// error
+	if(yyparse()) {
+		return ERRORS;
+	} 
+	// ok
+	else {
+		return OK;
+	}
+}
 
 void shell_init() {
 	// black background
 	
 	printf("[01;32;40m" "\n****************************** SHELL STARTS HERE *******************************\n\n");
 	printf("[00;32;40m" "");
+
+	textArray = (char**) malloc(500 * sizeof(char*));
+	textArray[0] = strdup("");
+
+	aliasCount = 0;
+	wordCount = 0; //number of wordCount
+	addedWords = 0;
+	builtin_type = 0;
+	cdPath = malloc(500 * sizeof(char));
+	variable = malloc(500 * sizeof(char));
+	word = malloc(500 * sizeof(char));
+
 
 	myPath = malloc(500 * sizeof(char));
 	if(myPath == (char *) NULL) { //error
@@ -42,14 +112,14 @@ void shell_init() {
 		return;
 	}
 	strcpy(myHome, getenv("HOME")); //get home directory so that it stays constant
-	signal(SIGINT, SIG_IGN); //prevent crash from ctrl-c
+	//signal(SIGINT, SIG_IGN); //prevent crash from ctrl-c
 	signal(SIGTSTP, SIG_IGN); //prevent crash from ctrl-z
 	signal(SIGQUIT, SIG_IGN); //prevent crash from ctrl-/
 
 	// start in home
 	cd_home_function();
-	// print path
-	lineHeaderPath();
+	// // print path
+	// lineHeaderPath();
 }
 
 
@@ -89,7 +159,7 @@ int read_from_function (char *text) {
 }
 
 
-void word_function(char *text) {
+void insertToWordTable(char *text) {
 	char * es;
 	es = malloc(strlen(text) + 1); //allocate space for word and terminating character
 	if (es == NULL) {//error
@@ -98,23 +168,23 @@ void word_function(char *text) {
 		return;
 	}
 	strcpy(es, text); //copy text into pointer
-	char **newTextArray = (char **) malloc((words+2)*sizeof(char *)); //null entry and new word
+	char **newTextArray = (char **) malloc((wordCount+2)*sizeof(char *)); //null entry and new word
 	if ( newTextArray == (char **) NULL ) { //no array created
 		perror("Array not created");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	memcpy ((char *) newTextArray, (char *) textArray, words*sizeof(char *)); //copy all entries from textArray into newTextArray
-	newTextArray[words]   = es; //word
-	newTextArray[words+1] = NULL; //null entry
+	memcpy ((char *) newTextArray, (char *) textArray, wordCount*sizeof(char *)); //copy all entries from textArray into newTextArray
+	newTextArray[wordCount]   = es; //word
+	newTextArray[wordCount+1] = NULL; //null entry
 	textArray = newTextArray;
-	words++; //increment index
+	++wordCount; //increment index
 }
 
 
 
 int getWords() {
-	return words;
+	return wordCount;
 }
 char* getDirectories(char* textmatch) {
 	int i;
@@ -232,7 +302,7 @@ void quoteFunction(char* text) {
 		return;
 	}
 	if(resultCount == 0) {//no opens or ends
-		word_function(actualText);
+		insertToWordTable(actualText);
 	}
 	else {//opens and ends
 		strcpy(result2, "");
@@ -273,14 +343,14 @@ void quoteFunction(char* text) {
 		}
 		if(results[resultCount - 1] != strlen(actualText) - 1) {//more left
 			strcat(result2, &actualText[results[resultCount - 1] + 1]); //add all the leftovers
-			word_function(result2);
+			insertToWordTable(result2);
 		}
 		else {
-			word_function(result2);
+			insertToWordTable(result2);
 		}
 	}
 }
-void word2Function(char* text) {
+void yytextProcessor(char* text) {
 	char* result2 = malloc(300 * sizeof(char));
 	if(result2 == (char*) NULL) {//error with memory allocation
 		perror ("Memory allocation error.");
@@ -302,8 +372,10 @@ void word2Function(char* text) {
 		pch = strtok(NULL, ":");
 	}
 	result2[strlen(result2) - 1] = '\0'; //remove last colon
-	word_function(result2);
+	insertToWordTable(result2);
 }
+
+
 char* tildeExpansion(char* text)
 {
 	if(strncmp(text, "~", 1) == 0) {//tilde expansion
@@ -414,7 +486,7 @@ void reset() {
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	words = 0;
+	wordCount = 0;
 	addedWords = 0;
 	memset(textArray, 0, sizeof(textArray)); //clear contents
 }
@@ -422,423 +494,8 @@ void reset() {
 
 
 
-void execute() {
-	int numberOfPipes = 0;
-	int numberOfCommands = 0;
-	int i;
-	int indexOfRead = 0;
-	int indexOfWrite = 0;
-	int indexOfAppend = 0;
-	int indexOfStandardError1 = 0;
-	int indexOfStandardError2 = 0;
-	int indexOfAmpersand = 0; 
-	int endOfCommand = 0;
-	int numberOfSpaces = 0;
-	int numberOfGlobs = 0;
-	int child;
-	if((child = fork()) == -1) {//error
-		perror("Error forking");
-		printf("Error at line %d\n", __LINE__);
-		reset();
-		exit(0);
-		return;
-	}	
-	if(child != 0) { //in parent
-		if(indexOfAmpersand == 0) {//wait for process to finish executing
-			wait((int *) 0);
-		}
-		reset();
-	}
-	else {//in child
-		if(strcmp(textArray[0], "echo") == 0 && strcmp(textArray[1], "-e") != 0) {//echo command without -e
-			char* result = malloc((strlen(textArray[1]) + 1) * sizeof(char));
-			if(result == (char*)NULL) {
-				perror("Memory allocation error.");
-				printf("Error at line %d\n", __LINE__);
-				reset();
-				exit(0);
-				return;
-			}
-			strcpy(result, fixText(textArray[1], "\\\\", "\\"));
-			strcpy(textArray[1], result);
-			strcpy(result, fixText(textArray[1], "\\\"", "\""));
-			strcpy(textArray[1], result);
-		}
-		int* spaces = malloc(300 * sizeof(int));
-		if(spaces == (int*) NULL) { //error
-			perror("Memory allocation error.");
-			printf("Error at line %d\n", __LINE__);
-			reset();
-			exit(0);
-			return;
-		}
-		for(i = 0; i < words; i++) {
-			if(strchr(textArray[i], ' ') != NULL) {//there's a space
-				spaces[numberOfSpaces] = i;
-				numberOfSpaces++;
-			}
-		}
-		for(i = 0; i < numberOfSpaces; i++) {
-			char ** ep;
-			int index;
-			int j;
-			for(ep = environ; *ep!= NULL; ep++) {
-				char* theVariable = malloc((strlen(*ep) + 1) * sizeof(char));
-				if(theVariable == (char*) NULL) {//error
-					perror("Memory allocation error.");
-					printf("Error at line %d\n", __LINE__);
-					reset();
-					exit(0);
-					return;
-				}
-				strcpy(theVariable, *ep); //copy environment variable
-				for(j = 0; j < strlen(theVariable); j++) {
-					if(theVariable[j] == '=') {//found =
-						index = j;
-						break;
-					}
-				}
-				char* result = malloc((strlen(theVariable) - index + 1) * sizeof(char));
-				if(result == (char*) NULL) {//error
-					perror("Memory allocation error.");
-					printf("Error at line %d\n", __LINE__);
-					reset();
-					exit(0);
-					return;
-				}
-				strcpy(result, &theVariable[index + 1]); //take everything after =
-				if(strcmp(textArray[spaces[i]], result) == 0) { //there's a match
-					textArrayAliasExpansion(textArray[spaces[i] + addedWords], spaces[i] + addedWords); //expand to get rid of spaces
-					break;
-				}
-			}
-		}
-		int* pipes = malloc(300 * sizeof(int));
-		if(pipes == (int*) NULL) { //error
-			perror("Memory allocation error.");
-			printf("Error at line %d\n", __LINE__);
-			reset();
-			exit(0);
-			return;
-		}
-		int* globs = malloc(300 * sizeof(int));
-		if(globs == (int*) NULL) {//error
-			perror("Memory allocation error.");
-			printf("Error at line %d\n", __LINE__);
-			reset();
-			exit(0);
-			return;
-		}
-		addedWords = 0;
-		for(i = 0; i < words; i++) {
-			if(strcmp(textArray[i], "|") == 0) { //it's a pipe
-				pipes[numberOfPipes] = i;
-				numberOfPipes++;
-			}
-		}
-		numberOfCommands = numberOfPipes + 1;
-		for(i = 0; i < numberOfCommands; i++) { //resolves aliases
-			if(i == 0) {
-				if(strcmp(aliasResolver(textArray[i]), "<LOOP>") == 0) { //infinite alias expansion
-					perror("Infinite alias expansion.");
-					printf("Error at line %d\n", __LINE__);
-					reset();
-					exit(0);
-					return;
-				}
-				else if(strcmp(aliasResolver(textArray[i]), "") != 0) {//alias has a value
-					char* resolved = malloc((strlen(aliasResolver(textArray[i])) + 1) * sizeof(char));
-					strcpy(resolved,aliasResolver(textArray[i]));
-					textArray[i] = resolved;
-					textArrayAliasExpansion(textArray[i], i + addedWords);
 
-				}
-			}
-			else{
-				int j;
-				if(strcmp(aliasResolver(textArray[pipes[i - 1] + 1]), "<LOOP>") == 0) {//infinite alias expansion
-					perror("Infinite alias expansion.");
-					printf("Error at line %d\n", __LINE__);
-					reset();
-					exit(0);
-					return;
-				}
-				else if(strcmp(aliasResolver(textArray[pipes[i - 1] + 1 + addedWords]), "") != 0) {//alias has a value
-					char* resolved = malloc((strlen(aliasResolver(textArray[pipes[i - 1] + 1 + addedWords]) + 1) * sizeof(char)));
-					strcpy(resolved,aliasResolver(textArray[pipes[i - 1] + 1 + addedWords]));
-					textArray[pipes[i - 1] + 1 + addedWords] = resolved;
-					textArrayAliasExpansion(textArray[pipes[i - 1] + 1 + addedWords], pipes[i - 1] + 1 + addedWords);
-				}
-			}
-		}
-		numberOfGlobs = 0;
-		addedWords = 0;
-		for(i = 0; i < words; i++) {
-			if(strchr(textArray[i], '*') != NULL || strchr(textArray[i], '?') != NULL) { //contains a * or ?
-				globs[numberOfGlobs] = i;
-				numberOfGlobs++;
-			}
-		}
-		char* saved3;
-		for(i = 0; i < numberOfGlobs; i++) {//takes care of globbing
-			if(i == 0) {
-				printf(" ");
-			}
-			char* result = malloc((strlen(getDirectories(textArray[globs[i] + addedWords])) + 1)* sizeof(char));
-			if(result == (char*) NULL) { //error
-				perror("Memory allocation error.");
-				printf("Error at line %d\n", __LINE__);
-				reset();
-				exit(0);
-				return;
-			}
-			strcpy(result, getDirectories(textArray[globs[i] + addedWords]));
-			if(strcmp(result, "") == 0) { //error
-				perror("No matches, so not executing.");
-				printf("Error at line %d\n", __LINE__);
-				reset();
-				exit(0);
-				return;
-			}
-			word3_function(result, globs[i] + addedWords);
-		}
-		numberOfPipes = 0;
-		for(i = 0; i < words; i++) {
-			if(strcmp(textArray[i], "|") == 0) { //it's a pipe
-				pipes[numberOfPipes] = i;
-				numberOfPipes++;
-			}
-			if(strcmp(textArray[i], "<") == 0) { //read in
-				indexOfRead = i;
-			}
-			if(strcmp(textArray[i], ">") == 0) {//write to
-				indexOfWrite = i;
-			}
-			if(strcmp(textArray[i], ">>") == 0) { //append
-				indexOfAppend = i;
-			}
-			if(strcmp(textArray[i], "2>&1") == 0) { //standard error redirect 2
-				indexOfStandardError2 = i;
-			}
-			else if(strcmp(textArray[i], "2>") == 0) { //standard error redirect 1
-				indexOfStandardError1 = i;
-			}
-			if(strcmp(textArray[i], "&") == 0) { //ampersand
-				indexOfAmpersand = i;
-			}
-		}
-		if(indexOfRead != 0) {//there's a read present
-			int result = read_from_function(textArray[indexOfRead + 1]); 
-			if(result == -1) {
-				reset();
-				exit(0);
-				return;
-			}
-		}
-		if(indexOfWrite != 0) {//there's a write to present
-			int result = write_to_function(textArray[indexOfWrite + 1]);
-			if(result == -1) {
-				reset();
-				exit(0);
-				return;
-			}
-		}
-		if (indexOfAppend != 0) {//there's an append present
-			int result = append_function(textArray[indexOfAppend + 1]);
-			if(result == -1)
-			{
-				reset();
-				exit(0);
-				return;
-			}
-		}
-		if(indexOfStandardError2 != 0) {//second standard error case present
-			int result = standard_error_redirect_function();
-			if(result == -1)
-			{
-				reset();
-				exit(0);
-				return;
-			}
-		}
-		if(indexOfStandardError1 != 0) { //first standard error case present
-			int result = standard_error_redirect_function2(textArray[indexOfStandardError2]);
-			if(result == -1) {
-				reset();
-				exit(0);
-				return;
-			}
-		}
-		numberOfCommands = numberOfPipes + 1;
-		if(numberOfPipes == 0) { //no pipes, just this command
-			if(indexOfRead != 0) { //take everything up until this 
-				endOfCommand = indexOfRead;
-			}
-			else if(indexOfWrite != 0) { //no read from
-				endOfCommand = indexOfWrite;
-			}
-			else if(indexOfAppend != 0) { //no read from
-				endOfCommand = indexOfAppend;
-			}
-			else if(indexOfStandardError2 != 0) { //no other I/O redirection
-				endOfCommand = indexOfStandardError2;
-			}
-			else if(indexOfStandardError1 != 0) { //no other I/O redirection
-				endOfCommand = indexOfStandardError1;
-			}
-			else if(indexOfAmpersand != 0) { //no I/O redirection
-				endOfCommand = indexOfAmpersand;
-			}
-			else { //just a command with no special components
-				endOfCommand = words;
-			}
-			char* result = malloc(300 * sizeof(char));
-			if(result == (char*) NULL) { //error
-				perror("Memory allocation error.");
-				printf("Error at line %d\n", __LINE__);
-				reset();
-				exit(0);
-				return;
-			}
-			char* arguments[endOfCommand + 1];
-			int i;
-			for(i = 0; i < endOfCommand; i++) {
-				arguments[i] = textArray[i]; //copy arguments
-			}
-			arguments[endOfCommand] = (char *)0; //null terminator
-			int result2 = execvp(arguments[0], arguments);
-			if(result2 == -1) { //error
-				perror("Error executing.");
-				printf("Error at line %d\n", __LINE__);
-				reset();
-				exit(0);
-				return;
-			}
-		}
-		else {//perform piping
-			if(indexOfRead != 0) { //take everything up until this 
-				endOfCommand = indexOfRead;
-			}
-			else if(indexOfWrite != 0) { //no read from
-				endOfCommand = indexOfWrite;
-			}
-			else if(indexOfAppend != 0) { //no read from
-				endOfCommand = indexOfAppend;
-			}
-			else if(indexOfStandardError2 != 0) { //no other I/O redirection
-				endOfCommand = indexOfStandardError2;
-			}
-			else if(indexOfStandardError1 != 0) { //no other I/O redirection
-				endOfCommand = indexOfStandardError1;
-			}
-			else if(indexOfAmpersand != 0) { //no I/O redirection
-				endOfCommand = indexOfAmpersand;
-			}
-			else { //just a command with no special components
-				endOfCommand = words;
-			}
-			struct command* cmd = malloc(numberOfCommands * sizeof(struct command));
-			for(i = 0; i < numberOfCommands; i++) {
-				if(i == 0) { //first command
-					char* arguments [pipes[0] + 1];
-					int j = 0;
-					for(j = 0; j < pipes[0]; j++) {
-						arguments[j] = textArray[j]; //copy arguments
-					}
-					arguments[pipes[0]] = (char*)0; //null terminator
-					cmd[0].argv = malloc(j*sizeof(char*));
-					if(cmd[0].argv == (char**)NULL) { //error
-						perror("Memory allocation error.");
-						printf("Error at line %d\n", __LINE__);
-						reset();
-						exit(0);
-						return;
-					}
-					int k = 0;
-					for(k = 0; k < j; k++) {
-						cmd[0].argv[k] = malloc((strlen(arguments[k]) + 1) * sizeof(char));
-						if(cmd[0].argv[k] == (char*) NULL) { //error
-							perror("Memory allocation error.");
-							printf("Error at line %d\n", __LINE__);
-							reset();
-							exit(0);
-							return;
-						}
-						strcpy(cmd[0].argv[k], arguments[k]);
-					}
-					cmd[0].argv[j] = (char*) 0;
-				}
-				else if(i != (numberOfCommands - 1)) { //in the middle
-					char* arguments[pipes[i] - pipes[i - 1]];
-					int j;
-					for(j = 0; j < pipes[i] - pipes[i - 1] - 1; j++) {
-						arguments[j] = textArray[pipes[i - 1] + 1 + j]; //copy arguments
-					}
-					arguments[pipes[i] - pipes[i - 1] - 1] = (char *)0; //null terminator
-					cmd[i].argv = malloc(j*sizeof(char*));
-					if(cmd[i].argv == (char**)NULL) {//error
-						perror("Memory allocation error.");
-						printf("Error at line %d\n", __LINE__);
-						reset();
-						exit(0);
-						return;
-					}
-					int k = 0;
-					for(k = 0; k < j; k++) {
-						cmd[i].argv[k] = malloc((strlen(arguments[k]) + 1) * sizeof(char));
-						if(cmd[i].argv[k] == (char*) NULL) { //error
-							perror("Memory allocation error.");
-							printf("Error at line %d\n", __LINE__);
-							reset();
-							exit(0);
-							return;
-						}
-						strcpy(cmd[i].argv[k], arguments[k]);
-					}
-					cmd[i].argv[j] = (char*) 0;
-				}
-				else { //at the end
-					char* arguments[endOfCommand - pipes[i - 1]];
-					int j;
-					for(j = 0; j < endOfCommand - pipes[i - 1] - 1; j++) {
-						arguments[j] = textArray[pipes[i - 1] + 1 + j]; //copy arguments
-					}
-					arguments[endOfCommand - pipes[i - 1] - 1] = (char *)0; //null terminator
-					cmd[numberOfCommands - 1].argv = malloc(j*sizeof(char*));
-					if(cmd[numberOfCommands - 1].argv == (char**) NULL) { //error
-						perror("Memory allocation error.");
-						printf("Error at line %d\n", __LINE__);
-						reset();
-						exit(0);
-						return;
-					}
-					int k = 0;
-					for(k = 0; k < j; k++) {
-						cmd[numberOfCommands - 1].argv[k] = malloc((strlen(arguments[k]) + 1) * sizeof(char));
-						if(cmd[numberOfCommands - 1].argv[k] == (char*) NULL) { //error
-							perror("Memory allocation error.");
-							printf("Error at line %d\n", __LINE__);
-							reset();
-							exit(0);
-							return;
-						}
-						strcpy(cmd[numberOfCommands - 1].argv[k], arguments[k]);
-					}
-					cmd[numberOfCommands - 1].argv[j] = (char*) 0;
-				}		
-			}
-			int result = fork_pipes(numberOfCommands, cmd);
-			if(result == -1) { //error
-				perror("Error executing.");
-				printf("Error at line %d\n", __LINE__);
-				reset();
-				exit(0);
-				return;
-			}
-		}
-		exit(0);
-	}
-}
+
 void word3_function(char* text, int position) {
 	char* saved3;
 	char* result = malloc((strlen(text) + 1) * sizeof(char));
@@ -861,14 +518,14 @@ void word3_function(char* text, int position) {
 		tokens++;
 		pch = strtok_r(NULL, "$", &saved3);
 	}
-	char **newTextArray = (char **) malloc((words+tokens)*sizeof(char *)); //null entry and new words
+	char **newTextArray = (char **) malloc((wordCount+tokens)*sizeof(char *)); //null entry and new wordCount
 	if ( newTextArray == (char **) NULL ) { //no array created
 		perror("Array not created");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
 	memcpy ((char *) newTextArray, (char *) textArray, position*sizeof(char *)); //copy all entries from 0 to position of textArray into newTextArray
-	char** textForLater = malloc((words - position) * sizeof(char *)); //text we add at the end of the textArray
+	char** textForLater = malloc((wordCount - position) * sizeof(char *)); //text we add at the end of the textArray
 	if(textForLater == (char**)NULL) { //error
 		perror("Array not created");
 		printf("Error at line %d\n", __LINE__);
@@ -876,7 +533,7 @@ void word3_function(char* text, int position) {
 	}
 	int i;
 	int index = 0;
-	for(i = position + 1; i < words; i++) {
+	for(i = position + 1; i < wordCount; i++) {
 		textForLater[index] = malloc((strlen(textArray[i]) + 1) * sizeof(char)); //allocate enough space for entry
 		if(textForLater[index] == (char*) NULL) { //error
 			perror("Error with memory allocation");
@@ -889,7 +546,7 @@ void word3_function(char* text, int position) {
 	char* saved4;
 	char* pch2 = strtok_r(result2, "$", &saved4);
 	int j = 0;
-	words--; //since we are overwriting an entry, need to decrement words beforehand
+	wordCount--; //since we are overwriting an entry, need to decrement wordCount beforehand
 	while(pch2 != NULL) {
 		char* es;
 		es = malloc(strlen(pch2) + 1); //allocate space for word and terminating character
@@ -901,12 +558,12 @@ void word3_function(char* text, int position) {
 		strcpy(es, pch2); //copy text into pointer
 		newTextArray[position + j] = es; //word
 		j++; //move forward
-		words++; //added another word
+		wordCount++; //added another word
 		pch2 = strtok_r(NULL, "$", &saved4);
 	}
 	int k;
 	index = 0;
-	for(k = position + j; k < words; k++) {
+	for(k = position + j; k < wordCount; k++) {
 		newTextArray[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
 		if(newTextArray[k] == (char*) NULL) { //error
 			perror("Memory allocation error.");
@@ -916,14 +573,14 @@ void word3_function(char* text, int position) {
 		strcpy(newTextArray[k], textForLater[index]); //copy over
 		index++; //move to next entry
 	}
-	newTextArray[words + 1] = NULL; //null entry
+	newTextArray[wordCount + 1] = NULL; //null entry
 	textArray = newTextArray;
-	addedWords += j - 1; //how many words we added
+	addedWords += j - 1; //how many wordCount we added
 }
 
 void printTextArray() {
 	int i;
-	for(i = 0; i < words; i++) {
+	for(i = 0; i < wordCount; i++) {
 		printf("%s\n", textArray[i]);
 	}
 }
