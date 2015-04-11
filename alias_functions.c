@@ -139,18 +139,18 @@ void textArrayAliasExpansion(char* name, int position) {
 		tokens++;
 		pch = strtok_r(NULL, " ", &saved3);
 	}
-	char** newTextArray = (char **) malloc((wordCount+tokens)*sizeof(char *)); //null entry and new wordCount
+	char** tempWordTable = (char **) malloc((wordCount+tokens)*sizeof(char *)); //null entry and new wordCount
 
-	memcpy ((char *) newTextArray, (char *) textArray, position*sizeof(char *)); //copy all entries from 0 to position of textArray into newTextArray
-	char** textForLater = malloc((wordCount - position) * sizeof(char *)); //name we add at the end of the textArray
+	memcpy ((char *) tempWordTable, (char *) wordTable, position*sizeof(char *)); //copy all entries from 0 to position of wordTable into tempWordTable
+	char** textForLater = malloc((wordCount - position) * sizeof(char *)); //name we add at the end of the wordTable
 
 	int i;
 	int index = 0;
 	for(i = position + 1; i < wordCount; i++)
 	{
-		textForLater[index] = malloc((strlen(textArray[i]) + 1) * sizeof(char)); //allocate enough space for entry
+		textForLater[index] = malloc((strlen(wordTable[i]) + 1) * sizeof(char)); //allocate enough space for entry
 		
-		strcpy(textForLater[index], textArray[i]); //copy entry into array
+		strcpy(textForLater[index], wordTable[i]); //copy entry into array
 		index++;
 	}
 	char* saved4;
@@ -163,7 +163,7 @@ void textArrayAliasExpansion(char* name, int position) {
 		pair = malloc(strlen(pch2) + 1); //allocate space for word and terminating character
 		
 		strcpy(pair, pch2); //copy name into pointer
-		newTextArray[position + j] = pair; //word
+		tempWordTable[position + j] = pair; //word
 		j++; //move forward
 		wordCount++; //added another word
 		pch2 = strtok_r(NULL, " ", &saved4);
@@ -172,13 +172,13 @@ void textArrayAliasExpansion(char* name, int position) {
 	index = 0;
 	for(k = position + j; k < wordCount; k++)
 	{
-		newTextArray[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
+		tempWordTable[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
 		
-		strcpy(newTextArray[k], textForLater[index]); //copy over
+		strcpy(tempWordTable[k], textForLater[index]); //copy over
 		index++; //move to next entry
 	}
-	newTextArray[wordCount + 1] = NULL; //null entry
-	textArray = newTextArray;
+	tempWordTable[wordCount + 1] = NULL; //null entry
+	wordTable = tempWordTable;
 	addedWords += j - 1; //how many wordCount we added
 }
 char *fixText(char *orig, char *rep, char *with) {

@@ -45,7 +45,7 @@ cd_case:
 	    |
 		CD word_case {
 			builtin_type = CDPATH_DEF;	
-			strcpy(cdPath, textArray[getWords() - 1]);
+			strcpy(cdPath, wordTable[getWords() - 1]);
 		};
 env_case:
 	    PRINTENV {
@@ -54,14 +54,14 @@ env_case:
 		| 
 		UNSETENV word_case {
 			builtin_type = UNSETENV_DEF;
-			variable = strdup(textArray[getWords() - 1]);
+			variable = strdup(wordTable[getWords() - 1]);
 		}   
 		|
 		SETENV word_case word_case {
-			//setenv_function(textArray[getWords() - 2], textArray [getWords() - 1], 1);	
+			//setenv_function(wordTable[getWords() - 2], wordTable [getWords() - 1], 1);	
 			builtin_type = SETENV_DEF;
-			variable = strdup(textArray[getWords() - 2]);
-			word = strdup(textArray[getWords() - 1]);
+			variable = strdup(wordTable[getWords() - 2]);
+			word = strdup(wordTable[getWords() - 1]);
 		};
 alias_case:
 		ALIAS {
@@ -69,16 +69,16 @@ alias_case:
 		}
 		|
 		ALIAS  word_case  word_case {
-			//alias_function(textArray[getWords() - 2], textArray[getWords() - 1]);
+			//alias_function(wordTable[getWords() - 2], wordTable[getWords() - 1]);
 			builtin_type = ALIAS_DEF;
-			variable = strdup(textArray[getWords() - 2]);
-			word = strdup(textArray[getWords() - 1]);
+			variable = strdup(wordTable[getWords() - 2]);
+			word = strdup(wordTable[getWords() - 1]);
 		}
 		|
 		UNALIAS word_case {
-			//unalias_function(textArray[getWords() - 1], 1);  
+			//unalias_function(wordTable[getWords() - 1], 1);  
 			builtin_type = UNALIAS_DEF;
-			variable = strdup(textArray[getWords() - 1]);
+			variable = strdup(wordTable[getWords() - 1]);
 		};
 		
 bye_case:

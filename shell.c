@@ -11,7 +11,7 @@ main() {
 	// loops till bye
 	while(1) {
 		// prepare parser
-		textArray[0] = strdup("");
+		wordTable[0] = strdup("");
 		// header
 		lineHeaderPath();
 		switch(getCommand()) {
@@ -84,8 +84,8 @@ void shell_init() {
 	printf("[01;32;40m" "\n****************************** SHELL STARTS HERE *******************************\n\n");
 	printf("[00;32;40m" "");
 
-	textArray = (char**) malloc(500 * sizeof(char*));
-	textArray[0] = strdup("");
+	wordTable = (char**) malloc(500 * sizeof(char*));
+	wordTable[0] = strdup("");
 
 	aliasCount = 0;
 	wordCount = 0; //number of wordCount
@@ -168,16 +168,16 @@ void insertToWordTable(char *text) {
 		return;
 	}
 	strcpy(es, text); //copy text into pointer
-	char **newTextArray = (char **) malloc((wordCount+2)*sizeof(char *)); //null entry and new word
-	if ( newTextArray == (char **) NULL ) { //no array created
+	char **tempWordTable = (char **) malloc((wordCount+2)*sizeof(char *)); //null entry and new word
+	if ( tempWordTable == (char **) NULL ) { //no array created
 		perror("Array not created");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	memcpy ((char *) newTextArray, (char *) textArray, wordCount*sizeof(char *)); //copy all entries from textArray into newTextArray
-	newTextArray[wordCount]   = es; //word
-	newTextArray[wordCount+1] = NULL; //null entry
-	textArray = newTextArray;
+	memcpy ((char *) tempWordTable, (char *) wordTable, wordCount*sizeof(char *)); //copy all entries from wordTable into tempWordTable
+	tempWordTable[wordCount]   = es; //word
+	tempWordTable[wordCount+1] = NULL; //null entry
+	wordTable = tempWordTable;
 	++wordCount; //increment index
 }
 
@@ -488,7 +488,7 @@ void reset() {
 	}
 	wordCount = 0;
 	addedWords = 0;
-	memset(textArray, 0, sizeof(textArray)); //clear contents
+	memset(wordTable, 0, sizeof(wordTable)); //clear contents
 }
 
 
@@ -518,14 +518,14 @@ void word3_function(char* text, int position) {
 		tokens++;
 		pch = strtok_r(NULL, "$", &saved3);
 	}
-	char **newTextArray = (char **) malloc((wordCount+tokens)*sizeof(char *)); //null entry and new wordCount
-	if ( newTextArray == (char **) NULL ) { //no array created
+	char **tempWordTable = (char **) malloc((wordCount+tokens)*sizeof(char *)); //null entry and new wordCount
+	if ( tempWordTable == (char **) NULL ) { //no array created
 		perror("Array not created");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	memcpy ((char *) newTextArray, (char *) textArray, position*sizeof(char *)); //copy all entries from 0 to position of textArray into newTextArray
-	char** textForLater = malloc((wordCount - position) * sizeof(char *)); //text we add at the end of the textArray
+	memcpy ((char *) tempWordTable, (char *) wordTable, position*sizeof(char *)); //copy all entries from 0 to position of wordTable into tempWordTable
+	char** textForLater = malloc((wordCount - position) * sizeof(char *)); //text we add at the end of the wordTable
 	if(textForLater == (char**)NULL) { //error
 		perror("Array not created");
 		printf("Error at line %d\n", __LINE__);
@@ -534,13 +534,13 @@ void word3_function(char* text, int position) {
 	int i;
 	int index = 0;
 	for(i = position + 1; i < wordCount; i++) {
-		textForLater[index] = malloc((strlen(textArray[i]) + 1) * sizeof(char)); //allocate enough space for entry
+		textForLater[index] = malloc((strlen(wordTable[i]) + 1) * sizeof(char)); //allocate enough space for entry
 		if(textForLater[index] == (char*) NULL) { //error
 			perror("Error with memory allocation");
 			printf("Error at line %d\n", __LINE__);
 			return;
 		}
-		strcpy(textForLater[index], textArray[i]); //copy entry into array
+		strcpy(textForLater[index], wordTable[i]); //copy entry into array
 		index++;
 	}
 	char* saved4;
@@ -556,7 +556,7 @@ void word3_function(char* text, int position) {
 			return;
 		}
 		strcpy(es, pch2); //copy text into pointer
-		newTextArray[position + j] = es; //word
+		tempWordTable[position + j] = es; //word
 		j++; //move forward
 		wordCount++; //added another word
 		pch2 = strtok_r(NULL, "$", &saved4);
@@ -564,24 +564,24 @@ void word3_function(char* text, int position) {
 	int k;
 	index = 0;
 	for(k = position + j; k < wordCount; k++) {
-		newTextArray[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
-		if(newTextArray[k] == (char*) NULL) { //error
+		tempWordTable[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
+		if(tempWordTable[k] == (char*) NULL) { //error
 			perror("Memory allocation error.");
 			printf("Error at line %d\n", __LINE__);
 			return;
 		}
-		strcpy(newTextArray[k], textForLater[index]); //copy over
+		strcpy(tempWordTable[k], textForLater[index]); //copy over
 		index++; //move to next entry
 	}
-	newTextArray[wordCount + 1] = NULL; //null entry
-	textArray = newTextArray;
+	tempWordTable[wordCount + 1] = NULL; //null entry
+	wordTable = tempWordTable;
 	addedWords += j - 1; //how many wordCount we added
 }
 
 void printTextArray() {
 	int i;
 	for(i = 0; i < wordCount; i++) {
-		printf("%s\n", textArray[i]);
+		printf("%s\n", wordTable[i]);
 	}
 }
 

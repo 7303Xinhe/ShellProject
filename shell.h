@@ -95,7 +95,7 @@ void  textArrayAliasExpansion(char* text, int position);
 int   spawn_proc(int in, int out, struct command *cmd);
 int   fork_pipes (int n, struct command *cmd);
 
-char** textArray; //words
+char** wordTable; //words
 
 
 char** z; //copied words
