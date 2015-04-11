@@ -1,5 +1,4 @@
 
-
 /* setenv variable word - This command sets the word of the variable variable to be word. */
 void setenv_function (char *variable, char *word, int flag) {
 
@@ -20,11 +19,6 @@ void setenv_function (char *variable, char *word, int flag) {
 	
 	// allocate +2 for '=' and null terminator 
 	pair = malloc(strlen(variable) + strlen(word) + 2);
-	if (pair == NULL) {
-		perror("Error with memory allocation");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
 
 	// setting path
 	if(strcmp(variable, "PATH") == 0 || strcmp(variable, "ARGPATH") == 0) {
@@ -34,11 +28,6 @@ void setenv_function (char *variable, char *word, int flag) {
 
 		// string used to build the final word
 		char *path = malloc(500 * sizeof(char));
-		if(path == (char *) NULL) {
-			perror("Error with memory allocation.");
-			printf("Error at line %d\n", __LINE__);
-			return;
-		}
 
 		strcpy(path, "");
 
@@ -46,11 +35,6 @@ void setenv_function (char *variable, char *word, int flag) {
 		while (valueToken != NULL) {
 
 			char* currentDirectory = malloc(300 * sizeof(char));
-			if(currentDirectory == (char*) NULL) {
-				perror("Error with memory allocation.");
-				printf("Error at line %d\n", __LINE__);
-				return;
-			}
 
 			// get current directory
 			strcpy(currentDirectory, getenv("PWD"));
@@ -131,11 +115,7 @@ void setenv_function (char *variable, char *word, int flag) {
 					strcat(path, ":");
 				} else {
 					char* word = malloc(300 * sizeof(char));
-					if(word == (char *) NULL) {
-						perror("Error with memory allocation.");
-						printf("Error at line %d\n", __LINE__);
-						return;
-					}
+
 					// adding the absolute path
 					strcat(path, valueToken);
 					strcat(path, ":");
@@ -145,11 +125,6 @@ void setenv_function (char *variable, char *word, int flag) {
 			// relative path ~sjc/bin
 			else {
 				char* word = malloc(300 * sizeof(char));
-				if(word == (char *) NULL) {
-					perror("Error with memory allocation.");
-					printf("Error at line %d\n", __LINE__);
-					return;
-				}
 				strcat(word, currentDirectory);
 				strcat(word, valueToken);
 				strcat(path, word);
@@ -216,7 +191,6 @@ void unsetenv_function(char *variable, int flag) {
 		} 
 		// increment 
 	}
-
 	if(flag) {
 		reset();
 	}

@@ -93,6 +93,7 @@ bye_case:
 								printf("[00;00;00m");
 								exit(0); //exit shell
 							};
+
 read_from_case2:
 		READFROM
 							{
@@ -108,18 +109,17 @@ write_to_case2:
 read_from_case:
 		read_from_case2 word_case			
 							{
-								lineHeaderPath();
 							};
 write_to_case:
 		write_to_case2	word_case	
 							{
-								lineHeaderPath();
 							};
+
+							
 pipe2_case:
 		PIPE
 							{
 								word_function("|");
-								lineHeaderPath();
 							};
 pipe_case:
 		pipe2_case words			

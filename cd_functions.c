@@ -16,21 +16,9 @@ void cd_home_function() {
 /* normal cd function "cd word" */
 void cd_function(char *inputDirectory){
 
-	// // check if input is an alias
-	// if(strcmp(aliasResolver(inputDirectory), "") != 0) {
-	// 	inputDirectory = aliasResolver(inputDirectory);
-	// }
-
 	condenseSlashes(inputDirectory); 
 
 	char *currentDirectory = malloc(300 * sizeof(char));
-	
-	if (currentDirectory == (char *) NULL) {
-		perror("Memory allocation error.\n");
-		printf("Error at line %d\n", __LINE__);
-		reset();
-		return;
-	}
 
 	// get current directory
 	strcpy(currentDirectory, getenv("PWD")); 
@@ -110,8 +98,7 @@ void cd_function(char *inputDirectory){
 		// just '/' or "/."
 		if(strlen(inputDirectory) == 1 || (strlen(inputDirectory) == 2 && inputDirectory[1] == '.')) {
 			// go to root
-			int flag = chdir("/"); 
-			if(flag == -1) {
+			if(chdir("/") == -1) {
 				perror("Directory not changed");
 				printf("Error at line %d\n", __LINE__);
 				reset();

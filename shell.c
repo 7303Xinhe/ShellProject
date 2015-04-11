@@ -17,6 +17,7 @@ int addedWords = 0;
 #include "alias_functions.c"
 #include "cd_functions.c"
 #include "env_functions.c"
+#include "error_functions.c"
 
 
 void shell_init() {
@@ -51,40 +52,7 @@ void shell_init() {
 	lineHeaderPath();
 }
 
-int standard_error_redirect_function() {
-	savedError = dup(2); //get current standard error
-	//redirect output to standard error
-	if (dup2(1, 2) == -1) {//error
-		perror("Standard error not redirected to output");
-		printf("Error at line %d\n", __LINE__);
-		return -1;
-	}
-	return 0;
-}
 
-int standard_error_redirect_function2(char *text) {
-	char* copyText = malloc(300 * sizeof(char));
-	if (copyText == (char *)NULL) { //error
-		perror("Memory allocation error.");
-		printf("Error at line %d\n", __LINE__);
-		return -1;
-	}
-	strcpy(copyText, &text[2]); //get everything after >
-	int out = open(copyText, O_WRONLY | O_CREAT | O_TRUNC | S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR); //open file
-	if(out == -1) {//error
-		perror("File not created");
-		printf("Error at line %d\n", __LINE__);
-		return -1;
-	}
-	savedError = dup(2); //get current standard error 
-	//redirect standard error to output file
-	if (dup2(out, 2) == -1) {//error
-		perror("Standard error not redirected");
-		printf("Error at line %d\n", __LINE__);
-		return -1;
-	}
-	return 0;
-}
 int write_to_function(char *text) {
 	int out = open(text, O_WRONLY | O_CREAT | O_TRUNC | S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR); //open file
 	if(out == -1) {//error
@@ -101,6 +69,8 @@ int write_to_function(char *text) {
 	}
 	return 0;
 }
+
+
 int read_from_function (char *text) {
 	int in = open(text, O_RDONLY); //open file
 	if(in == -1) {//error
@@ -117,6 +87,8 @@ int read_from_function (char *text) {
 	}
 	return 0;
 }
+
+
 void word_function(char *text) {
 	char * es;
 	es = malloc(strlen(text) + 1); //allocate space for word and terminating character

@@ -13,14 +13,6 @@ struct aliasStruct *aliases;
 essentially a shorthand form of a long command. */
 void alias_function(char *name, char *word) {
 
-	// check
-	if (name == NULL || name[0] == '\0' || strchr(name, '=') != NULL || word == NULL) {
-		perror("Invalid argument");
-		printf("Error at line %d\n", __LINE__);
-		reset();
-		return;
-	}
-
 	// remove current assignment for the name
 	unalias_function(name, 0);          
 
@@ -31,14 +23,6 @@ void alias_function(char *name, char *word) {
 
 	struct aliasStruct* aliasesTemp;
 	aliasesTemp = malloc((aliasCount+1) * sizeof(struct aliasStruct)); 
-
-	if(aliasesTemp == (struct aliasStruct *) NULL) {
-		perror("Array not created.");
-
-		printf("Error at line %d\n", __LINE__);
-		reset();
-		return;
-	}
 
 	int i;
 	for(i = 0; i < aliasCount; ++i) {
@@ -155,20 +139,10 @@ void textArrayAliasExpansion(char* name, int position) {
 	
 	char* saved3;
 	char* result = malloc((strlen(name) + 1) * sizeof(char)); //allocate space
-	if(result == (char*) NULL) //error
-	{
-		perror("Error with memory allocation.");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
+
 	strcpy(result, name); //copy name over
 	char* result2 = malloc((strlen(name) + 1) * sizeof(char));
-	if(result2 == (char*) NULL) //error
-	{
-		perror("Error with memory allocation.");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
+
 	strcpy(result2, result); //copy another one since strtok_r changes actual name
 	char* pch = strtok_r(result, " ", &saved3); //parse to get each indiviual file
 	int tokens = 0; //how many positions we add
@@ -178,31 +152,16 @@ void textArrayAliasExpansion(char* name, int position) {
 		pch = strtok_r(NULL, " ", &saved3);
 	}
 	char** newTextArray = (char **) malloc((words+tokens)*sizeof(char *)); //null entry and new words
-	if ( newTextArray == (char **) NULL ) //no array created
-	{
-		perror("Array not created");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
+
 	memcpy ((char *) newTextArray, (char *) textArray, position*sizeof(char *)); //copy all entries from 0 to position of textArray into newTextArray
 	char** textForLater = malloc((words - position) * sizeof(char *)); //name we add at the end of the textArray
-	if(textForLater == (char**)NULL) //error
-	{
-		perror("Array not created");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
+
 	int i;
 	int index = 0;
 	for(i = position + 1; i < words; i++)
 	{
 		textForLater[index] = malloc((strlen(textArray[i]) + 1) * sizeof(char)); //allocate enough space for entry
-		if(textForLater[index] == (char*) NULL) //error
-		{
-			perror("Error with memory allocation");
-			printf("Error at line %d\n", __LINE__);
-			return;
-		}
+		
 		strcpy(textForLater[index], textArray[i]); //copy entry into array
 		index++;
 	}
@@ -214,12 +173,7 @@ void textArrayAliasExpansion(char* name, int position) {
 	{
 		char* pair;
 		pair = malloc(strlen(pch2) + 1); //allocate space for word and terminating character
-		if (pair == NULL) //error
-		{
-			perror("Error with memory allocation.");
-			printf("Error at line %d\n", __LINE__);
-			return;
-		}
+		
 		strcpy(pair, pch2); //copy name into pointer
 		newTextArray[position + j] = pair; //word
 		j++; //move forward
@@ -231,12 +185,7 @@ void textArrayAliasExpansion(char* name, int position) {
 	for(k = position + j; k < words; k++)
 	{
 		newTextArray[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
-		if(newTextArray[k] == (char*) NULL) //error
-		{
-			perror("Error with memory allocation.");
-			printf("Error at line %d\n", __LINE__);
-			return;
-		}
+		
 		strcpy(newTextArray[k], textForLater[index]); //copy over
 		index++; //move to next entry
 	}
