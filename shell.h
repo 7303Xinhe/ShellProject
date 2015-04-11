@@ -89,13 +89,13 @@ void  reset(void);
 
 void  execute(void);
 void  word3_function(char* text, int position);
-void  printTextArray();
+void  printWordArray();
 char* fixText(char *orig, char *rep, char *with);
-void  textArrayAliasExpansion(char* text, int position);
+void  wordArrayAliasExpansion(char* text, int position);
 int   spawn_proc(int in, int out, struct command *cmd);
 int   fork_pipes (int n, struct command *cmd);
 
-char** wordTable; //words
+char** wordArray; //words
 
 
 char** z; //copied words
@@ -122,6 +122,5 @@ char* word;
 int   aliasCount; 
 
 struct aliasStruct *aliases; 
-
 
 #endif

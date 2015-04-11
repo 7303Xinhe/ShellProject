@@ -123,7 +123,7 @@ char* aliasResolver(char* alias) {
 }
 
 
-void textArrayAliasExpansion(char* name, int position) {
+void wordArrayAliasExpansion(char* name, int position) {
 	
 	char* saved3;
 	char* result = malloc((strlen(name) + 1) * sizeof(char)); //allocate space
@@ -139,18 +139,18 @@ void textArrayAliasExpansion(char* name, int position) {
 		tokens++;
 		pch = strtok_r(NULL, " ", &saved3);
 	}
-	char** tempWordTable = (char **) malloc((wordCount+tokens)*sizeof(char *)); //null entry and new wordCount
+	char** tempWordArray = (char **) malloc((wordCount+tokens)*sizeof(char *)); //null entry and new wordCount
 
-	memcpy ((char *) tempWordTable, (char *) wordTable, position*sizeof(char *)); //copy all entries from 0 to position of wordTable into tempWordTable
-	char** textForLater = malloc((wordCount - position) * sizeof(char *)); //name we add at the end of the wordTable
+	memcpy ((char *) tempWordArray, (char *) wordArray, position*sizeof(char *)); //copy all entries from 0 to position of wordArray into tempWordArray
+	char** textForLater = malloc((wordCount - position) * sizeof(char *)); //name we add at the end of the wordArray
 
 	int i;
 	int index = 0;
 	for(i = position + 1; i < wordCount; i++)
 	{
-		textForLater[index] = malloc((strlen(wordTable[i]) + 1) * sizeof(char)); //allocate enough space for entry
+		textForLater[index] = malloc((strlen(wordArray[i]) + 1) * sizeof(char)); //allocate enough space for entry
 		
-		strcpy(textForLater[index], wordTable[i]); //copy entry into array
+		strcpy(textForLater[index], wordArray[i]); //copy entry into array
 		index++;
 	}
 	char* saved4;
@@ -163,7 +163,7 @@ void textArrayAliasExpansion(char* name, int position) {
 		pair = malloc(strlen(pch2) + 1); //allocate space for word and terminating character
 		
 		strcpy(pair, pch2); //copy name into pointer
-		tempWordTable[position + j] = pair; //word
+		tempWordArray[position + j] = pair; //word
 		j++; //move forward
 		wordCount++; //added another word
 		pch2 = strtok_r(NULL, " ", &saved4);
@@ -172,63 +172,16 @@ void textArrayAliasExpansion(char* name, int position) {
 	index = 0;
 	for(k = position + j; k < wordCount; k++)
 	{
-		tempWordTable[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
+		tempWordArray[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
 		
-		strcpy(tempWordTable[k], textForLater[index]); //copy over
+		strcpy(tempWordArray[k], textForLater[index]); //copy over
 		index++; //move to next entry
 	}
-	tempWordTable[wordCount + 1] = NULL; //null entry
-	wordTable = tempWordTable;
+	tempWordArray[wordCount + 1] = NULL; //null entry
+	wordArray = tempWordArray;
 	addedWords += j - 1; //how many wordCount we added
 }
-char *fixText(char *orig, char *rep, char *with) {
-    char *result; // the return string
-    char *ins;    // the next insert point
-    char *tmp;    // varies
-    int len_rep;  // length of rep
-    int len_with; // length of with
-    int len_front; // distance between rep and end of last rep
-    int count;    // number of replacements
-    if (!orig)
-	{
-        return NULL;
-	}
-    if (!rep)
-	{
-        rep = "";
-	}
-    len_rep = strlen(rep);
-    if (!with)
-	{
-        with = "";
-	}
-    len_with = strlen(with);
-    ins = orig;
-    for (count = 0; tmp = strstr(ins, rep); ++count) 
-	{
-        ins = tmp + len_rep;
-    }
-    // first time through the loop, all the variable are set correctly
-    // from here on,
-    // tmp points to the end of the result string
-    // ins points to the next occurrence of rep in orig
-    // orig points to the remainder of orig after "end of rep"
-    tmp = result = malloc(strlen(orig) + (len_with - len_rep) * count + 1);
-    if (!result)
-	{
-        return NULL;
-	}
-    while (count--) 
-	{
-        ins = strstr(orig, rep);
-        len_front = ins - orig;
-        tmp = strncpy(tmp, orig, len_front) + len_front;
-        tmp = strcpy(tmp, with) + len_with;
-        orig += len_front + len_rep; // move to next "end of rep"
-    }
-    strcpy(tmp, orig);
-    return result;
-}
+
 
 /* print each alias line by line */
 void alias_print_function() {

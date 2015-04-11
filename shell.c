@@ -11,7 +11,7 @@ main() {
 	// loops till bye
 	while(1) {
 		// prepare parser
-		wordTable[0] = strdup("");
+		wordArray[0] = strdup("");
 		// header
 		lineHeaderPath();
 		switch(getCommand()) {
@@ -30,6 +30,7 @@ void processCommand() {
 	
 	if(builtin_type > 0)
 		do_it();
+	// take care of all possible cases (redirections and pipes)
 	else 
 		execute();
 }
@@ -63,6 +64,7 @@ void do_it() {
 		default:
 			break;
 	}
+	// reset to 0
 	builtin_type = 0;
 }
 
@@ -81,11 +83,11 @@ int getCommand() {
 void shell_init() {
 	// black background
 	
-	printf("[01;32;40m" "\n****************************** SHELL STARTS HERE *******************************\n\n");
+	printf("[01;32;40m" "\n****************************** SHELL STARTS HERE ******************************\n");
 	printf("[00;32;40m" "");
 
-	wordTable = (char**) malloc(500 * sizeof(char*));
-	wordTable[0] = strdup("");
+	wordArray = (char**) malloc(500 * sizeof(char*));
+	wordArray[0] = strdup("");
 
 	aliasCount = 0;
 	wordCount = 0; //number of wordCount
@@ -174,10 +176,10 @@ void insertToWordTable(char *text) {
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	memcpy ((char *) tempWordTable, (char *) wordTable, wordCount*sizeof(char *)); //copy all entries from wordTable into tempWordTable
+	memcpy ((char *) tempWordTable, (char *) wordArray, wordCount*sizeof(char *)); //copy all entries from wordArray into tempWordTable
 	tempWordTable[wordCount]   = es; //word
 	tempWordTable[wordCount+1] = NULL; //null entry
-	wordTable = tempWordTable;
+	wordArray = tempWordTable;
 	++wordCount; //increment index
 }
 
@@ -350,6 +352,8 @@ void quoteFunction(char* text) {
 		}
 	}
 }
+
+
 void yytextProcessor(char* text) {
 	char* result2 = malloc(300 * sizeof(char));
 	if(result2 == (char*) NULL) {//error with memory allocation
@@ -376,8 +380,8 @@ void yytextProcessor(char* text) {
 }
 
 
-char* tildeExpansion(char* text)
-{
+char* tildeExpansion(char* text) {
+
 	if(strncmp(text, "~", 1) == 0) {//tilde expansion
 		int length = strlen(&text[1]); 
 		if(length == 0) {//empty afterwards, so get home directory
@@ -436,7 +440,7 @@ char* tildeExpansion(char* text)
 }
 
 /* removes extra spaces in the word */
-void condenseSpaces(char* string){ 
+void condenseSpaces(char* string) { 
 	int i = 0;
 	int size = strlen(string);
 	for(i = 0; i < size;) {
@@ -469,6 +473,8 @@ int append_function(char* text) {
 	}
 	return 0;
 }
+
+
 void reset() {
 	if(dup2(savedInput, 0) == -1) {//error
 		perror("Input not redirected");
@@ -488,7 +494,7 @@ void reset() {
 	}
 	wordCount = 0;
 	addedWords = 0;
-	memset(wordTable, 0, sizeof(wordTable)); //clear contents
+	memset(wordArray, 0, sizeof(wordArray)); //clear contents
 }
 
 
@@ -524,8 +530,8 @@ void word3_function(char* text, int position) {
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	memcpy ((char *) tempWordTable, (char *) wordTable, position*sizeof(char *)); //copy all entries from 0 to position of wordTable into tempWordTable
-	char** textForLater = malloc((wordCount - position) * sizeof(char *)); //text we add at the end of the wordTable
+	memcpy ((char *) tempWordTable, (char *) wordArray, position*sizeof(char *)); //copy all entries from 0 to position of wordArray into tempWordTable
+	char** textForLater = malloc((wordCount - position) * sizeof(char *)); //text we add at the end of the wordArray
 	if(textForLater == (char**)NULL) { //error
 		perror("Array not created");
 		printf("Error at line %d\n", __LINE__);
@@ -534,13 +540,13 @@ void word3_function(char* text, int position) {
 	int i;
 	int index = 0;
 	for(i = position + 1; i < wordCount; i++) {
-		textForLater[index] = malloc((strlen(wordTable[i]) + 1) * sizeof(char)); //allocate enough space for entry
+		textForLater[index] = malloc((strlen(wordArray[i]) + 1) * sizeof(char)); //allocate enough space for entry
 		if(textForLater[index] == (char*) NULL) { //error
 			perror("Error with memory allocation");
 			printf("Error at line %d\n", __LINE__);
 			return;
 		}
-		strcpy(textForLater[index], wordTable[i]); //copy entry into array
+		strcpy(textForLater[index], wordArray[i]); //copy entry into array
 		index++;
 	}
 	char* saved4;
@@ -574,14 +580,14 @@ void word3_function(char* text, int position) {
 		index++; //move to next entry
 	}
 	tempWordTable[wordCount + 1] = NULL; //null entry
-	wordTable = tempWordTable;
+	wordArray = tempWordTable;
 	addedWords += j - 1; //how many wordCount we added
 }
 
-void printTextArray() {
+void printWordArray() {
 	int i;
 	for(i = 0; i < wordCount; i++) {
-		printf("%s\n", wordTable[i]);
+		printf("%s\n", wordArray[i]);
 	}
 }
 
@@ -601,8 +607,9 @@ int spawn_proc (int inChannel, int outChannel, struct command *cmd) {
     }
 	return pid;
 }
-int fork_pipes (int n, struct command *cmd)
-{
+
+
+int fork_pipes (int n, struct command *cmd) {
 	int i;
 	pid_t pid;
 	int inChannel, fd [2];
@@ -646,19 +653,7 @@ void aliasToCd(char* text) {
 
 
 void lineHeaderPath() {
-	// char *folder = malloc(300 * sizeof(char));
-	// folder = getenv("PWD");
-	// int sizeString = strlen(folder);
-	// int lastIndex = sizeString - 1;
-	// int lastSlashIndex;
-	// int i;
-	// for(i = lastIndex; i >= 0; --i) {
-	// 	if(folder[i] == '/') {
-	// 		lastSlashIndex = i; //found last slash
-	// 		break;
-	// 	}
-	// }
-	
+
 	// get user
 	struct passwd *passwd;
 	passwd = getpwuid ( getuid()); 
@@ -692,3 +687,6 @@ void condenseSlashes(char* string) { //removes extra slashes in the beginning of
 			i++;
 	}
 }
+
+
+
