@@ -1,8 +1,18 @@
 
 void execute() {
+<<<<<<< Updated upstream
 	if(strcmp(wordTable[0], "") == 0) {
+=======
+	
+	// ignore
+	if(strcmp(textArray[0], "") == 0) {
+>>>>>>> Stashed changes
 		return;
 	}
+
+
+
+
 	int numberOfPipes = 0;
 	int numberOfCommands = 0;
 	int i;

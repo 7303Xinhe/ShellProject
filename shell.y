@@ -17,6 +17,7 @@ int yywrap() {
 %token CD PRINTENV UNSETENV SETENV NEWLINE ALIAS UNALIAS BYE WORD QUOTES ENVIRONMENTVARIABLE READFROM WRITETO PIPE AMPERSAND APPEND STANDARDERROR1 STANDARDERROR2 
 %%
 
+// some recursion
 begin: 
 		| builtin_commands NEWLINE {
 			return 0;
@@ -24,13 +25,11 @@ begin:
 		| execute_commands begin {
 			return 0;
 		}
-		| execute_commands NEWLINE{
-			return 0;
-		}
 		| NEWLINE {
 			return 0;
 		};
 
+// these cases make builtin_type > 0
 builtin_commands:
 		cd_case
 		|env_case
@@ -78,9 +77,8 @@ alias_case:
 		UNALIAS word_case {
 			//unalias_function(wordTable[getWords() - 1], 1);  
 			builtin_type = UNALIAS_DEF;
-			variable = strdup(wordTable[getWords() - 1]);
-		};
-		
+			variable = strdup(textArray[getWords() - 1]);
+		};		
 bye_case:
 		BYE { 
 			printf("[01;31;40m" "\n******************************  SHELL ENDS HERE  *******************************\n\n");
@@ -91,18 +89,12 @@ bye_case:
 
 
 execute_commands:
-//		read_from_case
-//		|write_to_case
-//		|pipe_case
 		ampersand_case
-//		|append_case
 		|standard_error_redirect_case
 		|standard_error_redirect_case2
 		|error_case        
 		|word_case
-//		|pipes
 		|pipe2_case
-//		|command2
 		|read_from_case2
 		|write_to_case2
 		|append_case2;
@@ -119,38 +111,12 @@ write_to_case2:
 								insertToWordTable(">");
 								//lineHeaderPath();
 							};
-/*							
-read_from_case:
-		read_from_case2 word_case			
-							{
-							};
-write_to_case:
-		write_to_case2	word_case	
-							{
-							};
-
-*/
 
 pipe2_case:
 		PIPE
 							{
 								insertToWordTable("|");
 							};
-/*
-pipe_case:
-		pipe2_case words			
-							{
-								//printf("PIPE words\n");
-								//pipe with a command name and more than one argument
-								//lineHeaderPath();
-							}
-	|	pipe2_case word_case
-							{
-								//printf("PIPE word_case\n");
-								//pipe with a command name and no arguments
-								//lineHeaderPath();
-							};
-*/
 
 ampersand_case:
 		AMPERSAND			
@@ -164,6 +130,7 @@ standard_error_redirect_case:
 								insertToWordTable("2>&1");
 								//lineHeaderPath();
 							};
+
 standard_error_redirect_case2:
 		STANDARDERROR2		
 							{
@@ -181,39 +148,7 @@ append_case2:
 								insertToWordTable(">>");
 								//lineHeaderPath();
 							};
-/*
-append_case:
-		append_case2	word_case
-							{
-								//lineHeaderPath();
-							};
-*/
-
-/*							
-words:
-		word_case word_case
-							{
-								//printf("word_case word_case\n");
-								//lineHeaderPath();
-							}
-	|	words	word_case
-							{
-								//printf("words word_case\n");
-								//lineHeaderPath();
-							};
-
-pipes:
-		pipe_case	pipe_case
-							{
-								//printf("pipe_case pipe_case\n");
-								//lineHeaderPath();
-							}
-	|	pipes 		pipe_case
-							{
-								//printf("pipes pipe_case\n");
-								//lineHeaderPath();
-							};
-*/							
+							
 ///////////////////////////////taken out shit storm
 
 word_case:
