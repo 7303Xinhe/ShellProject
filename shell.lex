@@ -13,6 +13,7 @@ alias 		return ALIAS;
 unalias 	return UNALIAS;
 bye 		return BYE;
 \n 			return NEWLINE;
+test		return TEST;
 
 [-*?@!#%',=~_.:/:A-Za-z0-9]+ 						return WORD;
 "\""[-*? \\<>&\|${},_\"@!#%'=~.:/:A-Za-z0-9]+"\"" 	return QUOTES;

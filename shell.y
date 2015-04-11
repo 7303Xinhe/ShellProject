@@ -1,6 +1,9 @@
 %{
 #include "shell.h"
 extern char *yytext;
+typedef struct yy_buffer_state * YY_BUFFER_STATE;
+extern YY_BUFFER_STATE yy_scan_string(char * str);
+extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
 
 void yyerror(const char *str) {
 	fprintf(stderr,"error: %s\n", str);
@@ -23,6 +26,7 @@ commands:
 		| commands command4;
 command:
 		cd_case
+		|testingk
 		|env_case
 		|alias_case
 		|bye_case
@@ -41,6 +45,16 @@ command:
 		|read_from_case2
 		|write_to_case2
 		|append_case2;
+
+testingk:
+		TEST{
+			 char* str = "cd Desktop";
+			 yy_scan_string(str);
+			 yylex();
+			 yy_delete_buffer(YY_CURRENT_BUFFER);
+			// reset();
+		}
+		
 cd_case:
 		CD {
 			cd_home_function();
