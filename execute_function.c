@@ -1,12 +1,7 @@
 
-void execute() {
-<<<<<<< Updated upstream
-	if(strcmp(wordTable[0], "") == 0) {
-=======
-	
+void execute() {	
 	// ignore
 	if(strcmp(textArray[0], "") == 0) {
->>>>>>> Stashed changes
 		return;
 	}
 

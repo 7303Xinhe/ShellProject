@@ -77,7 +77,7 @@ alias_case:
 		UNALIAS word_case {
 			//unalias_function(wordTable[getWords() - 1], 1);  
 			builtin_type = UNALIAS_DEF;
-			variable = strdup(textArray[getWords() - 1]);
+			variable = strdup(wordTable[getWords() - 1]);
 		};		
 bye_case:
 		BYE { 
