@@ -49,10 +49,10 @@ command:
 testingk:
 		TEST{
 			 char* str = "cd Desktop";
-			 yy_scan_string(str);
-			 yylex();
-			 yy_delete_buffer(YY_CURRENT_BUFFER);
-			// reset();
+			 YY_BUFFER_STATE str_buffer = yy_scan_string(str);
+			 yyparse();
+			 yy_delete_buffer(str_buffer);
+			 reset();
 		}
 		
 cd_case:
