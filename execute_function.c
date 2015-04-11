@@ -1,7 +1,7 @@
 
 void execute() {	
 	// ignore
-	if(strcmp(textArray[0], "") == 0) {
+	if(strcmp(wordTable[0], "") == 0) {
 		return;
 	}
 
