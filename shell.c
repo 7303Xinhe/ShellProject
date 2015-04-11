@@ -447,6 +447,9 @@ void reset() {
 	memset(textArray, 0, sizeof(textArray)); //clear contents
 }
 
+
+
+
 void execute() {
 	int numberOfPipes = 0;
 	int numberOfCommands = 0;

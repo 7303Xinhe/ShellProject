@@ -18,7 +18,7 @@ main() {
 	yyparse();
 }
 %}
-%token CD PRINTENV UNSETENV SETENV NEWLINE ALIAS UNALIAS BYE WORD QUOTES ENVIRONMENTVARIABLE READFROM WRITETO PIPE AMPERSAND APPEND STANDARDERROR1 STANDARDERROR2
+%token CD PRINTENV UNSETENV SETENV NEWLINE ALIAS UNALIAS BYE WORD QUOTES ENVIRONMENTVARIABLE READFROM WRITETO PIPE AMPERSAND APPEND STANDARDERROR1 STANDARDERROR2 
 %%
 commands: 
 		| commands command NEWLINE
@@ -26,7 +26,6 @@ commands:
 		| commands command4;
 command:
 		cd_case
-		|testingk
 		|env_case
 		|alias_case
 		|bye_case
@@ -45,15 +44,6 @@ command:
 		|read_from_case2
 		|write_to_case2
 		|append_case2;
-
-testingk:
-		TEST{
-			 char* str = "cd Desktop";
-			 YY_BUFFER_STATE str_buffer = yy_scan_string(str);
-			 yyparse();
-			 yy_delete_buffer(str_buffer);
-			 reset();
-		}
 		
 cd_case:
 		CD {
