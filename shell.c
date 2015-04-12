@@ -113,7 +113,6 @@ void do_it() {
 	builtin_type = 0;
 }
 
-
 void insertToWordTable(char *text) {
 	char * word = strdup(text);
 	char **tempWordArray = (char **) malloc((wordCount+2)*sizeof(char *)); //null entry and new word
@@ -476,7 +475,7 @@ void processEnvironmentVariable(char* yyText) {
 	}
 	else
 	{
-		insertToWordTable( getenv(actualText));
+		insertToWordTable( getenv(insideText));
 	}	
 }
 
