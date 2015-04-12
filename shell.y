@@ -1,9 +1,6 @@
 %{
 #include "shell.h"
 extern char *yytext;
-typedef struct yy_buffer_state * YY_BUFFER_STATE;
-extern YY_BUFFER_STATE yy_scan_string(char * str);
-extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
 
 void yyerror(const char *str) {
 	fprintf(stderr,"error: %s\n", str);
@@ -14,7 +11,7 @@ int yywrap() {
 }
 
 %}
-%token CD PRINTENV UNSETENV SETENV NEWLINE ALIAS UNALIAS BYE WORD QUOTES ENVIRONMENTVARIABLE READFROM WRITETO PIPE AMPERSAND APPEND STANDARDERROR1 STANDARDERROR2 
+%token CD PRINTENV UNSETENV SETENV NEWLINE ALIAS UNALIAS BYE WORD QUOTES ENVIRONMENTVARIABLE READFROM WRITETO PIPE AMPERSAND APPEND STANDARDERRORFILE STANDARDERROROUTPUT 
 %%
 
 // some recursion
@@ -103,12 +100,10 @@ execute_commands:
 read_from_case:
 		READFROM {
 			insertToWordTable("<");
-			//lineHeaderPath();
 		};
 write_to_case:
 		WRITETO{
-			insertToWordTable(">");
-			//lineHeaderPath();
+			insertToWordTable(">");			
 		};
 pipe_case:
 		PIPE {
@@ -117,29 +112,24 @@ pipe_case:
 		};
 ampersand_case:
 		AMPERSAND {
-			insertToWordTable("&");
-			//lineHeaderPath();
+			insertToWordTable("&");			
 		};
 standard_error_redirect_case:
-		STANDARDERROR1 {
-			insertToWordTable("2>&1");
-			//lineHeaderPath();
+		STANDARDERRORFILE {
+			insertToWordTable("2>&1");			
 		};
 
 standard_error_redirect_case2:
-		STANDARDERROR2 {
-			insertToWordTable(yytext);
-			//lineHeaderPath();
+		STANDARDERROROUTPUT {
+			insertToWordTable(yytext);			
 		};
 error_case:
 		error {
-			//printf ("Syntax error.\n");
-			//lineHeaderPath();
+			//printf ("Syntax error.\n");			
 		};
 append_case:
 		APPEND {
-			insertToWordTable(">>");
-			//lineHeaderPath();
+			insertToWordTable(">>");			
 		};
 		
 word_case:

@@ -27,8 +27,8 @@ bye 		return BYE;
 "&" 	return AMPERSAND;
 ">>"	return APPEND;
 
-"2>"[*?@!#%',=~.:/:A-Za-z0-9]+ 	return STANDARDERROR1;
-"2>&1" 							return STANDARDERROR2;
+"2>"[*?@!#%',=~.:/:A-Za-z0-9]+ 	return STANDARDERRORFILE;
+"2>&1" 							return STANDARDERROROUTPUT;
 <<EOF>>	{exit(0);}
 . {yyerror("Unrecognized character");}
 %%
