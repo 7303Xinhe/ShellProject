@@ -36,7 +36,6 @@ builtin_commands:
 cd_case:
 		CD {
 			builtin_type = CDHOME_DEF;
-			//cd_home_function();
 		}
 	    |
 		CD word_case {
@@ -54,7 +53,6 @@ env_case:
 		}   
 		|
 		SETENV word_case word_case {
-			//setenv_function(wordArray[getWords() - 2], wordArray [getWords() - 1], 1);	
 			builtin_type = SETENV_DEF;
 			variable = strdup(wordArray[getWords() - 2]);
 			word = strdup(wordArray[getWords() - 1]);
@@ -65,14 +63,12 @@ alias_case:
 		}
 		|
 		ALIAS  word_case  word_case {
-			//alias_function(wordArray[getWords() - 2], wordArray[getWords() - 1]);
 			builtin_type = ALIAS_DEF;
 			variable = strdup(wordArray[getWords() - 2]);
 			word = strdup(wordArray[getWords() - 1]);
 		}
 		|
 		UNALIAS word_case {
-			//unalias_function(wordArray[getWords() - 1], 1);  
 			builtin_type = UNALIAS_DEF;
 			variable = strdup(wordArray[getWords() - 1]);
 		};		
