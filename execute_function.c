@@ -184,6 +184,7 @@ void execute() {
 				ampersandIndex = i;
 			}
 		}
+		
 		if(readIndex != 0) {//there's a read present 
 			int in = open(wordArray[readIndex + 1], O_RDONLY, 0); //open file
 			if(in == -1) {//error
