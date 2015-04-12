@@ -184,34 +184,66 @@ void execute() {
 				ampersandIndex = i;
 			}
 		}
-		if(readIndex != 0) {//there's a read present
-			int result = read_from_function(wordArray[readIndex + 1]); 
-			if(result == -1) {
+		if(readIndex != 0) {//there's a read present 
+			int in = open(wordArray[readIndex + 1], O_RDONLY, 0); //open file
+			if(in == -1) {//error
+				perror("File not opened");
+				printf("Error at line %d\n", __LINE__);
+				reset();
+				exit(0);
+				return;
+			}
+			savedInput = dup(0); //get current input
+			//redirect input from file
+			if (dup2(in, 0) == -1) {//error
+				perror("Input not redirected");
+				printf("Error at line %d\n", __LINE__);
 				reset();
 				exit(0);
 				return;
 			}
 		}
 		if(writeIndex != 0) {//there's a write to present
-			int result = write_to_function(wordArray[writeIndex + 1]);
-			if(result == -1) {
+			int out = open(wordArray[writeIndex + 1], O_WRONLY | O_CREAT, 0755); //open file
+			if(out == -1) {//error
+				perror("File not created");
+				printf("Error at line %d\n", __LINE__);
+				reset();
+				exit(0);
+				return;
+			}
+			savedOutput = dup(1); //get current output
+			//redirect output to file
+			if (dup2(out, 1) == -1) {//error
+				perror("Output not redirected");
+				printf("Error at line %d\n", __LINE__);
 				reset();
 				exit(0);
 				return;
 			}
 		}
 		if (appendIndex != 0) {//there's an append present
-			int result = append_function(wordArray[appendIndex + 1]);
-			if(result == -1)
-			{
+			int out = open(wordArray[appendIndex + 1], O_WRONLY | O_APPEND | O_CREAT,0755); //open file
+			if(out == -1) { //error
+				perror("File not created");
+				printf("Error at line %d\n", __LINE__);
+				reset();
+				exit(0);
+				return;
+			}
+			savedOutput = dup(1); //save current output
+			//redirect output to file
+			if (dup2(out, 1) == -1) {//error
+				perror("Output not redirected");
+				printf("Error at line %d\n", __LINE__);
 				reset();
 				exit(0);
 				return;
 			}
 		}
 		if(se2Index != 0) {//second standard error case present
-			int result = standard_error_redirect_function();
-			if(result == -1)
+			savedError = dup(2);
+			if(dup2(1, 2) == -1)
 			{
 				reset();
 				exit(0);
@@ -219,13 +251,34 @@ void execute() {
 			}
 		}
 		if(se1Index != 0) { //first standard error case present
-			int result = standard_error_redirect_function2(wordArray[se2Index]);
-			if(result == -1) {
+			char* copyText = malloc(300 * sizeof(char));
+			if (copyText == (char *)NULL) { //error
+				perror("Memory allocation error.");
+				printf("Error at line %d\n", __LINE__);
+				reset();
+				exit(0);
+				return;
+			}
+			strcpy(copyText, &wordArray[se2Index][2]); //get everything after >
+			int out = open(copyText, O_WRONLY | O_APPEND | O_CREAT, 0755); //open file
+			if(out == -1) {//error
+				perror("File not created");
+				printf("Error at line %d\n", __LINE__);
+				reset();
+				exit(0);
+				return;
+			}
+			savedError = dup(2); //get current standard error 
+			//redirect standard error to output file
+			if (dup2(out, 2) == -1) {//error
+				perror("Standard error not redirected");
+				printf("Error at line %d\n", __LINE__);
 				reset();
 				exit(0);
 				return;
 			}
 		}
+
 		commandCount = pipeCount + 1;
 		if(pipeCount == 0) { //no pipes, just this command
 			if(readIndex != 0) { //take everything up until this 
