@@ -4,8 +4,7 @@ essentially a shorthand form of a long command. */
 void alias_function(char *name, char *word) {
 
 	// remove current assignment for the name
-	unalias_function(name, 0);          
-
+	unalias_function(name);          
 
 	struct aliasStruct pair;
 	pair.name = strdup(name);
@@ -22,13 +21,11 @@ void alias_function(char *name, char *word) {
 
 	free(aliases);
 	aliases = aliasesTemp;
-	++aliasCount; 
-	reset();
-	
+	++aliasCount; 	
 }
 
 /*  The unalias command is used to remove the alias for name from the alias list. */
-void unalias_function(char *name, int flag) {
+void unalias_function(char *name) {
 	
 	size_t length;
 	if (name == NULL || name == '\0' || strchr(name, '=') != NULL) { 
@@ -52,15 +49,11 @@ void unalias_function(char *name, int flag) {
 			--aliasCount; 
 		} 
 	}
-
-	if(flag == 1) {
-		reset();
-	}
 }
 
 
 
-// Gets the value of an alias when given the name returns empty string if the alias name does not exist
+/* Gets the value of an alias when given the name returns empty string if the alias name does not exist */
 int getAliasValue(char* aliasName, char* returnValue) {
 	
 	int aliasNameLength = strlen(aliasName);
@@ -73,13 +66,12 @@ int getAliasValue(char* aliasName, char* returnValue) {
 			return 0;
 		}
 	}
-
 	return -1;
 }
 
 
 
-// takes in name of alias and returns the final resolved value of that alias name or <LOOP> if it loops infinitely,
+/* takes in name of alias and returns the final resolved value of that alias name or <LOOP> if it loops infinitely */
 char* aliasResolver(char* alias) {
 	char* name = malloc(500*sizeof(char)); 
 	strcpy(name, alias);

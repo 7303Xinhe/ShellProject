@@ -1,9 +1,8 @@
 void execute() {
 
-	// ignore
-	if(strcmp(wordArray[0], "") == 0) {
+	// ignore: for NEWLINE
+	if(strcmp(wordArray[0], "") == 0) 
 		return;
-	}
 
 	// track amount of pipes
 	int pipeCount = 0;
@@ -18,14 +17,18 @@ void execute() {
 	int standardErrorOutputIndex = 0;
 	int ampersandIndex = 0; 
 
+	// for wildcarding
 	int globCount = 0;
+
+	// for the loops
 	int i;
 
+	// doing all executions in the child process
 	int childpid;
 	if((childpid = fork()) == -1) {
 		perror("Error forking");
 		printf("Error at line %d\n", __LINE__);
-		reset();
+		resetGlobals();
 		exit(0);
 		return;
 	}	
@@ -33,22 +36,20 @@ void execute() {
 	// in parent
 	if(childpid != 0) { 
 		// wait for process to finish executing
-		if(ampersandIndex == 0) {
+		if(ampersandIndex == 0) 
 			wait((int *) 0);
-		}
-		reset();
+		resetGlobals();
 	}
 
-	// in childpid
+	// in child
 	else {
-		// used to track the location of each pipe sy
+		// used to track the location of each pipe 
 		int* pipes = malloc(300 * sizeof(int));
 		// tracks the pipes
 		addedWords = 0;
 		for(i = 0; i < wordCount; ++i) {
-			if(strcmp(wordArray[i], "|") == 0) { //it's a pipe
+			if(strcmp(wordArray[i], "|") == 0) 
 				pipes[pipeCount++] = i;				
-			}
 		}
 
 		// number of commands is pipeCount + 1
@@ -63,7 +64,7 @@ void execute() {
 				if(strcmp(aliasResolver(wordArray[i]), "<LOOP>") == 0) { 
 					perror("Infinite alias expansion.");
 					printf("Error at line %d\n", __LINE__);
-					reset();
+					resetGlobals();
 					exit(0);
 					return;
 				}				
@@ -81,7 +82,7 @@ void execute() {
 				if(strcmp(aliasResolver(wordArray[pipes[i - 1] + 1]), "<LOOP>") == 0) {
 					perror("Infinite alias expansion.");
 					printf("Error at line %d\n", __LINE__);
-					reset();
+					resetGlobals();
 					exit(0);
 					return;
 				}
@@ -115,7 +116,7 @@ void execute() {
 			if(strcmp(result, "") == 0) { //error
 				perror("No matches, so not executing.");
 				printf("Error at line %d\n", __LINE__);
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -163,7 +164,7 @@ void execute() {
 			if(in == -1) {
 				perror("File not opened");
 				printf("Error at line %d\n", __LINE__);
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -174,7 +175,7 @@ void execute() {
 			if (dup2(in, 0) == -1) {
 				perror("Input not redirected");
 				printf("Error at line %d\n", __LINE__);
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -186,7 +187,7 @@ void execute() {
 			if(out == -1) {
 				perror("File not created");
 				printf("Error at line %d\n", __LINE__);
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -197,7 +198,7 @@ void execute() {
 			if (dup2(out, 1) == -1) {
 				perror("Output not redirected");
 				printf("Error at line %d\n", __LINE__);
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -209,7 +210,7 @@ void execute() {
 			if(out == -1) { //error
 				perror("File not created");
 				printf("Error at line %d\n", __LINE__);
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -219,7 +220,7 @@ void execute() {
 			if (dup2(out, 1) == -1) {//error
 				perror("Output not redirected");
 				printf("Error at line %d\n", __LINE__);
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -231,7 +232,7 @@ void execute() {
 			savedError = dup(2);
 			if(dup2(1, 2) == -1)
 			{
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -244,7 +245,7 @@ void execute() {
 			if(out == -1) {//error
 				perror("File not created");
 				printf("Error at line %d\n", __LINE__);
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -253,7 +254,7 @@ void execute() {
 			if (dup2(out, 2) == -1) {//error
 				perror("Standard error not redirected");
 				printf("Error at line %d\n", __LINE__);
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -294,7 +295,7 @@ void execute() {
 			if(execvp(arguments[0], arguments) == -1) { 
 				perror("Error executing.");
 				printf("Error at line %d\n", __LINE__);
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -422,7 +423,7 @@ void execute() {
 			if(execvp (commandArray[x].argv [0], (char * const *)commandArray[x].argv) == -1) { //error
 				perror("Error executing.");
 				printf("Error at line %d\n", __LINE__);
-				reset();
+				resetGlobals();
 				exit(0);
 				return;
 			}

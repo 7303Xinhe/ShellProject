@@ -1,6 +1,6 @@
 
 /* setenv variable word - This command sets the word of the variable variable to be word. */
-void setenv_function (char *variable, char *word, int flag) {
+void setenv_function (char *variable, char *word) {
 
 	condense(word, ' '); 
 
@@ -15,7 +15,7 @@ void setenv_function (char *variable, char *word, int flag) {
 	}
 
 	// remove current assignment for the variable
-	unsetenv_function(variable, 0);             
+	unsetenv_function(variable);             
 	
 	// allocate +2 for '=' and null terminator 
 	pair = malloc(strlen(variable) + strlen(word) + 2);
@@ -122,7 +122,7 @@ void setenv_function (char *variable, char *word, int flag) {
 				}
 			} 
 
-			// relative path ~sjc/bin
+			// relative path 
 			else {
 				char* word = malloc(300 * sizeof(char));
 				strcat(word, currentDirectory);
@@ -154,14 +154,11 @@ void setenv_function (char *variable, char *word, int flag) {
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	if(flag) {
-		reset();
-	}
 }
 
 
 /* unsetenv variable This command will remove the binding of variable. If the variable is unbound, the command is ignored. */
-void unsetenv_function(char *variable, int flag) {
+void unsetenv_function(char *variable) {
 	
 	 // check
 	if (variable == NULL || variable == '\0' || strchr(variable, '=') != NULL) { 
@@ -178,10 +175,8 @@ void unsetenv_function(char *variable, int flag) {
 
 	// loop through all the env variables trying to find match
 	for (environTemp = environ; *environTemp != NULL; ++environTemp) {
-
 		// found match
-		if (strncmp(*environTemp, variable, length) == 0 && (*environTemp)[length] == '=') { 
-			
+		if (strncmp(*environTemp, variable, length) == 0 && (*environTemp)[length] == '=') { 		
 			// shift all the variables to the left
 			while(*environTemp != NULL) {
 				*environTemp = *(environTemp + 1); 
@@ -189,10 +184,6 @@ void unsetenv_function(char *variable, int flag) {
 			}
 			break;
 		} 
-		// increment 
-	}
-	if(flag) {
-		reset();
 	}
 }
 

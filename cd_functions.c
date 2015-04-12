@@ -3,12 +3,12 @@ void cd_home_function() {
 	// change to home currentDirectory	
 	// error
 	if(chdir(myHome) == -1) { 				
+		printf("Directory not changed. %d\n", __LINE__);
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-
 	// change the value of the PWD variable
-	setenv_function("PWD", myHome, 0); 
+	setenv_function("PWD", myHome); 
 }
 
 
@@ -100,17 +100,15 @@ void cd_function(char *inputDirectory){
 			if(chdir("/") == -1) {
 				perror("Directory not changed");
 				printf("Error at line %d\n", __LINE__);
-				reset();
 				return;
 			}
 			// change variable
-			setenv_function("PWD", "/", 0); 
+			setenv_function("PWD", "/"); 
 			return;
 		} else {			
 			strcpy(currentDirectory, "");
 		}
 	}
-
 
 	// combines current with the input
 	// check if relative
@@ -121,11 +119,10 @@ void cd_function(char *inputDirectory){
 		if (chdir(inputDirectory) == -1) {
 			perror("Directory not changed");
 			printf("Error at line %d\n", __LINE__);
-			reset();
 			return;
 		}
 		// absolute path
-		setenv_function("PWD", inputDirectory, 0); 
+		setenv_function("PWD", inputDirectory); 
 		return;
 	}
 
@@ -133,11 +130,10 @@ void cd_function(char *inputDirectory){
 	// last character is a slash and currentDirectory isn't "/"
 	if(strncmp(&currentDirectory[strlen(currentDirectory) - 1], "/", 1) == 0 && strlen(currentDirectory) != 1) {
 		currentDirectory[strlen(currentDirectory) - 1] = '\0'; // remove slash
-		setenv_function("PWD", currentDirectory, 0); 
+		setenv_function("PWD", currentDirectory); 
 	} else {
-		setenv_function("PWD", currentDirectory, 0); 
+		setenv_function("PWD", currentDirectory); 
 	}
-	reset();
 }
 
 
