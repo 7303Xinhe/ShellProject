@@ -1,7 +1,6 @@
 
 void execute() {
-	printf("word array:\n" );	
-	printWordArray();
+
 	// ignore
 	if(strcmp(wordArray[0], "") == 0) {
 		return;
