@@ -62,6 +62,8 @@ void  alias_print_function(void);
 
 void  yytextProcessor(char* text);
 void  insertToWordTable (char *text);
+void processEnvironmentVariable(char* yyText);
+
 int   getWords(void);
 
 int   getAliasCount(void);
@@ -83,7 +85,6 @@ void  cardsGoneWild(char* text, int position);
 void  printWordArray();
 char* fixText(char *orig, char *rep, char *with);
 void  wordArrayAliasExpansion(char* text, int position);
-int   spawn_proc(int in, int out, struct command *cmd);
 
 char** wordArray; //words
 
@@ -102,6 +103,7 @@ int   savedInput; //input channel
 int   savedError; //error channel
 int   addedWords;
 
+int piped;
 int   builtin_type;
 
 char* cdPath;

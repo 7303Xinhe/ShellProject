@@ -113,6 +113,7 @@ write_to_case:
 pipe_case:
 		PIPE {
 			insertToWordTable("|");
+			piped = TRUE;
 		};
 ampersand_case:
 		AMPERSAND {
@@ -147,35 +148,7 @@ word_case:
 		}
 		|		
 		ENVIRONMENTVARIABLE {
-			char* actualText = malloc(300 * sizeof(char));
-			if(actualText == (char*) NULL) //error
-			{
-					perror ("Error with memory allocation.");
-					printf ("Error at line %d\n", __LINE__);
-			}
-			else
-			{
-				strncpy(actualText, &yytext[2], strlen(yytext) - 3); //take everything between ${ and }
-				char* result = malloc(300 * sizeof(char));
-				if(result == (char*) NULL) //error
-				{
-					perror ("Error with memory allocation.");
-					printf ("Error at line %d\n", __LINE__);
-				}
-				else
-				{
-					if(getenv(actualText) == NULL) //invalid environment variable
-					{
-						perror ("Entered an invalid environment variable.");
-						printf ("Error at line %d\n", __LINE__);
-					}
-					else
-					{
-						strcpy(result, getenv(actualText)); //get value, if any
-						insertToWordTable(result);
-					}
-				}
-			}		
+			processEnvironmentVariable(yytext);
 		}
 		|	
 		QUOTES {
