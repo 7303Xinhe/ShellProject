@@ -17,11 +17,15 @@ void execute() {
 	int standardErrorOutputIndex = 0;
 	int ampersandIndex = 0; 
 
-	// for wildcarding
-	int globCount = 0;
-
 	// for the loops
 	int i;
+
+	// check if wants to run in background
+	if(wordArray[wordCount-1] == "&")
+		ampersandIndex = 1;
+
+	// for wildcarding
+	int globCount = 0;
 
 	// doing all executions in the child process
 	int childpid;

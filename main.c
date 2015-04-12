@@ -130,40 +130,40 @@ void insertToWordTable(char *text) {
 	wordArray = tempWordArray;
 }
 
-char* getDirectories(char* textmatch) {
+// get matching directories
+char* getDirectories(char* matchString) {
 	int i;
 	int flags = 0;
-	glob_t *results;
-	int ret;
+
+	// A type representing a directory stream.
 	DIR *dir;
-	struct dirent *ent;
-	results = malloc(10 * sizeof(glob_t));
-	if(results == (glob_t*) NULL) {//error
-		perror("Memory allocation error.");
+	// array of the files
+	struct dirent* ent;
+
+
+	glob_t *results = malloc(10 * sizeof(glob_t));
+
+	if((dir = opendir(getenv("PWD"))) == NULL) {
+		perror ("Cannot open directory");
 		printf("Error at line %d\n", __LINE__);
-		return;
-	}
-	if ((dir = opendir(getenv("PWD"))) != NULL) {
-		/* print all the files and directories within directory */
-		while ((ent = readdir (dir)) != NULL) {
+		return "";
+	} else {
+		// get directory stream
+		while ((ent = readdir(dir)) != NULL) {
 			flags |= (i > 1 ? GLOB_APPEND : 0);
-			ret = glob(textmatch, flags, globerr, results); //glob expression
-			if (ret != 0) {//error
+			if (glob(matchString, flags, globerr, results) != 0) {//error
 				printf("Error with globbing\n");
 				printf("Error at line %d\n", __LINE__);
 				return "";
 			}
 		}
 		int size = 0;
-		for(i = 0; i < results->gl_pathc; i++) {
+		// for amount of paths matched
+		for(i = 0; i < results->gl_pathc; ++i) 
 			size += strlen(results->gl_pathv[i]) + 1;
-		}
+		
 		char* result = malloc(size * sizeof(char));
-		if(result == (char*) NULL) { //error
-			perror("Memory allocation error.");
-			printf("Error at line %d\n", __LINE__);
-			return;
-		}
+	
 		strcpy(result, "");
 		for(i = 0; i < results->gl_pathc; i++) {
 			strcat(result, results->gl_pathv[i]);
@@ -174,14 +174,9 @@ char* getDirectories(char* textmatch) {
 		closedir(dir); //close directory 
 		return result;
 	}
-	else {
-		/* could not open directory */
-		perror ("Cannot open directory");
-		printf("Error at line %d\n", __LINE__);
-		return "";
-	}
 	return "";
 }
+
 
 int globerr(const char *path, int eerrno) {//error
 	perror ("Error with globbing\n");
@@ -404,7 +399,6 @@ void cardsGoneWild(char* text, int position) {
 		strcpy(textForLater[index], wordArray[i]); //copy entry into array
 		index++;
 	}
-
 
 	char* saveptr2;
 	char* filesList2 = strtok_r(result2, "$", &saveptr2);
