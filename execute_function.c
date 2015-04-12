@@ -95,7 +95,7 @@ void execute() {
 			}
 		}
 
-
+		// track where the globs patterns are
 		int* globs = malloc(300 * sizeof(int));
 		globCount = 0;
 		addedWords = 0;
@@ -106,10 +106,12 @@ void execute() {
 			}
 		}
 		//takes care of globbing
-		for(i = 0; i < globCount; i++) {
+		for(i = 0; i < globCount; ++i) {
 			if(i == 0) {
 				printf(" ");
 			}
+
+			// get all directories to sort through
 			char* result = strdup(getDirectories(wordArray[globs[i] + addedWords]));
 			if(strcmp(result, "") == 0) { //error
 				perror("No matches, so not executing.");
@@ -118,7 +120,7 @@ void execute() {
 				exit(0);
 				return;
 			}
-			word3_function(result, globs[i] + addedWords);
+			cardsGoneWild(result, globs[i] + addedWords);
 		}
 
 		
@@ -378,7 +380,6 @@ void execute() {
 				}		
 			}
 			int x;
-			pid_t pid;
 			int inChannel;
 			int fd [2];
 
@@ -388,7 +389,24 @@ void execute() {
 			/* All but the last part of the pipeline.  */
 			for (x = 0; x < commandCount - 1; ++x) {
 				pipe (fd);
-				spawn_proc (inChannel, fd [1], commandArray + x); //take in read end of previous iteration, goes to write end of next iteration
+				//spawn_proc (inChannel, fd [1], commandArray + x); //take in read end of previous iteration, goes to write end of next iteration
+				
+
+				pid_t pid;
+				if ((pid = fork ()) == 0) { //in parents
+			    	if (inChannel != 0) {
+						dup2 (inChannel, 0);
+						close (inChannel);
+					}
+					if (fd [1] != 1) {
+						dup2 (fd [1], 1);
+						close (fd [1]);
+					}
+					execvp ((commandArray + x)->argv [0], (char * const *)(commandArray + x)->argv);
+			    }
+				//return pid;
+
+
 				/* Close redundant output.  */
 				close (fd [1]);
 				/* Need this for next iteration.  */

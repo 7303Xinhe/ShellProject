@@ -124,16 +124,16 @@ void insertToWordTable(char *text) {
 		return;
 	}
 	strcpy(es, text); //copy text into pointer
-	char **tempWordTable = (char **) malloc((wordCount+2)*sizeof(char *)); //null entry and new word
-	if ( tempWordTable == (char **) NULL ) { //no array created
+	char **tempWordArray = (char **) malloc((wordCount+2)*sizeof(char *)); //null entry and new word
+	if ( tempWordArray == (char **) NULL ) { //no array created
 		perror("Array not created");
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-	memcpy ((char *) tempWordTable, (char *) wordArray, wordCount*sizeof(char *)); //copy all entries from wordArray into tempWordTable
-	tempWordTable[wordCount]   = es; //word
-	tempWordTable[wordCount+1] = NULL; //null entry
-	wordArray = tempWordTable;
+	memcpy ((char *) tempWordArray, (char *) wordArray, wordCount*sizeof(char *)); //copy all entries from wordArray into tempWordArray
+	tempWordArray[wordCount]   = es; //word
+	tempWordArray[wordCount+1] = NULL; //null entry
+	wordArray = tempWordArray;
 	++wordCount; //increment index
 }
 
@@ -445,87 +445,65 @@ void reset() {
 	memset(wordArray, 0, sizeof(wordArray)); //clear contents
 }
 
-void word3_function(char* text, int position) {
-	char* saved3;
-	char* result = malloc((strlen(text) + 1) * sizeof(char));
-	if(result == (char*) NULL) { //error
-		perror("Memory allocation error.");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
-	strcpy(result, text);
-	char* result2 = malloc((strlen(text) + 1) * sizeof(char));
-	if(result2 == (char*) NULL) {//error
-		perror("Memory allocation error.");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
-	strcpy(result2, result); //copy another one since strtok_r changes actual text
-	char* pch = strtok_r(result, "$", &saved3); //parse to get each indiviual file
-	int tokens = 0; //how many positions we add
-	while(pch != NULL) {
+void cardsGoneWild(char* text, int position) {
+	char* saveptr;
+	char* result = strdup(text);
+	char* result2 = strdup(text);
+	
+	char* filesList = strtok_r(result, "$", &saveptr); //parse to get each indiviual file
+	
+	// how many positions we add
+	int tokens = 0; 
+	while(filesList != NULL) {
 		tokens++;
-		pch = strtok_r(NULL, "$", &saved3);
+		filesList = strtok_r(NULL, "$", &saveptr);
 	}
-	char **tempWordTable = (char **) malloc((wordCount+tokens)*sizeof(char *)); //null entry and new wordCount
-	if ( tempWordTable == (char **) NULL ) { //no array created
-		perror("Array not created");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
-	memcpy ((char *) tempWordTable, (char *) wordArray, position*sizeof(char *)); //copy all entries from 0 to position of wordArray into tempWordTable
-	char** textForLater = malloc((wordCount - position) * sizeof(char *)); //text we add at the end of the wordArray
-	if(textForLater == (char**)NULL) { //error
-		perror("Array not created");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
+
+	//  create temp table
+	char **tempWordArray = (char **) malloc((wordCount+tokens)*sizeof(char *)); 
+
+	// copy all entries from 0 to position of wordArray into tempWordArray
+	memcpy ((char *) tempWordArray, (char *) wordArray, position*sizeof(char *)); 
+
+	char** textForLater = malloc((wordCount - position) * sizeof(char *)); // text we add at the end of the wordArray
+
 	int i;
 	int index = 0;
-	for(i = position + 1; i < wordCount; i++) {
-		textForLater[index] = malloc((strlen(wordArray[i]) + 1) * sizeof(char)); //allocate enough space for entry
-		if(textForLater[index] == (char*) NULL) { //error
-			perror("Error with memory allocation");
-			printf("Error at line %d\n", __LINE__);
-			return;
-		}
+	for(i = position + 1; i < wordCount; ++i) {
+		textForLater[index] = malloc((strlen(wordArray[i]) + 1) * sizeof(char)); // allocate enough space for entry
+
 		strcpy(textForLater[index], wordArray[i]); //copy entry into array
 		index++;
 	}
-	char* saved4;
-	char* pch2 = strtok_r(result2, "$", &saved4);
+
+
+	char* saveptr2;
+	char* filesList2 = strtok_r(result2, "$", &saveptr2);
 	int j = 0;
 	wordCount--; //since we are overwriting an entry, need to decrement wordCount beforehand
-	while(pch2 != NULL) {
+	while(filesList2 != NULL) {
 		char* es;
-		es = malloc(strlen(pch2) + 1); //allocate space for word and terminating character
-		if (es == NULL) {//error
-			perror("Memory allocation error.");
-			printf("Error at line %d\n", __LINE__);
-			return;
-		}
-		strcpy(es, pch2); //copy text into pointer
-		tempWordTable[position + j] = es; //word
-		j++; //move forward
-		wordCount++; //added another word
-		pch2 = strtok_r(NULL, "$", &saved4);
+		es = malloc(strlen(filesList2) + 1); //allocate space for word and terminating character
+
+		strcpy(es, filesList2); //copy text into pointer
+		tempWordArray[position + j] = es; //word
+		++j; //move forward
+		++wordCount; //added another word
+		filesList2 = strtok_r(NULL, "$", &saveptr2);
 	}
 	int k;
 	index = 0;
 	for(k = position + j; k < wordCount; k++) {
-		tempWordTable[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
-		if(tempWordTable[k] == (char*) NULL) { //error
-			perror("Memory allocation error.");
-			printf("Error at line %d\n", __LINE__);
-			return;
-		}
-		strcpy(tempWordTable[k], textForLater[index]); //copy over
+		tempWordArray[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
+
+		strcpy(tempWordArray[k], textForLater[index]); //copy over
 		index++; //move to next entry
 	}
-	tempWordTable[wordCount + 1] = NULL; //null entry
-	wordArray = tempWordTable;
+	tempWordArray[wordCount + 1] = NULL; //null entry
+	wordArray = tempWordArray;
 	addedWords += j - 1; //how many wordCount we added
 }
+
 
 void printWordArray() {
 	int i;

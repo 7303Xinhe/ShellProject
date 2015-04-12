@@ -79,7 +79,7 @@ void  condenseSpaces(char* string);
 void  reset(void);
 
 void  execute(void);
-void  word3_function(char* text, int position);
+void  cardsGoneWild(char* text, int position);
 void  printWordArray();
 char* fixText(char *orig, char *rep, char *with);
 void  wordArrayAliasExpansion(char* text, int position);
