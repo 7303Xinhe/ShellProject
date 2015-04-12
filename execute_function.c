@@ -28,7 +28,6 @@ void execute() {
 	if((childpid = fork()) == -1) {
 		perror("Error forking");
 		printf("Error at line %d\n", __LINE__);
-		resetGlobals();
 		exit(0);
 		return;
 	}	
@@ -38,7 +37,6 @@ void execute() {
 		// wait for process to finish executing
 		if(ampersandIndex == 0) 
 			wait((int *) 0);
-		resetGlobals();
 	}
 
 	// in child
@@ -64,7 +62,6 @@ void execute() {
 				if(strcmp(aliasResolver(wordArray[i]), "<LOOP>") == 0) { 
 					perror("Infinite alias expansion.");
 					printf("Error at line %d\n", __LINE__);
-					resetGlobals();
 					exit(0);
 					return;
 				}				
@@ -82,7 +79,6 @@ void execute() {
 				if(strcmp(aliasResolver(wordArray[pipes[i - 1] + 1]), "<LOOP>") == 0) {
 					perror("Infinite alias expansion.");
 					printf("Error at line %d\n", __LINE__);
-					resetGlobals();
 					exit(0);
 					return;
 				}
@@ -114,9 +110,8 @@ void execute() {
 			// get all directories to sort through
 			char* result = strdup(getDirectories(wordArray[globs[i] + addedWords]));
 			if(strcmp(result, "") == 0) { //error
-				perror("No matches, so not executing.");
+				perror("No matches");
 				printf("Error at line %d\n", __LINE__);
-				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -164,7 +159,6 @@ void execute() {
 			if(in == -1) {
 				perror("File not opened");
 				printf("Error at line %d\n", __LINE__);
-				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -175,7 +169,6 @@ void execute() {
 			if (dup2(in, 0) == -1) {
 				perror("Input not redirected");
 				printf("Error at line %d\n", __LINE__);
-				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -187,7 +180,6 @@ void execute() {
 			if(out == -1) {
 				perror("File not created");
 				printf("Error at line %d\n", __LINE__);
-				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -198,7 +190,6 @@ void execute() {
 			if (dup2(out, 1) == -1) {
 				perror("Output not redirected");
 				printf("Error at line %d\n", __LINE__);
-				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -210,7 +201,6 @@ void execute() {
 			if(out == -1) { //error
 				perror("File not created");
 				printf("Error at line %d\n", __LINE__);
-				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -220,7 +210,6 @@ void execute() {
 			if (dup2(out, 1) == -1) {//error
 				perror("Output not redirected");
 				printf("Error at line %d\n", __LINE__);
-				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -230,9 +219,7 @@ void execute() {
 		// redirecting error to this
 		if(standardErrorOutputIndex != 0) {
 			savedError = dup(2);
-			if(dup2(1, 2) == -1)
-			{
-				resetGlobals();
+			if(dup2(1, 2) == -1) {
 				exit(0);
 				return;
 			}
@@ -245,7 +232,6 @@ void execute() {
 			if(out == -1) {//error
 				perror("File not created");
 				printf("Error at line %d\n", __LINE__);
-				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -254,7 +240,6 @@ void execute() {
 			if (dup2(out, 2) == -1) {//error
 				perror("Standard error not redirected");
 				printf("Error at line %d\n", __LINE__);
-				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -293,9 +278,8 @@ void execute() {
 
 			// run command	
 			if(execvp(arguments[0], arguments) == -1) { 
-				perror("Error executing.");
+				perror("Error execvp.");
 				printf("Error at line %d\n", __LINE__);
-				resetGlobals();
 				exit(0);
 				return;
 			}
@@ -421,9 +405,8 @@ void execute() {
 			printf("before the execute\n");
 			/* Execute the last stage with the current process. */
 			if(execvp (commandArray[x].argv [0], (char * const *)commandArray[x].argv) == -1) { //error
-				perror("Error executing.");
+				perror("Error execvp.");
 				printf("Error at line %d\n", __LINE__);
-				resetGlobals();
 				exit(0);
 				return;
 			}
