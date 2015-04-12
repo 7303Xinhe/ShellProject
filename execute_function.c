@@ -61,59 +61,6 @@ void execute() {
 			strcpy(wordArray[1], result);
 		}
 
-		// int* spaces = malloc(300 * sizeof(int));
-		// if(spaces == (int*) NULL) { //error
-		// 	perror("Memory allocation error.");
-		// 	printf("Error at line %d\n", __LINE__);
-		// 	reset();
-		// 	exit(0);
-		// 	return;
-		// }
-
-		// for(i = 0; i < wordCount; ++i) {
-		// 	if(strchr(wordArray[i], ' ') != NULL) {//there's a space
-		// 		spaces[numberOfSpaces] = i;
-		// 		numberOfSpaces++;
-		// 	}
-		// }
-
-		// for(i = 0; i < numberOfSpaces; ++i) {
-		// 	char ** ep;
-		// 	int index;
-		// 	int j;
-		// 	for(ep = environ; *ep!= NULL; ++ep) {
-		// 		char* theVariable = malloc((strlen(*ep) + 1) * sizeof(char));
-		// 		if(theVariable == (char*) NULL) {//error
-		// 			perror("Memory allocation error.");
-		// 			printf("Error at line %d\n", __LINE__);
-		// 			reset();
-		// 			exit(0);
-		// 			return;
-		// 		}
-		// 		strcpy(theVariable, *ep); //copy environment variable
-		// 		for(j = 0; j < strlen(theVariable); j++) {
-		// 			if(theVariable[j] == '=') {//found =
-		// 				index = j;
-		// 				break;
-		// 			}
-		// 		}
-		// 		char* result = malloc((strlen(theVariable) - index + 1) * sizeof(char));
-		// 		if(result == (char*) NULL) {//error
-		// 			perror("Memory allocation error.");
-		// 			printf("Error at line %d\n", __LINE__);
-		// 			reset();
-		// 			exit(0);
-		// 			return;
-		// 		}
-		// 		strcpy(result, &theVariable[index + 1]); //take everything after =
-		// 		if(strcmp(wordArray[spaces[i]], result) == 0) { //there's a match
-		// 			wordArrayAliasExpansion(wordArray[spaces[i] + addedWords], spaces[i] + addedWords); //expand to get rid of spaces
-		// 			break;
-		// 		}
-		// 	}
-		// }
-
-
 		int* pipes = malloc(300 * sizeof(int));
 		if(pipes == (int*) NULL) { //error
 			perror("Memory allocation error.");
@@ -132,6 +79,7 @@ void execute() {
 			return;
 		}
 
+		// track pipe
 		addedWords = 0;
 		for(i = 0; i < wordCount; i++) {
 			if(strcmp(wordArray[i], "|") == 0) { //it's a pipe
@@ -141,7 +89,8 @@ void execute() {
 		}
 
 		commandCount = pipeCount + 1;
-		for(i = 0; i < commandCount; ++i) { //resolves aliases
+		// resolves aliases in the array
+		for(i = 0; i < commandCount; ++i) { 
 			if(i == 0) {
 				if(strcmp(aliasResolver(wordArray[i]), "<LOOP>") == 0) { // infinite alias expansion
 					perror("Infinite alias expansion.");
@@ -176,6 +125,7 @@ void execute() {
 				}
 			}
 		}
+
 		numberOfGlobs = 0;
 		addedWords = 0;
 		for(i = 0; i < wordCount; i++) {
@@ -184,6 +134,7 @@ void execute() {
 				numberOfGlobs++;
 			}
 		}
+		
 		char* saved3;
 		for(i = 0; i < numberOfGlobs; i++) {//takes care of globbing
 			if(i == 0) {
@@ -207,6 +158,7 @@ void execute() {
 			}
 			word3_function(result, globs[i] + addedWords);
 		}
+
 		pipeCount = 0;
 		for(i = 0; i < wordCount; ++i) {
 			if(strcmp(wordArray[i], "|") == 0) { //it's a pipe
