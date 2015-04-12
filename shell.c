@@ -115,15 +115,9 @@ void do_it() {
 
 
 void insertToWordTable(char *text) {
-	char * word;
-	word = malloc(strlen(text) + 1); //allocate space for word and terminating character
-	strcpy(word, text); //copy text into pointer
+	char * word = strdup(text);
 	char **tempWordArray = (char **) malloc((wordCount+2)*sizeof(char *)); //null entry and new word
-	if ( tempWordArray == (char **) NULL ) { //no array created
-		perror("Array not created");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
+
 	memcpy ((char *) tempWordArray, (char *) wordArray, wordCount*sizeof(char *)); //copy all entries from wordArray into tempWordArray
 	tempWordArray[wordCount]   = word; //word
 	tempWordArray[++wordCount] = NULL; //null entry
