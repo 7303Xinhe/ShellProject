@@ -77,7 +77,7 @@ char* tildeExpansion(char* text);
 char* aliasResolve(char* string);
 int   getAliasValue(char* aliasName, char* aliasValue);
 
-void  condenseSpaces(char* string);
+void  condense(char* string, char toCondense);
 void  reset(void);
 
 void  execute(void);

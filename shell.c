@@ -190,7 +190,7 @@ int globerr(const char *path, int eerrno) {//error
 }
 
 void quoteFunction(char* text) {
-	condenseSpaces(text);
+	condense(text, ' ');
 	char* actualText = malloc(300 * sizeof(char));
 	if(actualText == (char*) NULL) {//error
 		perror ("Memory allocation error.");
@@ -374,22 +374,6 @@ char* tildeExpansion(char* text) {
 }
 
 /* removes extra spaces in the word */
-void condenseSpaces(char* string) { 
-	int i = 0;
-	int size = strlen(string);
-	while( i < size ) {
-		if(string[i] == ' ' && string[i+1] == ' ') {
-			int j = i;
-			while (j <= size) {
-				string[j] = string[++j];
-			}
-			--size;
-		}
-		else {
-			++i;
-		}
-	}
-}
 
 void reset() {
 	if(dup2(savedInput, 0) == -1) {//error
@@ -482,7 +466,7 @@ void processEnvironmentVariable(char* yyText) {
 	}
 	else
 	{
-		insertToWordTable( getenv(actualText));
+		insertToWordTable( getenv(insideText));
 	}	
 }
 
@@ -512,11 +496,11 @@ void lineHeaderPath() {
 	printf("[00;00;40m");
 }
 
-void condenseSlashes(char* string) { 
+void condense(char* string, char toCondense) { 
 	int i = 0;
 	int size = strlen(string);
 	while ( i < size ){
-		if(string[i] == '/' && string[i+1] == '/'){
+		if(string[i] == toCondense && string[i+1] == toCondense){
 			int j = i;
 			while ( j <=size ){
 				string[j] = string[++j];

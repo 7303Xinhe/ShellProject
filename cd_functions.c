@@ -15,7 +15,7 @@ void cd_home_function() {
 /* normal cd function "cd word" */
 void cd_function(char *inputDirectory){
 
-	condenseSlashes(inputDirectory); 
+	condense(inputDirectory, ' '); 
 
 	char *currentDirectory = malloc(300 * sizeof(char));
 
