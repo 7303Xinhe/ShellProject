@@ -103,7 +103,6 @@ int   savedInput; //input channel
 int   savedError; //error channel
 int   addedWords;
 
-int   piped;
 int   builtin_type;
 
 char* cdPath;

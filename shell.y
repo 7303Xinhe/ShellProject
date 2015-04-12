@@ -108,7 +108,6 @@ write_to_case:
 pipe_case:
 		PIPE {
 			insertToWordTable("|");
-			piped = TRUE;
 		};
 ampersand_case:
 		AMPERSAND {

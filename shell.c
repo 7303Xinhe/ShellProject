@@ -72,10 +72,6 @@ void processCommand() {
 	if(builtin_type > 0)
 		do_it();
 	// take care of all possible cases (redirections and pipes)
-	else if(piped) {
-		execute_pipes();
-		piped = FALSE;
-	}
 	else
 		execute();
 }
