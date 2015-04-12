@@ -1,5 +1,5 @@
 shell: lex.yy.c y.tab.c
-	gcc -g shell.c lex.yy.c y.tab.c -o shell
+	gcc -g main.c lex.yy.c y.tab.c -o shell
 lex.yy.c: y.tab.c shell.lex
 	flex shell.lex
 y.tab.c: shell.y

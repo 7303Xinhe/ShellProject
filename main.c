@@ -19,9 +19,11 @@ main() {
 			case OK:
 				processCommand();
 				break;
-			default: 				
+			default: 
+				printf("uhhh...whoops.\n");				
 				break;
 		}
+		resetGlobals();
 	}
 }
 
@@ -35,7 +37,7 @@ void shell_init() {
 	wordArray[0] = strdup("");
 
 	aliasCount = 0;
-	wordCount = 0; //number of wordCount
+	wordCount = 0; 
 	addedWords = 0;
 	builtin_type = 0;
 	cdPath = malloc(500 * sizeof(char));
@@ -48,6 +50,8 @@ void shell_init() {
 	//signal(SIGINT, SIG_IGN); //prevent crash from ctrl-c
 	signal(SIGTSTP, SIG_IGN); //prevent crash from ctrl-z
 	signal(SIGQUIT, SIG_IGN); //prevent crash from ctrl-/
+	int i;
+	for (i = 0; i < SIGRTMAX; ++i) { signal(i, SIG_IGN); }
 
 	// start in home
 	cd_home_function();
@@ -55,6 +59,14 @@ void shell_init() {
 	// lineHeaderPath();
 }
 
+void resetGlobals() {
+	wordCount = 0;
+	addedWords = 0;
+	memset(wordArray, 0, sizeof(wordArray)); 
+	free(commands);
+	// reset to 0
+	builtin_type = 0;
+}
 
 int getCommand() {
 	// error
@@ -91,13 +103,13 @@ void do_it() {
 			cd_function(cdPath);
 			break;
 		case UNALIAS_DEF:
-			unalias_function(variable, 1);
+			unalias_function(variable);
 			break;
 		case SETENV_DEF:
-			setenv_function(variable, word, 1);	
+			setenv_function(variable, word);	
 			break;
 		case UNSETENV_DEF:
-			unsetenv_function(variable, 1);
+			unsetenv_function(variable);
 			break;
 		case PRINTENV_DEF: 
 			printenv_function();
@@ -105,15 +117,14 @@ void do_it() {
 		default:
 			break;
 	}
-	// reset to 0
-	builtin_type = 0;
 }
 
+/* adds new entry to word table */
 void insertToWordTable(char *text) {
 	char * word = strdup(text);
-	char **tempWordArray = (char **) malloc((wordCount+2)*sizeof(char *)); //null entry and new word
+	char **tempWordArray = (char **) malloc((wordCount+2)*sizeof(char *)); 
 
-	memcpy ((char *) tempWordArray, (char *) wordArray, wordCount*sizeof(char *)); //copy all entries from wordArray into tempWordArray
+	memcpy ((char *) tempWordArray, (char *) wordArray, wordCount*sizeof(char *)); 
 	tempWordArray[wordCount]   = word; //word
 	tempWordArray[++wordCount] = NULL; //null entry
 	wordArray = tempWordArray;
@@ -362,12 +373,6 @@ char* tildeExpansion(char* text) {
 	}
 }
 
-void reset() {
-	wordCount = 0;
-	addedWords = 0;
-	memset(wordArray, 0, sizeof(wordArray)); 
-	free(commands);
-}
 
 void cardsGoneWild(char* text, int position) {
 	char* saveptr;
