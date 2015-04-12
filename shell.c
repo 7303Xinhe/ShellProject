@@ -636,6 +636,7 @@ int fork_pipes (int n, struct command *cmd) {
 	return execvp (cmd [i].argv [0], (char * const *)cmd [i].argv);
 }
 
+
 void aliasToCd(char* text) {
 	char* altered = malloc(300 * sizeof(char));
 	altered = text;

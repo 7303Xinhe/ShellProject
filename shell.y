@@ -94,25 +94,25 @@ execute_commands:
 		|standard_error_redirect_case2
 		|error_case        
 		|word_case
-		|pipe2_case
-		|read_from_case2
-		|write_to_case2
-		|append_case2;
+		|pipe_case
+		|read_from_case
+		|write_to_case
+		|append_case;
 
-read_from_case2:
+read_from_case:
 		READFROM
 							{
 								insertToWordTable("<");
 								//lineHeaderPath();
 							};
-write_to_case2:
+write_to_case:
 		WRITETO
 							{
 								insertToWordTable(">");
 								//lineHeaderPath();
 							};
 
-pipe2_case:
+pipe_case:
 		PIPE
 							{
 								insertToWordTable("|");
@@ -143,14 +143,11 @@ error_case:
 								//printf ("Syntax error.\n");
 								//lineHeaderPath();
 							};
-append_case2:
+append_case:
 		APPEND				{
 								insertToWordTable(">>");
 								//lineHeaderPath();
 							};
-							
-///////////////////////////////taken out shit storm
-
 word_case:
 		WORD				
 							{
