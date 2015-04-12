@@ -435,7 +435,6 @@ void reset() {
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
-
 	if(dup2(savedError, 2) == -1) { //error
 		perror("Error not redirected");
 		printf("Error at line %d\n", __LINE__);
@@ -551,47 +550,6 @@ int spawn_proc(int inChannel, int outChannel, struct command *cmd) {
 	return pid;
 }
 
-int fork_pipes (int n, struct command *cmd) {
-	int i;
-	pid_t pid;
-	int inChannel, fd [2];
-
-	/* The first process should get its input from the original file descriptor 0.  */
-	inChannel = 0;
-
-	/* All but the last part of the pipeline.  */
-	for (i = 0; i < n - 1; ++i) {
-		pipe (fd);
-		spawn_proc (inChannel, fd [1], cmd + i); //take in read end of previous iteration, goes to write end of next iteration
-		/* Close redundant output.  */
-		close (fd [1]);
-		/* Need this for next iteration.  */
-		inChannel = fd [0];
-    }
-
-    /* Last stage of the pipeline - set stdin be the read end of the previous pipe
-    and output to the original file descriptor 1. */  
-    if (inChannel != 0) {
-		dup2 (inChannel, 0);
-	}
-	/* Execute the last stage with the current process. */
-	return execvp (cmd [i].argv [0], (char * const *)cmd [i].argv);
-}
-
-void aliasToCd(char* text) {
-	char* altered = malloc(300 * sizeof(char));
-	altered = text;
-
-	int i;
-	for(i = 0; i < strlen(altered); ++i) {
-		if(altered[i] == ' ') {
-			strcpy(altered, &altered[i+1]);
-			break;
-		}
-
-	}
-	cd_function(altered);
-}
 
 void lineHeaderPath() {
 

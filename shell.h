@@ -51,8 +51,6 @@ void  processCommand(void);
 void  do_it(void);
 void  execute_it(void);
 
-// void  aliasToCd(char* text);
-
 void  unsetenv_function(char *text, int flag);
 void  unalias_function (char *text, int flag);
 void  setenv_function (char *text, char *text2, int flag);
@@ -61,12 +59,6 @@ void  cd_home_function(void);
 void  printenv_function(void);
 void  cd_function(char *text);
 void  alias_print_function(void);
-
-int   standard_error_redirect_function ();
-int   standard_error_redirect_function2 (char *text);
-
-int   write_to_function (char *text);
-int   read_from_function (char *text);
 
 void  yytextProcessor(char* text);
 void  insertToWordTable (char *text);
@@ -84,7 +76,6 @@ char* aliasResolve(char* string);
 int   getAliasValue(char* aliasName, char* aliasValue);
 
 void  condenseSpaces(char* string);
-int   append_function(char* text);
 void  reset(void);
 
 void  execute(void);
@@ -93,7 +84,6 @@ void  printWordArray();
 char* fixText(char *orig, char *rep, char *with);
 void  wordArrayAliasExpansion(char* text, int position);
 int   spawn_proc(int in, int out, struct command *cmd);
-int   fork_pipes (int n, struct command *cmd);
 
 char** wordArray; //words
 
