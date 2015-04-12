@@ -54,12 +54,12 @@ void  processCommand(void);
 void  do_it(void);
 void  execute_it(void);
 
-void  unsetenv_function(char *text, int flag);
-void  setenv_function (char *text, char *text2, int flag);
+void  unsetenv_function(char *text);
+void  setenv_function (char *text, char *text2);
 void  printenv_function(void);
 void  alias_function(char *text, char *text2);
 void  alias_print_function(void);
-void  unalias_function (char *text, int flag);
+void  unalias_function (char *text);
 void  cd_home_function(void);
 void  cd_function(char *text);
 
@@ -82,7 +82,7 @@ char* aliasResolve(char* string);
 int   getAliasValue(char* aliasName, char* aliasValue);
 
 void  condense(char* string, char toCondense);
-void  reset(void);
+void  resetGlobals(void);
 
 void  execute(void);
 void  cardsGoneWild(char* text, int position);
