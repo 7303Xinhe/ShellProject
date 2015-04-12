@@ -99,93 +99,86 @@ execute_commands:
 		|write_to_case
 		|append_case;
 
+
 read_from_case:
-		READFROM
-							{
-								insertToWordTable("<");
-								//lineHeaderPath();
-							};
+		READFROM {
+			insertToWordTable("<");
+			//lineHeaderPath();
+		};
 write_to_case:
-		WRITETO
-							{
-								insertToWordTable(">");
-								//lineHeaderPath();
-							};
-
+		WRITETO{
+			insertToWordTable(">");
+			//lineHeaderPath();
+		};
 pipe_case:
-		PIPE
-							{
-								insertToWordTable("|");
-							};
-
+		PIPE {
+			insertToWordTable("|");
+		};
 ampersand_case:
-		AMPERSAND			
-							{
-								insertToWordTable("&");
-								//lineHeaderPath();
-							};
+		AMPERSAND {
+			insertToWordTable("&");
+			//lineHeaderPath();
+		};
 standard_error_redirect_case:
-		STANDARDERROR1
-							{
-								insertToWordTable("2>&1");
-								//lineHeaderPath();
-							};
+		STANDARDERROR1 {
+			insertToWordTable("2>&1");
+			//lineHeaderPath();
+		};
 
 standard_error_redirect_case2:
-		STANDARDERROR2		
-							{
-								insertToWordTable(yytext);
-								//lineHeaderPath();
-							};
+		STANDARDERROR2 {
+			insertToWordTable(yytext);
+			//lineHeaderPath();
+		};
 error_case:
-		error
-							{
-								//printf ("Syntax error.\n");
-								//lineHeaderPath();
-							};
+		error {
+			//printf ("Syntax error.\n");
+			//lineHeaderPath();
+		};
 append_case:
-		APPEND				{
-								insertToWordTable(">>");
-								//lineHeaderPath();
-							};
+		APPEND {
+			insertToWordTable(">>");
+			//lineHeaderPath();
+		};
+		
 word_case:
-		WORD				
-							{
-								yytextProcessor(yytext);
-							}
-	|	ENVIRONMENTVARIABLE
-							{
-								char* actualText = malloc(300 * sizeof(char));
-								if(actualText == (char*) NULL) //error
-								{
-										perror ("Error with memory allocation.");
-										printf ("Error at line %d\n", __LINE__);
-								}
-								else
-								{
-									strncpy(actualText, &yytext[2], strlen(yytext) - 3); //take everything between ${ and }
-									char* result = malloc(300 * sizeof(char));
-									if(result == (char*) NULL) //error
-									{
-										perror ("Error with memory allocation.");
-										printf ("Error at line %d\n", __LINE__);
-									}
-									else
-									{
-										if(getenv(actualText) == NULL) //invalid environment variable
-										{
-											perror ("Entered an invalid environment variable.");
-											printf ("Error at line %d\n", __LINE__);
-										}
-										else
-										{
-											strcpy(result, getenv(actualText)); //get value, if any
-											insertToWordTable(result);
-										}
-									}
-								}		
-							}
-	|	QUOTES				{
-								quoteFunction(yytext);
-							};
+		WORD {
+			yytextProcessor(yytext);
+		}
+		|		
+		ENVIRONMENTVARIABLE {
+			char* actualText = malloc(300 * sizeof(char));
+			if(actualText == (char*) NULL) //error
+			{
+					perror ("Error with memory allocation.");
+					printf ("Error at line %d\n", __LINE__);
+			}
+			else
+			{
+				strncpy(actualText, &yytext[2], strlen(yytext) - 3); //take everything between ${ and }
+				char* result = malloc(300 * sizeof(char));
+				if(result == (char*) NULL) //error
+				{
+					perror ("Error with memory allocation.");
+					printf ("Error at line %d\n", __LINE__);
+				}
+				else
+				{
+					if(getenv(actualText) == NULL) //invalid environment variable
+					{
+						perror ("Entered an invalid environment variable.");
+						printf ("Error at line %d\n", __LINE__);
+					}
+					else
+					{
+						strcpy(result, getenv(actualText)); //get value, if any
+						insertToWordTable(result);
+					}
+				}
+			}		
+		}
+		|	
+		QUOTES {
+			quoteFunction(yytext);
+		};
 
