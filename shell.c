@@ -3,7 +3,6 @@
 #include "alias_functions.c"
 #include "cd_functions.c"
 #include "env_functions.c"
-#include "error_functions.c"
 #include "execute_function.c"
 
 main() {
@@ -23,6 +22,53 @@ main() {
 			default: 				
 				break;
 		}
+	}
+}
+
+void shell_init() {
+	// black background
+	
+	printf("[01;32;40m" "\n****************************** SHELL STARTS HERE ******************************\n");
+	printf("[00;32;40m" "");
+
+	wordArray = (char**) malloc(500 * sizeof(char*));
+	wordArray[0] = strdup("");
+
+	aliasCount = 0;
+	wordCount = 0; //number of wordCount
+	addedWords = 0;
+	builtin_type = 0;
+	cdPath = malloc(500 * sizeof(char));
+	variable = malloc(500 * sizeof(char));
+	word = malloc(500 * sizeof(char));
+	
+	myHome = malloc(500 * sizeof(char));
+	if(myHome == (char *) NULL) { //error
+		perror("Memory allocation error."); 
+		printf("Error at line %d\n", __LINE__);
+		lineHeaderPath();
+		return;
+	}
+	strcpy(myHome, getenv("HOME")); //get home directory so that it stays constant
+	//signal(SIGINT, SIG_IGN); //prevent crash from ctrl-c
+	signal(SIGTSTP, SIG_IGN); //prevent crash from ctrl-z
+	signal(SIGQUIT, SIG_IGN); //prevent crash from ctrl-/
+
+	// start in home
+	cd_home_function();
+	// // print path
+	// lineHeaderPath();
+}
+
+
+int getCommand() {
+	// error
+	if(yyparse()) {
+		return ERRORS;
+	} 
+	// ok
+	else {
+		return OK;
 	}
 }
 
@@ -68,52 +114,6 @@ void do_it() {
 	builtin_type = 0;
 }
 
-int getCommand() {
-
-	// error
-	if(yyparse()) {
-		return ERRORS;
-	} 
-	// ok
-	else {
-		return OK;
-	}
-}
-
-void shell_init() {
-	// black background
-	
-	printf("[01;32;40m" "\n****************************** SHELL STARTS HERE ******************************\n");
-	printf("[00;32;40m" "");
-
-	wordArray = (char**) malloc(500 * sizeof(char*));
-	wordArray[0] = strdup("");
-
-	aliasCount = 0;
-	wordCount = 0; //number of wordCount
-	addedWords = 0;
-	builtin_type = 0;
-	cdPath = malloc(500 * sizeof(char));
-	variable = malloc(500 * sizeof(char));
-	word = malloc(500 * sizeof(char));
-	
-	myHome = malloc(500 * sizeof(char));
-	if(myHome == (char *) NULL) { //error
-		perror("Memory allocation error."); 
-		printf("Error at line %d\n", __LINE__);
-		lineHeaderPath();
-		return;
-	}
-	strcpy(myHome, getenv("HOME")); //get home directory so that it stays constant
-	//signal(SIGINT, SIG_IGN); //prevent crash from ctrl-c
-	signal(SIGTSTP, SIG_IGN); //prevent crash from ctrl-z
-	signal(SIGQUIT, SIG_IGN); //prevent crash from ctrl-/
-
-	// start in home
-	cd_home_function();
-	// // print path
-	// lineHeaderPath();
-}
 
 void insertToWordTable(char *text) {
 	char * es;
@@ -137,11 +137,6 @@ void insertToWordTable(char *text) {
 	++wordCount; //increment index
 }
 
-
-
-int getWords() {
-	return wordCount;
-}
 char* getDirectories(char* textmatch) {
 	int i;
 	int flags = 0;
@@ -307,7 +302,6 @@ void quoteFunction(char* text) {
 	}
 }
 
-
 void yytextProcessor(char* text) {
 	char* result2 = malloc(300 * sizeof(char));
 	if(result2 == (char*) NULL) {//error with memory allocation
@@ -315,6 +309,7 @@ void yytextProcessor(char* text) {
 		printf ("Error at line %d\n", __LINE__);
 		return;
 	}
+
 	char* pch = strtok(text, ":"); //colon-separate
 	strcpy(result2, "");
 	while(pch != NULL) {
@@ -329,10 +324,10 @@ void yytextProcessor(char* text) {
 		strcat(result2, ":"); //add colon
 		pch = strtok(NULL, ":");
 	}
+	
 	result2[strlen(result2) - 1] = '\0'; //remove last colon
 	insertToWordTable(result2);
 }
-
 
 char* tildeExpansion(char* text) {
 
@@ -410,7 +405,25 @@ void condenseSpaces(char* string) {
 		}
 	}
 }
-yy
+
+
+int append_function(char* text) {
+	int out = open(text, O_RDWR | O_APPEND | S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR); //open file
+	if(out == -1) { //error
+		perror("File not created");
+		printf("Error at line %d\n", __LINE__);
+		return -1;
+	}
+	savedOutput = dup(1); //save current output
+	//redirect output to file
+	if (dup2(out, 1) == -1) {//error
+		perror("Output not redirected");
+		printf("Error at line %d\n", __LINE__);
+		return -1;
+	}
+	return 0;
+}
+
 void reset() {
 	if(dup2(savedInput, 0) == -1) {//error
 		perror("Input not redirected");
@@ -432,11 +445,6 @@ void reset() {
 	addedWords = 0;
 	memset(wordArray, 0, sizeof(wordArray)); //clear contents
 }
-
-
-
-
-
 
 void word3_function(char* text, int position) {
 	char* saved3;
@@ -527,8 +535,7 @@ void printWordArray() {
 	}
 }
 
-
-int spawn_proc (int inChannel, int outChannel, struct command *cmd) {
+int spawn_proc(int inChannel, int outChannel, struct command *cmd) {
 	pid_t pid;
 	if ((pid = fork ()) == 0) { //in parents
     	if (inChannel != 0) {
@@ -543,7 +550,6 @@ int spawn_proc (int inChannel, int outChannel, struct command *cmd) {
     }
 	return pid;
 }
-
 
 int fork_pipes (int n, struct command *cmd) {
 	int i;
@@ -572,7 +578,6 @@ int fork_pipes (int n, struct command *cmd) {
 	return execvp (cmd [i].argv [0], (char * const *)cmd [i].argv);
 }
 
-
 void aliasToCd(char* text) {
 	char* altered = malloc(300 * sizeof(char));
 	altered = text;
@@ -587,7 +592,6 @@ void aliasToCd(char* text) {
 	}
 	cd_function(altered);
 }
-
 
 void lineHeaderPath() {
 
@@ -608,8 +612,7 @@ void lineHeaderPath() {
 	printf("[00;00;40m");
 }
 
-
-void condenseSlashes(char* string) { //removes extra slashes in the beginning of a string so ////home -> /home, ./////home -> ./home
+void condenseSlashes(char* string) { 
 	int i = 0;
 	int size = strlen(string);
 	for(i = 0; i < size;){
@@ -625,5 +628,7 @@ void condenseSlashes(char* string) { //removes extra slashes in the beginning of
 	}
 }
 
-
+int getWords() {
+	return wordCount;
+}
 

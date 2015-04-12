@@ -88,7 +88,9 @@ void execute() {
 			}
 		}
 
+		// number of commands is pipeCount + 1
 		commandCount = pipeCount + 1;
+		
 		// resolves aliases in the array
 		for(i = 0; i < commandCount; ++i) { 
 			if(i == 0) {
