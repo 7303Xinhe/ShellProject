@@ -366,27 +366,11 @@ char* tildeExpansion(char* text) {
 	}
 }
 
-/* removes extra spaces in the word */
-
 void reset() {
-	if(dup2(savedInput, 0) == -1) {//error
-		perror("Input not redirected");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
-	if(dup2(savedOutput, 1) == -1) {//error
-		perror("Output not redirected");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
-	if(dup2(savedError, 2) == -1) { //error
-		perror("Error not redirected");
-		printf("Error at line %d\n", __LINE__);
-		return;
-	}
 	wordCount = 0;
 	addedWords = 0;
-	memset(wordArray, 0, sizeof(wordArray)); //clear contents
+	memset(wordArray, 0, sizeof(wordArray)); 
+	free(commands);
 }
 
 void cardsGoneWild(char* text, int position) {

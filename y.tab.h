@@ -61,8 +61,8 @@ extern int yydebug;
     PIPE = 271,
     AMPERSAND = 272,
     APPEND = 273,
-    STANDARDERROR1 = 274,
-    STANDARDERROR2 = 275
+    STANDARDERRORFILE = 274,
+    STANDARDERROROUTPUT = 275
   };
 #endif
 /* Tokens.  */
@@ -82,8 +82,8 @@ extern int yydebug;
 #define PIPE 271
 #define AMPERSAND 272
 #define APPEND 273
-#define STANDARDERROR1 274
-#define STANDARDERROR2 275
+#define STANDARDERRORFILE 274
+#define STANDARDERROROUTPUT 275
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

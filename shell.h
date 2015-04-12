@@ -62,7 +62,7 @@ void  alias_print_function(void);
 
 void  yytextProcessor(char* text);
 void  insertToWordTable (char *text);
-void processEnvironmentVariable(char* yyText);
+void  processEnvironmentVariable(char* yyText);
 
 int   getWords(void);
 
@@ -103,7 +103,7 @@ int   savedInput; //input channel
 int   savedError; //error channel
 int   addedWords;
 
-int piped;
+int   piped;
 int   builtin_type;
 
 char* cdPath;
@@ -114,5 +114,6 @@ char* word;
 int   aliasCount; 
 
 struct aliasStruct *aliases; 
+struct command *commands; 
 
 #endif
