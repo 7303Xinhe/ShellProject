@@ -478,29 +478,23 @@ void execute() {
 
 		// set indexes
 		for(i = 0; i < wordCount; ++i) {
-			if(strcmp(wordArray[i], "<") == 0) { 
+			if(strcmp(wordArray[i], "<") == 0) 
 				readIndex = i;
-			}
 			// write 
-			else if(strcmp(wordArray[i], ">") == 0) {
+			else if(strcmp(wordArray[i], ">") == 0) 
 				writeIndex = i;
-			}
 			// append
-			else if(strcmp(wordArray[i], ">>") == 0) { 
+			else if(strcmp(wordArray[i], ">>") == 0) 
 				appendIndex = i;
-			}
 			// standard error redirect 2 
-			else if(strcmp(wordArray[i], "2>&1") == 0) { 
+			else if(strcmp(wordArray[i], "2>&1") == 0) 
 				standardErrorOutputIndex = i;
-			}
 			// standard error redirect 1
-			else if(strcmp(wordArray[i], "2>") == 0) { 
+			else if(strcmp(wordArray[i], "2>") == 0)  
 				standardErrorFileIndex = i;
-			}
 			// ampersand
-			else if(strcmp(wordArray[i], "&") == 0) { 
+			else if(strcmp(wordArray[i], "&") == 0) 
 				ampersandIndex = i;
-			}
 		}
 		
 
@@ -610,29 +604,29 @@ void execute() {
 		// reset commandCount
 		int endOfCommand = 0;
 		
-		// no pipes
-			if(readIndex != 0) { 
+			if(readIndex != 0) 
 				endOfCommand = readIndex;
-			} else if(writeIndex != 0) { 
+			else if(writeIndex != 0) 
 				endOfCommand = writeIndex;
-			} else if(appendIndex != 0) {
+			else if(appendIndex != 0) 
 				endOfCommand = appendIndex;
-			} else if(standardErrorOutputIndex != 0) { 
+			else if(standardErrorOutputIndex != 0) 	
 				endOfCommand = standardErrorOutputIndex;
-			} else if(standardErrorFileIndex != 0) { 
+			else if(standardErrorFileIndex != 0)  
 				endOfCommand = standardErrorFileIndex;
-			} else if(ampersandIndex != 0) { 
+			else if(ampersandIndex != 0) 
 				endOfCommand = ampersandIndex;
-			} else { // just normal command with no special needs
+			else  // just normal command with no special needs
 				endOfCommand = wordCount;
-			}
+
 			char* result = malloc(300 * sizeof(char));
 
 			char* arguments[endOfCommand + 1];
 			int i;
-			for(i = 0; i < endOfCommand; i++) {
+			
+			for(i = 0; i < endOfCommand; i++) 
 				arguments[i] = wordArray[i]; 
-			}
+			
 			arguments[endOfCommand] = (char *)0; 
 
 			// run command	
