@@ -40,7 +40,7 @@ void unalias_function(char *name) {
 	for (i = 0; i < aliasCount; ++i) {
 		// check for match
 		if (strncmp((aliases[i]).name, name, length) == 0) { 
-			for (j = i; j < aliasCount; j++) {
+			for (j = i; j < aliasCount; ++j) {
 				// shift to left
 				aliases[j] = aliases[j + 1]; 
 			}
@@ -71,7 +71,7 @@ int getAliasValue(char* aliasName, char* returnValue) {
 
 
 
-/* takes in name of alias and returns the final resolved value of that alias name or <LOOP> if it loops infinitely */
+/* takes in name of alias and returns the final resolved value of that alias name or INFIN if it loops infinitely */
 char* aliasResolver(char* alias) {
 	char* name = malloc(500*sizeof(char)); 
 	strcpy(name, alias);
@@ -79,8 +79,7 @@ char* aliasResolver(char* alias) {
 	// keeps track of alias names already encountered 
 	char* aliasTracker[100]; 
 	int nestedSize = 0; //keeps track of size of names in the tracker
-	aliasTracker[nestedSize] = name;
-	++nestedSize;
+	aliasTracker[nestedSize++] = name;
 
 	// first value
 	char* value = malloc(500*sizeof(char));
@@ -99,14 +98,13 @@ char* aliasResolver(char* alias) {
 			return value;
 		} 
 
-		aliasTracker[nestedSize] = name;
-		++nestedSize;
+		aliasTracker[nestedSize++] = name;
 
 		int i;
 		for(i = 0; i < nestedSize; ++i) {
-			// returns "<LOOP>" if the alias generates an infinite loop 
+			// returns "INFIN" if the alias generates an infinite loop 
 			if(strcmp(value, aliasTracker[i]) == 0) { 
-				strcpy(value, "<LOOP>");
+				strcpy(value, "INFIN");
 				free(name);
 				return value;
 			}
@@ -138,17 +136,17 @@ void wordArrayAliasExpansion(char* name, int position) {
 
 	int i;
 	int index = 0;
-	for(i = position + 1; i < wordCount; i++)
+	for(i = position + 1; i < wordCount; ++i)
 	{
 		textForLater[index] = malloc((strlen(wordArray[i]) + 1) * sizeof(char)); //allocate enough space for entry
 		
 		strcpy(textForLater[index], wordArray[i]); //copy entry into array
-		index++;
+		++index;
 	}
 	char* saved4;
 	char* pch2 = strtok_r(result2, " ", &saved4);
 	int j = 0;
-	wordCount--; //since we are overwriting an entry, need to decrement wordCount beforehand
+	--wordCount; //since we are overwriting an entry, need to decrement wordCount beforehand
 	while(pch2 != NULL)
 	{
 		char* pair;
@@ -156,18 +154,17 @@ void wordArrayAliasExpansion(char* name, int position) {
 		
 		strcpy(pair, pch2); //copy name into pointer
 		tempWordArray[position + j] = pair; //word
-		j++; //move forward
-		wordCount++; //added another word
+		++j; //move forward
+		++wordCount; //added another word
 		pch2 = strtok_r(NULL, " ", &saved4);
 	}
 	int k;
 	index = 0;
-	for(k = position + j; k < wordCount; k++)
+	for(k = position + j; k < wordCount; ++k)
 	{
 		tempWordArray[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
 		
-		strcpy(tempWordArray[k], textForLater[index]); //copy over
-		index++; //move to next entry
+		strcpy(tempWordArray[k], textForLater[index++]); //copy over
 	}
 	tempWordArray[wordCount + 1] = NULL; //null entry
 	wordArray = tempWordArray;

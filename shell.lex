@@ -19,7 +19,7 @@ bye 		return BYE;
 "\""[-*? \\<>&\|${},_\"@!#%'=~.:/:A-Za-z0-9]+"\"" 	return QUOTES;
 "${"[-*?@!#%,'=~._:/:AAN-Za-z0-9]+"}" 				return ENVIRONMENTVARIABLE; 
 
-[ \t]+ /* ignore end of line */;
+[ \t]+ 
 
 "<" 	return READFROM;
 ">" 	return WRITETO;

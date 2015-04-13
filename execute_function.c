@@ -30,7 +30,7 @@ void execute() {
 	// doing all executions in the child process
 	int childpid;
 	if((childpid = fork()) == -1) {
-		perror("Error forking");
+		perror("Forking error.");
 		printf("Error at line %d\n", __LINE__);
 		exit(0);
 		return;
@@ -63,7 +63,7 @@ void execute() {
 			// possible alias location: first command
 			if(i == 0) {
 				// infinite alias expansion
-				if(strcmp(aliasResolver(wordArray[i]), "<LOOP>") == 0) { 
+				if(strcmp(aliasResolver(wordArray[i]), "INFIN") == 0) { 
 					perror("Infinite alias expansion.");
 					printf("Error at line %d\n", __LINE__);
 					exit(0);
@@ -80,7 +80,7 @@ void execute() {
 			else {
 				int j;
 				// infinite alias expansion
-				if(strcmp(aliasResolver(wordArray[pipes[i - 1] + 1]), "<LOOP>") == 0) {
+				if(strcmp(aliasResolver(wordArray[pipes[i - 1] + 1]), "INFIN") == 0) {
 					perror("Infinite alias expansion.");
 					printf("Error at line %d\n", __LINE__);
 					exit(0);
@@ -155,7 +155,6 @@ void execute() {
 				ampersandIndex = i;
 			}
 		}
-		
 
 		// read
 		if(readIndex != 0) {
@@ -264,7 +263,6 @@ void execute() {
 			} else { // just normal command with no special needs
 				endOfCommand = wordCount;
 			}
-			char* result = malloc(300 * sizeof(char));
 
 			char* arguments[endOfCommand + 1];
 			int i;
@@ -307,7 +305,6 @@ void execute() {
 
 				// FIRST
 				if(i == 0) { 
-					printf("first\n");
 					char* arguments [pipes[0] + 1];
 					int j = 0;
 					for(j = 0; j < pipes[0]; ++j) {
@@ -326,10 +323,9 @@ void execute() {
 				}
 				// LAST
 				else if(i == (commandCount - 1)) { 
-					printf("last\n");
 					char* arguments[endOfCommand - pipes[i - 1]];
 					int j;
-					for(j = 0; j < endOfCommand - pipes[i - 1] - 1; j++) {
+					for(j = 0; j < endOfCommand - pipes[i - 1] - 1; ++j) {
 						arguments[j] = wordArray[pipes[i - 1] + 1 + j]; 
 					}
 					arguments[endOfCommand - pipes[i - 1] - 1] = (char *)0; //null terminator
@@ -344,7 +340,6 @@ void execute() {
 				}
 				// MID
 				else { 
-					printf("mid\n");
 					char* arguments[pipes[i] - pipes[i - 1]];
 					int j;
 					for(j = 0; j < pipes[i] - pipes[i - 1] - 1; ++j) {
@@ -370,9 +365,7 @@ void execute() {
 			/* All but the last part of the pipeline.  */
 			for (x = 0; x < commandCount - 1; ++x) {
 				pipe (fd);
-				//spawn_proc (inChannel, fd [1], commandArray + x); //take in read end of previous iteration, goes to write end of next iteration
 				
-
 				pid_t pid;
 				if ((pid = fork ()) == 0) { //in parents
 			    	if (inChannel != 0) {

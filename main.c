@@ -15,6 +15,7 @@ main(int argc, char* argv) {
 		lineHeaderPath();
 		switch(getCommand()) {
 			case ERRORS:
+				printf("You did something wrong.\n");
 				break;
 			case OK:
 				processCommand();
@@ -27,15 +28,17 @@ main(int argc, char* argv) {
 	}
 }
 
+/* used to set up the globals and such */
 void shell_init() {
-	// black background
 	
+	// black background	
 	printf("[01;32;40m" "\n****************************** SHELL STARTS HERE ******************************\n");
 	printf("[00;32;40m" "");
 
 	wordArray = (char**) malloc(500 * sizeof(char*));
 	wordArray[0] = strdup("");
 
+	// set the variables
 	aliasCount = 0;
 	wordCount = 0; 
 	addedWords = 0;
@@ -47,18 +50,18 @@ void shell_init() {
 	HOME = malloc(500 * sizeof(char));
 	strcpy(HOME, getenv("HOME")); //get home directory so that it stays constant
 	
-	//signal(SIGINT, SIG_IGN); //prevent crash from ctrl-c
-	signal(SIGTSTP, SIG_IGN); //prevent crash from ctrl-z
-	signal(SIGQUIT, SIG_IGN); //prevent crash from ctrl-/
+	// prevents this god from crashes
+	signal(SIGINT, SIG_IGN); 
+	signal(SIGTSTP, SIG_IGN); 
+	signal(SIGQUIT, SIG_IGN); 
 	int i;
 	for (i = 0; i < SIGRTMAX; ++i) { signal(i, SIG_IGN); }
 
 	// start in home
 	cd_home_function();
-	// // print path
-	// lineHeaderPath();
 }
 
+/* called after every iteration to reset all variables */
 void resetGlobals() {
 	wordCount = 0;
 	addedWords = 0;
@@ -68,19 +71,18 @@ void resetGlobals() {
 	builtin_type = 0;
 }
 
+/* runs the lexx and yac */
 int getCommand() {
 	// error
-	if(yyparse()) {
+	if(yyparse()) 
 		return ERRORS;
-	} 
 	// ok
-	else {
+	else 
 		return OK;
-	}
 }
 
+/* calls appropriate functions */
 void processCommand() {
-	
 	if(builtin_type > 0)
 		do_it();
 	// take care of all possible cases (redirections and pipes)
@@ -88,6 +90,7 @@ void processCommand() {
 		execute();
 }
 
+/* for built-in */
 void do_it() {
 	switch (builtin_type) {
 		case ALIAS_DEF:
@@ -151,7 +154,7 @@ char* getDirectories(char* matchString) {
 		if((ent = readdir(dir)) != NULL) {
 			flags |= (i > 1 ? GLOB_APPEND : 0);
 			if (glob(matchString, flags, globerr, results) != 0) {//error
-				printf("Error with globbing\n");
+				printf("Error with glob\n");
 				printf("Error at line %d\n", __LINE__);
 				return "";
 			}
@@ -166,7 +169,7 @@ char* getDirectories(char* matchString) {
 		strcpy(result, "");
 		for(i = 0; i < results->gl_pathc; i++) {
 			strcat(result, results->gl_pathv[i]);
-			strcat(result, "$");
+			strcat(result, "[^");
 		}
 		result[strlen(result) - 1] = '\0'; //null terminate
 		globfree(results); //free glob expression
@@ -175,89 +178,67 @@ char* getDirectories(char* matchString) {
 	}
 	return "";
 }
-
-
-int globerr(const char *path, int eerrno) {//error
-	perror ("Error with globbing\n");
+int globerr(const char *path, int eerrno) {
+	perror ("Error with glob\n");
 	printf ("Error with path %s at line %d\n", path, __LINE__);
-	return 0;	/* let glob() keep going */
+	return 0;	
 }
 
+
+/* get word between quotes */
 void quoteFunction(char* text) {
 	condense(text, ' ');
-	char* actualText = malloc(300 * sizeof(char));
-	if(actualText == (char*) NULL) {//error
-		perror ("Memory allocation error.");
-		printf ("Error at line %d\n", __LINE__);
-		return;
-	}
-	strncpy(actualText, &text[1], strlen(text) - 2); //everything between quotes
+	char* betweenQuotes = malloc(300 * sizeof(char));
+
+	strncpy(betweenQuotes, &text[1], strlen(text) - 2); 
 	char* result = malloc(300 * sizeof(char));
-	if (result == (char*) NULL) {//error
-		perror ("Memory allocation error.");
-		printf ("Error at line %d\n", __LINE__);
-		return;
-	}
+
 	int index = 0;
 	int i;
 	int* results = malloc(300 * sizeof(int));
 	int resultCount = 0;
-	int opens = 0;
-	int ends = 0;
-	if (results == (int*) NULL) {//error
-		perror ("Memory allocation error.");
-		printf ("Error at line %d\n", __LINE__);
-		return;
-	}
+	int openBrace = 0;
+	int closeBrace = 0;
 	
-	// Environment variable expansion
-	for(i = 0; i < strlen(actualText); i ++) {
-		if(actualText[i] == '$' && actualText[i + 1] == '{') { //opener
+	// Checks for environment variable expansion
+	for(i = 0; i < strlen(betweenQuotes); ++i) {
+		if(betweenQuotes[i] == '$' && betweenQuotes[i + 1] == '{') { 
 			index = i;
-			results[resultCount] = index;
-			resultCount++;
-			opens++;
+			results[resultCount++] = index;			
+			++openBrace;
 		}
-		if(actualText[i] == '}') {//closer
+		if(betweenQuotes[i] == '}') {//closer
 			index = i;
-			results[resultCount] = index;
-			resultCount++;
-			ends++;
+			results[resultCount++] = index;
+			++closeBrace;
 		}
-		if(ends > opens) { //incorrect input
-			perror ("Error with input.");
+		if(closeBrace > openBrace) { 
+			perror ("Input error..");
 			printf ("Error at line %d\n", __LINE__);
 			return;
 		}
 	}
-	if(opens != ends) {//not balanced
+	if(openBrace != closeBrace) {
 		perror ("Syntax error");
 		printf ("Error at line %d\n", __LINE__);
 		return;
 	}
 	char *result2 = malloc(300 * sizeof(char));
-	if(result2 == (char*) NULL) { //error
-		perror ("Memory allocation error.");
-		printf ("Error at line %d\n", __LINE__);
-		return;
+
+	// no openBrace or closeBrace
+	if(resultCount == 0) {
+		insertToWordTable(betweenQuotes);
 	}
-	if(resultCount == 0) {//no opens or ends
-		insertToWordTable(actualText);
-	}
-	else {//opens and ends
+	else {
 		strcpy(result2, "");
 		char* result3 = malloc(300 * sizeof(char));
-		if(result3 == (char*) NULL) { //error
-			perror ("Memory allocation error.");
-			printf ("Error at line %d\n", __LINE__);
-			return;
-		}
-		for(i = 0; i < resultCount; i++) {
+	
+		for(i = 0; i < resultCount; ++i) {
 			if(i == 0) {//first open
-				strncat(result2, &actualText[0], results[0]); //add the beginning
-				memcpy(result3, &actualText[results[0] + 2], (results[1] - results[0] - 2) * sizeof(char));
+				strncat(result2, &betweenQuotes[0], results[0]); //add the beginning
+				memcpy(result3, &betweenQuotes[results[0] + 2], (results[1] - results[0] - 2) * sizeof(char));
 				if(getenv(result3) == NULL) {//invalid environment variable
-					perror ("Entered an invalid environment variable.");
+					perror ("Invalid environment variable.");
 					printf ("Error at line %d\n", __LINE__);
 					return;
 				}
@@ -265,11 +246,11 @@ void quoteFunction(char* text) {
 				strcat(result2, result3);
 				memset(result3, 0, sizeof(result3)); //clear buffer
 			}
-			else if(i % 2 == 0 && i != 0) {//other opens
-				strncat(result2, &actualText[results[i - 1] + 1], results[i] - results[i - 1] - 1);
-				strncpy(result3, &actualText[results[i] + 2], (results[i + 1] - results[i] - 2) * sizeof(char));
+			else if(i % 2 == 0 && i != 0) {//other openBrace
+				strncat(result2, &betweenQuotes[results[i - 1] + 1], results[i] - results[i - 1] - 1);
+				strncpy(result3, &betweenQuotes[results[i] + 2], (results[i + 1] - results[i] - 2) * sizeof(char));
 				if(getenv(result3) == NULL) {
-					perror ("Entered an invalid environment variable.");
+					perror ("Invalid environment variable.");
 					printf ("Error at line %d\n", __LINE__);
 					return;
 				}
@@ -281,38 +262,40 @@ void quoteFunction(char* text) {
 				//do nothing
 			}
 		}
-		if(results[resultCount - 1] != strlen(actualText) - 1) {//more left
-			strcat(result2, &actualText[results[resultCount - 1] + 1]); //add all the leftovers
+		// more
+		if(results[resultCount - 1] != strlen(betweenQuotes) - 1) {
+			strcat(result2, &betweenQuotes[results[resultCount - 1] + 1]); //add all the leftovers
 			insertToWordTable(result2);
 		}
+		// done
 		else {
 			insertToWordTable(result2);
 		}
 	}
 }
 
+/* processes the text passed and calls insert */
 void yytextProcessor(char* text) {
-	char* result2 = malloc(300 * sizeof(char));
+	char* result = malloc(300 * sizeof(char));
 	
-	char* pch = strtok(text, ":"); //colon-separate
-	strcpy(result2, "");
-	while(pch != NULL) {
-		char* result = malloc(300 * sizeof(char));
-		strcpy(result, tildeExpansion(pch)); //get result of tilde expansion and reset
-		strcat(result2, result);
-		strcat(result2, ":"); //add colon
-		pch = strtok(NULL, ":");
+	char* string = strtok(text, ":"); 
+	strcpy(result, "");
+	while(string != NULL) {
+		char* copy = strdup(tildeExpansion(string));
+		strcat(result, copy);
+		strcat(result, ":"); 
+		string = strtok(NULL, ":");
 	}
 	
-	result2[strlen(result2) - 1] = '\0'; //remove last colon
-	insertToWordTable(result2);
+	result[strlen(result) - 1] = '\0'; //remove last colon
+	insertToWordTable(result);
 }
 
+/* expands words with ~ */
 char* tildeExpansion(char* text) {
-
 	if(strncmp(text, "~", 1) == 0) {//tilde expansion
 		int length = strlen(&text[1]); 
-		if(length == 0) {//empty afterwards, so get home directory
+		if(length == 0) {		// single tilde
 			int result = chdir(HOME); //get home directory and move to it
 			if(result == -1) { //error
 				perror("Directory not changed");
@@ -326,7 +309,7 @@ char* tildeExpansion(char* text) {
 			if (result == NULL) {//end of string, so must be username
 				pwd = getpwnam(&text[1]); //gets user info
 				if (pwd == NULL) {//error
-					perror("Error with getting struct.");
+					perror("Error retrieving struct.");
 					printf("Error at line %d\n", __LINE__);
 					return;
 				}
@@ -343,21 +326,16 @@ char* tildeExpansion(char* text) {
 				strcpy(directory, HOME); //start with home directory
 				int index = length - 1;
 				int i;
-				for(i = 0; i < length; i++)	{
+				for(i = 0; i < length; ++i)	{
 					if(text[i] == '/') {//find slash
 						index = i;
 						break;
 					}
 				}
-				char *toadd = malloc(300 * sizeof(char));
-				if(toadd == (char *) NULL) {
-					perror("Memory allocation error.");
-					printf("Error at line %d\n", __LINE__);
-					return;
-				}
-				strcpy(toadd, &text[index + 1]); //add everything after /
+				char* appender = strdup(&text[index + 1]);
+				
 				strcat(directory, "/"); //add slash
-				strcat(directory, toadd); //append
+				strcat(directory, appender); //append
 				return directory;
 			}
 		}
@@ -372,14 +350,13 @@ void cardsGoneWild(char* text, int position) {
 	char* saveptr;
 	char* result = strdup(text);
 	char* result2 = strdup(text);
-	char* filesList = strtok_r(result, "$", &saveptr); //parse to get each indiviual file
-	
+	char* filesList = strtok_r(result, "[^", &saveptr); //parse to get each indiviual file
 	
 	// how many positions we add
 	int tokens = 0; 
 	while(filesList != NULL) {
-		tokens++;
-		filesList = strtok_r(NULL, "$", &saveptr);
+		++tokens;
+		filesList = strtok_r(NULL, "[^", &saveptr);
 	}
 
 	//  create temp table
@@ -396,43 +373,41 @@ void cardsGoneWild(char* text, int position) {
 		textForLater[index] = malloc((strlen(wordArray[i]) + 1) * sizeof(char)); // allocate enough space for entry
 
 		strcpy(textForLater[index], wordArray[i]); //copy entry into array
-		index++;
+		++index;
 	}
 
 	char* saveptr2;
-	char* filesList2 = strtok_r(result2, "$", &saveptr2);
+	char* filesList2 = strtok_r(result2, "[^", &saveptr2);
 	int j = 0;
-	wordCount--; //since we are overwriting an entry, need to decrement wordCount beforehand
+	--wordCount; //since we are overwriting an entry, need to decrement wordCount beforehand
 	while(filesList2 != NULL) {
-		char* es;
-		es = malloc(strlen(filesList2) + 1); //allocate space for word and terminating character
-
+		char* es = malloc(strlen(filesList2) + 1); //allocate space for word and terminating character
 		strcpy(es, filesList2); //copy text into pointer
 		tempWordArray[position + j] = es; //word
 		++j; //move forward
 		++wordCount; //added another word
-		filesList2 = strtok_r(NULL, "$", &saveptr2);
+		filesList2 = strtok_r(NULL, "[^", &saveptr2);
 	}
 	int k;
 	index = 0;
-	for(k = position + j; k < wordCount; k++) {
+	for(k = position + j; k < wordCount; ++k) {
 		tempWordArray[k] = malloc((strlen(textForLater[index]) + 1)*sizeof(char)); //allocate space
 
-		strcpy(tempWordArray[k], textForLater[index]); //copy over
-		index++; //move to next entry
+		strcpy(tempWordArray[k], textForLater[index++]); //copy over
 	}
 	tempWordArray[wordCount + 1] = NULL; //null entry
 	wordArray = tempWordArray;
 	addedWords += j - 1; //how many wordCount we added
 }
 
+/* take everything between ${ and } */
 void processEnvironmentVariable(char* yyText) {
 	char* insideText = malloc(300 * sizeof(char));
-	strncpy(insideText, &yyText[2], strlen(yyText) - 3); //take everything between ${ and }
+	strncpy(insideText, &yyText[2], strlen(yyText) - 3); 
 	char* result = malloc(300 * sizeof(char));
 	if(getenv(insideText) == NULL) //invalid environment variable
 	{
-		perror ("Entered an invalid environment variable.");
+		perror ("Invalid environment variable.");
 		printf ("Error at line %d\n", __LINE__);
 	}
 	else
@@ -440,14 +415,7 @@ void processEnvironmentVariable(char* yyText) {
 		insertToWordTable( getenv(insideText));
 	}	
 }
-
-void printWordArray() {
-	int i;
-	for(i = 0; i < wordCount; i++) {
-		printf("%s\n", wordArray[i]);
-	}
-}
-
+/* prints the prompt */
 void lineHeaderPath() {
 
 	// get user
@@ -467,6 +435,7 @@ void lineHeaderPath() {
 	printf("[00;00;40m");
 }
 
+/* condenses particular character */
 void condense(char* string, char toCondense) { 
 	int i = 0;
 	int size = strlen(string);

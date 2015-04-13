@@ -40,7 +40,7 @@ cd_case:
 	    |
 		CD word_case {
 			builtin_type = CDPATH_DEF;	
-			strcpy(cdPath, wordArray[getWords() - 1]);
+			strcpy(cdPath, wordArray[wordCount - 1]);
 		};
 env_case:
 	    PRINTENV {
@@ -49,13 +49,13 @@ env_case:
 		| 
 		UNSETENV word_case {
 			builtin_type = UNSETENV_DEF;
-			variable = strdup(wordArray[getWords() - 1]);
+			variable = strdup(wordArray[wordCount - 1]);
 		}   
 		|
 		SETENV word_case word_case {
 			builtin_type = SETENV_DEF;
-			variable = strdup(wordArray[getWords() - 2]);
-			word = strdup(wordArray[getWords() - 1]);
+			variable = strdup(wordArray[wordCount - 2]);
+			word = strdup(wordArray[wordCount - 1]);
 		};
 alias_case:
 		ALIAS {
@@ -64,13 +64,13 @@ alias_case:
 		|
 		ALIAS  word_case  word_case {
 			builtin_type = ALIAS_DEF;
-			variable = strdup(wordArray[getWords() - 2]);
-			word = strdup(wordArray[getWords() - 1]);
+			variable = strdup(wordArray[wordCount - 2]);
+			word = strdup(wordArray[wordCount - 1]);
 		}
 		|
 		UNALIAS word_case {
 			builtin_type = UNALIAS_DEF;
-			variable = strdup(wordArray[getWords() - 1]);
+			variable = strdup(wordArray[wordCount - 1]);
 		};		
 bye_case:
 		BYE { 
