@@ -389,7 +389,6 @@ void execute() {
 		    if (inPipe != 0) {
 				dup2(inPipe, 0);
 			}
-			printf("before the execute\n");
 			/* Execute the last stage with the current process. */
 			if(execvp (commandArray[x].argv [0], (char * const *)commandArray[x].argv) == -1) { //error
 				perror("Error execvp.");
