@@ -1,5 +1,4 @@
 void execute() {
-
 	// ignore: for NEWLINE
 	if(strcmp(wordArray[0], "") == 0) 
 		return;
@@ -356,41 +355,39 @@ void execute() {
 				}		
 			}
 			int x;
-			int inChannel;
-			int fd [2];
+			int inPipe;
+			int outIn [2];
 
-			/* The first process should get its input from the original file descriptor 0.  */
-			inChannel = 0;
+			// create the pipeline
+			inPipe = 0;
 
 			/* All but the last part of the pipeline.  */
 			for (x = 0; x < commandCount - 1; ++x) {
-				pipe (fd);
+				pipe(outIn);
 				
 				pid_t pid;
-				if ((pid = fork ()) == 0) { //in parents
-			    	if (inChannel != 0) {
-						dup2 (inChannel, 0);
-						close (inChannel);
+
+				// parent
+				if ((pid = fork()) == 0) { 
+			    	if (inPipe != 0) {
+						dup2 (inPipe, 0);
+						close (inPipe);
 					}
-					if (fd [1] != 1) {
-						dup2 (fd [1], 1);
-						close (fd [1]);
+					if (outIn[1] != 1) {
+						dup2 (outIn [1], 1);
+						close (outIn [1]);
 					}
-					execvp ((commandArray + x)->argv [0], (char * const *)(commandArray + x)->argv);
+					execvp ((commandArray + x)->argv[0], (char * const *)(commandArray + x)->argv);
 			    }
-				//return pid;
 
-
-				/* Close redundant output.  */
-				close (fd [1]);
-				/* Need this for next iteration.  */
-				inChannel = fd [0];
+				close (outIn [1]);
+				inPipe = outIn [0];
 		    }
 
 		    /* Last stage of the pipeline - set stdin be the read end of the previous pipe
 		    and output to the original file descriptor 1. */  
-		    if (inChannel != 0) {
-				dup2 (inChannel, 0);
+		    if (inPipe != 0) {
+				dup2(inPipe, 0);
 			}
 			printf("before the execute\n");
 			/* Execute the last stage with the current process. */
