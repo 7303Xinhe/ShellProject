@@ -5,7 +5,7 @@
 #include "env_functions.c"
 #include "execute_function.c"
 
-main() {
+main(int argc, char* argv) {
 	shell_init();
 	// loops till bye
 	while(1) {
@@ -44,8 +44,8 @@ void shell_init() {
 	variable = malloc(500 * sizeof(char));
 	word = malloc(500 * sizeof(char));
 	
-	myHome = malloc(500 * sizeof(char));
-	strcpy(myHome, getenv("HOME")); //get home directory so that it stays constant
+	HOME = malloc(500 * sizeof(char));
+	strcpy(HOME, getenv("HOME")); //get home directory so that it stays constant
 	
 	//signal(SIGINT, SIG_IGN); //prevent crash from ctrl-c
 	signal(SIGTSTP, SIG_IGN); //prevent crash from ctrl-z
@@ -130,7 +130,7 @@ void insertToWordTable(char *text) {
 	wordArray = tempWordArray;
 }
 
-// get matching directories
+/* get matching directories */
 char* getDirectories(char* matchString) {
 	int i;
 	int flags = 0;
@@ -140,7 +140,6 @@ char* getDirectories(char* matchString) {
 	// array of the files
 	struct dirent* ent;
 
-
 	glob_t *results = malloc(10 * sizeof(glob_t));
 
 	if((dir = opendir(getenv("PWD"))) == NULL) {
@@ -149,7 +148,7 @@ char* getDirectories(char* matchString) {
 		return "";
 	} else {
 		// get directory stream
-		while ((ent = readdir(dir)) != NULL) {
+		if((ent = readdir(dir)) != NULL) {
 			flags |= (i > 1 ? GLOB_APPEND : 0);
 			if (glob(matchString, flags, globerr, results) != 0) {//error
 				printf("Error with globbing\n");
@@ -314,13 +313,13 @@ char* tildeExpansion(char* text) {
 	if(strncmp(text, "~", 1) == 0) {//tilde expansion
 		int length = strlen(&text[1]); 
 		if(length == 0) {//empty afterwards, so get home directory
-			int result = chdir(myHome); //get home directory and move to it
+			int result = chdir(HOME); //get home directory and move to it
 			if(result == -1) { //error
 				perror("Directory not changed");
 				printf("Error at line %d\n", __LINE__);
 				return;
 			}
-			return myHome;
+			return HOME;
 		}
 		else { //actual expansion
 			char *result = strchr(&text[1], '/');
@@ -341,7 +340,7 @@ char* tildeExpansion(char* text) {
 			}
 			else {//string continues
 				char *directory = malloc(300 * sizeof(char));
-				strcpy(directory, myHome); //start with home directory
+				strcpy(directory, HOME); //start with home directory
 				int index = length - 1;
 				int i;
 				for(i = 0; i < length; i++)	{
@@ -368,7 +367,7 @@ char* tildeExpansion(char* text) {
 	}
 }
 
-
+/* inserts the text into the word array */
 void cardsGoneWild(char* text, int position) {
 	char* saveptr;
 	char* result = strdup(text);

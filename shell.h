@@ -90,32 +90,27 @@ void  printWordArray();
 char* fixText(char *orig, char *rep, char *with);
 void  wordArrayAliasExpansion(char* text, int position);
 
-char** wordArray; //words
-
-
-char** z; //copied words
-int wordCount; //number of words
+// array that holds reach token
+char** wordArray; 
+// number of entries in array
+int wordCount; 
 
 // points to an array of strings called the `environment'.
 extern char** environ; 
 
 struct passwd* pwd; //contains result of getpwnam
-char* myPath;
-char* myHome;
-int   savedOutput; //output channel
-int   savedInput; //input channel
-int   savedError; //error channel
+
+char* HOME;
+
 int   addedWords;
 
+// selector
 int   builtin_type;
-
+// for builtin functions
 char* cdPath;
 char* variable;
 char* word;
 
 // number of aliases
 int   aliasCount; 
-
-
-
 #endif

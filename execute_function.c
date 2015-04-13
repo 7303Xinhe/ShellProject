@@ -166,8 +166,6 @@ void execute() {
 				exit(0);
 				return;
 			}
-			// file descriptor
-			savedInput = dup(0); // get current input
 
 			// redirect input from file
 			if (dup2(in, 0) == -1) {
@@ -187,9 +185,7 @@ void execute() {
 				exit(0);
 				return;
 			}
-			// file descriptor
-			savedOutput = dup(1); // get current output
-			
+
 			// redirect output to file
 			if (dup2(out, 1) == -1) {
 				perror("Output not redirected");
@@ -208,8 +204,7 @@ void execute() {
 				exit(0);
 				return;
 			}
-			savedOutput = dup(1); // save current output
-			
+
 			// redirect output to file
 			if (dup2(out, 1) == -1) {//error
 				perror("Output not redirected");
@@ -222,7 +217,6 @@ void execute() {
 
 		// redirecting error to this
 		if(standardErrorOutputIndex != 0) {
-			savedError = dup(2);
 			if(dup2(1, 2) == -1) {
 				exit(0);
 				return;
@@ -239,7 +233,6 @@ void execute() {
 				exit(0);
 				return;
 			}
-			savedError = dup(2); //get current standard error 
 			//redirect standard error to output file
 			if (dup2(out, 2) == -1) {//error
 				perror("Standard error not redirected");

@@ -2,13 +2,13 @@
 void cd_home_function() {
 	// change to home currentDirectory	
 	// error
-	if(chdir(myHome) == -1) { 				
+	if(chdir(HOME) == -1) { 				
 		printf("Directory not changed. %d\n", __LINE__);
 		printf("Error at line %d\n", __LINE__);
 		return;
 	}
 	// change the value of the PWD variable
-	setenv_function("PWD", myHome); 
+	setenv_function("PWD", HOME); 
 }
 
 
