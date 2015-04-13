@@ -31,3 +31,9 @@
 				|___________________________________________|
 
 
+		To run shell:
+
+		make clean; make; ./shell				*for interactive* 
+		OR 
+		make clean; make; ./shell < test.txt 	*for reading from file*  
+
